@@ -1,4 +1,17 @@
-# cs362_proj1
+# CSUF CPSC362 Group 1 Project - TufferUp (an OfferUp like clone for CSUF)
+
+| Name | Role | Email |
+| --- | --- | --- |
+| Alex Lu | Product Owner | alexluc2001@csu.fullerton.edu |
+| Eduardo Casas-Gabirio | Scrum Master | eduardo23@csu.fullerton.edu |
+| Gabriel Warkentin | Tech Lead | gabrielwarkentin@csu.fullerton.edu |
+| Mialiani Phommasa | Tech Chaser | phommasa@csu.fullerton.edu |
+| Ixis Weiss | QA | weiss112@csu.fullerton.edu |
+| Dulcie Hang |  | dhang0129@csu.fullerton.edu |
+
+
+
+# Vue.js Provided this info on creation:
 
 This template should help get you started developing with Vue 3 in Vite.
 
