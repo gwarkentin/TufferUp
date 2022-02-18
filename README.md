@@ -1,4 +1,6 @@
-# CSUF CPSC362 Group 1 Project - TufferUp (an OfferUp like clone for CSUF)
+# TufferUp (an OfferUp like clone for CSUF)
+
+CSUF CPSC362 Group 1 Project
 
 | Name | Role | Email |
 | --- | --- | --- |
