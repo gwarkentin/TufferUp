@@ -25,11 +25,13 @@ export default {
 </script>
 
 <template>
-    <div class="container">
+  <div class="row align-items-start">
+    <div class="col">
       <PostForm v-model:email="page_email" v-model:password="page_password" />
     </div>
-    <div class="container">
+    <div class="col">
       <PostDetails :det_email="page_email" :det_password="page_password" />
     </div>
+  </div>
 </template>
 

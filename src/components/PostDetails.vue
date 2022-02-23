@@ -6,6 +6,7 @@ export default {
 
 <template>
   <div class="container">
+    <h4>Detail View (live updates):</h4>
       <div class="mb-3">
         <label>Email address</label>
         <p>{{ det_email }}</p>
