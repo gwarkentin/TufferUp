@@ -14,12 +14,6 @@ export default {
     PostForm,
     PostDetails
   },
-  methods: {
-    updateEmailPass(email, pass) {
-      page_email = email
-      page_password = pass
-    }
-  }
 }
 
 </script>
