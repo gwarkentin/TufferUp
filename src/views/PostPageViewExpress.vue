@@ -2,6 +2,8 @@
 import PostDetails from '../components/PostDetails.vue'
 import axios from 'axios'
 
+// this view dynamically requests data from express runnin at server/index.js
+
 export default {
   data() {
     return {

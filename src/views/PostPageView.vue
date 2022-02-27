@@ -2,6 +2,8 @@
 import PostDetails from '../components/PostDetails.vue'
 import axios from 'axios'
 
+// this ajax just pulls the data from /publie/apipost.json
+
 export default {
   data() {
     return {
