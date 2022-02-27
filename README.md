@@ -12,36 +12,33 @@ CSUF CPSC362 Group 1 Project
 | Dulcie Hang |  | dhang0129@csu.fullerton.edu |
 
 
+# Install Instructions
+Install https://github.com/nvm-sh/nvm a node.js version manager.
+Use nvm to install the latest node.js.
 
-# Vue.js Provided this info on creation:
+Clone this repo, instructions here: https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
+Every time you do a git pull, cd to the project directory and run this to make sure you get any new packages.
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
+to build and run in browser:
 ```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
 
-```sh
-npm run build
-```
+
+# Vue.js's recommendations:
+
+### Recommended IDE Setup
+
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
+
+### Customize configuration
+
+See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ### Lint with [ESLint](https://eslint.org/)
 
