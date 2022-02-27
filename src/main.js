@@ -2,15 +2,18 @@ import { createApp } from 'vue'
 import { createRouter, createWebHistory} from 'vue-router'
 import App from './App.vue'
 
-import PostPage from '@/views/PostPage.vue'
+import PostPage from './views/PostPage.vue'
+import PostPageView from './views/PostPageView.vue'
 import PostDetails from './components/PostDetails.vue'
 import PostForm from './components/PostForm.vue'
+import LoginPage from './components/LoginPage.vue'
 
 const routes = [
   //{ path: '/', component: PostPage },
-  { path: '/', name: 'Home', component: PostPage },
-  { path: '/post', component: PostDetails },
-  { path: '/form', component: PostForm },
+  { path: '/', name: 'Home', component: PostPageView },
+  { path: '/post/:id', name: 'APost', component: PostPageView },
+  { path: '/post', name: 'Post', component: PostPage },
+  { path: '/login', name: 'Login', component: LoginPage },
 ]
 
 const router = createRouter({
