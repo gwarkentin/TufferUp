@@ -11,7 +11,7 @@ export default {
         category: "Books",
         condition: "Sandy",
         price: 99.00,
-        discountable: true
+        discountable: false
       }
     }
   },

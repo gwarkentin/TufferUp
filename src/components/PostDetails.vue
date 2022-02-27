@@ -19,8 +19,8 @@ export default {
         <p class="card-text">{{ description }}</p>
         <p class="card-text">Category: {{ category }}</p>
         <p class="card-text">Condition: {{ condition }}</p>
-        <input :placeholder="price" />
-        <p class="card-text">{{ price }}</p>
+        <input v-if="discountable" :placeholder="'$' + price" />
+        <p v-else class="card-text">${{ price }}</p>
       </div>
       <img src="/src/assets/book.jpg" class="card-img-bottom" alt="picture of {{ title }}">
     </div>
