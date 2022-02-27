@@ -7,6 +7,7 @@ export default {
       'condition': String,
       'price': Number,
       'discountable': Boolean,
+      'imgs': Array
   }
 }
 </script>
@@ -19,10 +20,17 @@ export default {
         <p class="card-text">{{ description }}</p>
         <p class="card-text">Category: {{ category }}</p>
         <p class="card-text">Condition: {{ condition }}</p>
-        <input v-if="discountable" :placeholder="'$' + price" />
+        <div v-if="discountable">
+          <label>$</label> 
+          <input :placeholder="price" />
+        </div>
         <p v-else class="card-text">${{ price }}</p>
       </div>
-      <img src="/src/assets/book.jpg" class="card-img-bottom" alt="picture of {{ title }}">
+      <div>
+        <span v-for="image in imgs">
+          <img :src="image" class="card-img-bottom" alt="picture of {{ title }}">
+        </span>
+      </div>
     </div>
 </div>
 </template>

@@ -5,6 +5,7 @@
         "category": "Api Category",
         "condition": "Api Condition",
         "price": 1.99,
-        "discountable": true
+        "discountable": true,
+        "imgs": ["/src/assets/tree.jpg"]
     }
 }

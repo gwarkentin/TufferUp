@@ -6,7 +6,8 @@ export default {
         'category': String,
         'condition': String,
         'price': Number,
-        'discountable':Boolean
+        'discountable': Boolean,
+        'imgs': Array
     },
     emits: [
     'update:title',
@@ -14,7 +15,8 @@ export default {
     'update:category',
     'update:condition',
     'update:price',
-    'update:discountable'
+    'update:discountable',
+    'update:imgs'
     ]
   }
 
@@ -54,11 +56,15 @@ export default {
           :value="price" @input="$emit('update:price', $event.target.value)"
         class="form-control" id="formPrice">
       </div>
-      <div class="mb-3 form-check">
-        <label for="formDiscountable" class="form-check-label">Discountable</label>
-        <input 
-          :value="discountable" @input="$emit('update:discountable', $event.target.value)"
-        type="checkbox" class="form-check-input" id="formDiscountable">
+      <div class="mb-3 form-check form-switch">
+        <label for="formDiscountableT" class="form-check-label">Discountable</label>
+        <input id="formDiscountableT" type="checkbox" name="discountable" class="form-check-input"
+            @input="$emit('update:discountable', $event.target.checked)" :checked="discountable" />
+      </div>
+      <div class="mb-3">
+        <label for="formFileMultiple" class="form-label">Upload Photos of Item</label>
+        <input class="form-control" type="file" id="formFileMultiple" multiple
+          @input="$emit('update:imgs', $event.target.value)" :value="imgs">
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>

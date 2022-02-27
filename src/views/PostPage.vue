@@ -11,7 +11,8 @@ export default {
         category: "Books",
         condition: "Sandy",
         price: 99.00,
-        discountable: false
+        discountable: true,
+        imgs: ["/src/assets/book.jpg"]
       }
     }
   },
@@ -26,6 +27,7 @@ export default {
 <template>
   <div class="row align-items-start">
     <div class="col-sm">
+      <p>Discountable:{{ typeof(form.discountable) }}</p>
       <PostForm 
         v-model:title="form.title"
         v-model:description="form.description"
