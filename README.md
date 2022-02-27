@@ -28,6 +28,12 @@ to build and run in browser:
 npm run dev
 ```
 
+in another terminal terminal window (add one in bottom right of vscode), run the node/express server
+```sh
+node server/index.js
+```
+you should be able to see some JSON data at http://localhost:3001/api/post/1
+
 
 
 # Vue.js's recommendations:

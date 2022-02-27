@@ -9,7 +9,11 @@
   },
   "dependencies": {
     "axios": "^0.26.0",
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
     "mongodb": "^4.4.0",
+    "nodemon": "^2.0.15",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12"
   },

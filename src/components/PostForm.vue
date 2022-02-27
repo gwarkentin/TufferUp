@@ -64,7 +64,7 @@ export default {
       <div class="mb-3">
         <label for="formFileMultiple" class="form-label">Upload Photos of Item</label>
         <input class="form-control" type="file" id="formFileMultiple" multiple
-          @input="$emit('update:imgs', $event.target.value)" :value="imgs">
+          @input="$emit('update:imgs', $event.target.value)">
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
