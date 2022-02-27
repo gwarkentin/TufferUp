@@ -6,8 +6,14 @@ import PostDetails from './PostDetails.vue'
 export default {
   data() {
     return {
-      page_email: "test",
-      page_password: "p"
+      postform: {
+        title: "Item Title",
+        description: "Some book",
+        category: "Books",
+        condition: "Sandy",
+        price: 99.00,
+        discountable: true
+      }
     }
   },
   components: {
@@ -20,11 +26,17 @@ export default {
 
 <template>
   <div class="row align-items-start">
-    <div class="col">
-      <PostForm v-model:email="page_email" v-model:password="page_password" />
+    <div class="col-sm">
+      <PostForm 
+        v-model:title="postform.title"
+        v-model:description="postform.description"
+        v-model:category="postform.category"
+        v-model:condition="postform.condition"
+        v-model:price="postform.price"
+        v-model:discountable="postform.discountable" />
     </div>
-    <div class="col">
-      <PostDetails :det_email="page_email" :det_password="page_password" />
+    <div class="col-sm">
+      <PostDetails v-bind="postform" />
     </div>
   </div>
 </template>

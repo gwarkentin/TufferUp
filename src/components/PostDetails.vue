@@ -1,20 +1,28 @@
 <script>
 export default {
-  props: ['det_email','det_password']
+  props: {
+      'title': String,
+      'description' : String,
+      'category': String,
+      'condition': String,
+      'price': Number,
+      'discountable': Boolean,
+  }
 }
 </script>
 
 <template>
   <div class="container">
-    <h4>Detail View (live updates):</h4>
-      <div class="mb-3">
-        <label>Email address</label>
-        <p>{{ det_email }}</p>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ title }}</h5>
+        <p class="card-text">{{ description }}</p>
+        <p class="card-text">Category: {{ category }}</p>
+        <p class="card-text">Condition: {{ condition }}</p>
+        <p class="card-text">{{ price }}</p>
       </div>
-      <div class="mb-3">
-        <label>Password</label>
-        <p>{{ det_password }}</p>
-      </div>
-  </div>
+      <img src="/src/assets/book.jpg" class="card-img-bottom" alt="picture of {{ title }}">
+    </div>
+</div>
 </template>
 
