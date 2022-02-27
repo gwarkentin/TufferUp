@@ -9,7 +9,7 @@ CSUF CPSC362 Group 1 Project
 | Gabriel Warkentin | Tech Lead | gabrielwarkentin@csu.fullerton.edu |
 | Mialiani Phommasa | Tech Chaser | phommasa@csu.fullerton.edu |
 | Ixis Weiss | QA | weiss112@csu.fullerton.edu |
-| Dulcie Hang |  | dhang0129@csu.fullerton.edu |
+| Dulcie Hang | QA | dhang0129@csu.fullerton.edu |
 
 
 # Install Instructions
