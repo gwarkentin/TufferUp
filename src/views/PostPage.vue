@@ -19,10 +19,6 @@ export default {
   components: {
     PostForm,
     PostDetails
-  },
-  methods: {
-    updateImgs (imgs) {
-    }
   }
 }
 
@@ -39,7 +35,6 @@ export default {
         v-model:condition="form.condition"
         v-model:price="form.price"
         v-model:discountable="form.discountable"
-        @update:imgs="updateImgs"
          />
     </div>
     <div class="col-sm">

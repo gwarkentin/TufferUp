@@ -2,7 +2,7 @@
 import PostDetails from '../components/PostDetails.vue'
 import axios from 'axios'
 
-// this ajax just pulls the data from /publie/apipost.json
+// this view dynamically requests data from express runnin at server/index.js
 
 export default {
   data() {
@@ -24,7 +24,8 @@ export default {
   },
   methods: {
     tryAjax() {
-      axios.get('/apipost.json')
+      const id = (this.$route.params.id ? this.$route.params.id : "");
+      axios.get('http://localhost:3001/api/post/' + id)
       .then(response => {
         this.form = response.data.form
         this.ogdata = false
