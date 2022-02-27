@@ -1,7 +1,6 @@
 <script>
-
-import PostForm from './PostForm.vue'
-import PostDetails from './PostDetails.vue'
+import PostForm from '../components/PostForm.vue'
+import PostDetails from '../components/PostDetails.vue'
 
 export default {
   data() {

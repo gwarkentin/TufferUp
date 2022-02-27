@@ -1,25 +1,22 @@
+import { createApp } from 'vue'
+import { createRouter, createWebHistory} from 'vue-router'
 import App from './App.vue'
-import PostPage from './components/PostPage.vue'
+
+import PostPage from '@/views/PostPage.vue'
 import PostDetails from './components/PostDetails.vue'
 import PostForm from './components/PostForm.vue'
 
-// const PostPageInst = PostPage.createApp({})
-const About = { template: '<div>About</div>' }
-
 const routes = [
   //{ path: '/', component: PostPage },
-  { path: '/', component: About },
-  { path: '/about', component: About },
-  { path: '/form', component: PostForm },
+  { path: '/', name: 'Home', component: PostPage },
   { path: '/post', component: PostDetails },
+  { path: '/form', component: PostForm },
 ]
 
-const router = VueRouter.createRouter({
+const router = createRouter({
   // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
-  history: VueRouter.createWebHashHistory(),
+  history: createWebHistory(),
   routes, // short for `routes: routes`
 })
 
-const app = Vue.createApp(App)
-app.use(router)
-app.mount('#app')
+createApp(App).use(router).mount('#app')
