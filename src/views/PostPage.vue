@@ -1,12 +1,11 @@
 <script>
-
-import PostForm from './PostForm.vue'
-import PostDetails from './PostDetails.vue'
+import PostForm from '../components/PostForm.vue'
+import PostDetails from '../components/PostDetails.vue'
 
 export default {
   data() {
     return {
-      postform: {
+      form: {
         title: "Item Title",
         description: "Some book",
         category: "Books",
@@ -19,7 +18,7 @@ export default {
   components: {
     PostForm,
     PostDetails
-  },
+  }
 }
 
 </script>
@@ -28,15 +27,15 @@ export default {
   <div class="row align-items-start">
     <div class="col-sm">
       <PostForm 
-        v-model:title="postform.title"
-        v-model:description="postform.description"
-        v-model:category="postform.category"
-        v-model:condition="postform.condition"
-        v-model:price="postform.price"
-        v-model:discountable="postform.discountable" />
+        v-model:title="form.title"
+        v-model:description="form.description"
+        v-model:category="form.category"
+        v-model:condition="form.condition"
+        v-model:price="form.price"
+        v-model:discountable="form.discountable" />
     </div>
     <div class="col-sm">
-      <PostDetails v-bind="postform" />
+      <PostDetails v-bind="form" />
     </div>
   </div>
 </template>
