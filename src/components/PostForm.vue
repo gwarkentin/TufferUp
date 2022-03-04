@@ -1,4 +1,6 @@
 <script>
+import axios from 'axios'
+
 export default {
     props: {
         'title': String,
@@ -17,14 +19,65 @@ export default {
     'update:price',
     'update:discountable',
     'update:imgs'
-    ]
+    ],
+    methods:
+    {
+      /*
+        collect the data from this page and submit to backend (server/index.js), receive back some response
+        the respose should be the ID of the post you just made if succesful and then you use this.$router.push(path/:id)
+      */
+      makePost() {
+
+        // put it all in one json object
+        this.form = {
+          'title': this.title,
+          'description': this.description,
+          'category': this.category,
+          'condition': this.condition,
+          'price': this.price,
+          'discountable': this.discountable,
+          'imgs': this.imgs
+        }
+        console.log("Sending:" + JSON.stringify(this.form))
+        axios({
+          method: 'post', // post type is for one time submissions. Only post listener functions on backend will answer this call at this url
+          url:'http://localhost:3001/api/newpost', // we shouldn't hardcode the url like this
+          data: this.form   
+        }).then(response => {
+          /* -- ! need to implement
+            Expect response.data to be like:
+              {
+                "success": Boolean,
+                "postID": Int,
+                "error": String // "" if success=true, "warning description" if some warning
+              }
+            if so push to '/newpost/:id' where they can see the live result,
+            otherwise tell them it failed to submit and stay on this page,
+              use a vue var bound to an element with bootstrap styles for hidden or warning/danger 
+              if danger, show some text diagnosing the problem from backend and/or from this func.
+          */
+
+          console.log("receiving:" + JSON.stringify(response.data))
+          this.$router.push('/newpost/done')
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        }); 
+      }
+    }
   }
 
 </script>
 
+<!-- Just a bunch of inputs and their associated id attributes. When you receive the post with the backend, you can
+access in these variables in server/index.js with something like req.body
+-->
 <template>
   <div class="form">
-    <form class="container" >
+    <form class="container" enctype="multipart/form-data" id="newpostform">
       <h4>Input Form:</h4>
       <div class="mb-3">
         <label for="formTitle" class="form-label">Title:</label>
@@ -66,7 +119,7 @@ export default {
         <input class="form-control" type="file" id="formFileMultiple" multiple
           @input="$emit('update:imgs', $event.target.value)">
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="button" class="btn btn-primary" @click="makePost()">Submit</button>
     </form>
   </div>
 </template>

@@ -28,6 +28,7 @@ export default {
       </div>
       <div>
         <span v-for="image in imgs">
+          <p>replace us with a carousel</p>
           <img :src="image" class="card-img-bottom" alt="picture of {{ title }}">
         </span>
       </div>
