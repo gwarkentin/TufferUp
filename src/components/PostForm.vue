@@ -2,6 +2,7 @@
 import axios from 'axios'
 
 export default {
+  // these are basically public variables that you can pass info between with parent
     props: {
         'title': String,
         'description': String,
@@ -11,6 +12,7 @@ export default {
         'discountable': Boolean,
         'imgs': Array
     },
+    // to send updates to let parent know these changed
     emits: [
     'update:title',
     'update:description', 
@@ -20,6 +22,7 @@ export default {
     'update:discountable',
     'update:imgs'
     ],
+    // what functions you can call from <template> section below or the rest of the functions.
     methods:
     {
       /*
@@ -48,7 +51,7 @@ export default {
             Expect response.data to be like:
               {
                 "success": Boolean,
-                "postID": Int,
+                "postID": Int,  // 0 on failure
                 "error": String // "" if success=true, "warning description" if some warning
               }
             if so push to '/newpost/:id' where they can see the live result,
