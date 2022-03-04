@@ -23,6 +23,13 @@ export default {
     PostDetails
   },
   methods: {
+
+    /* !need to implement
+     the page should immediate try to fetch the data
+     look at vue lifecycle hooks. We should calling tryAjax() from in Created(), but maybe check again
+     later if something is going wrong
+     */
+    
     tryAjax() {
       const id = (this.$route.params.id ? this.$route.params.id : "");
       axios.get('http://localhost:3001/api/post/' + id)
@@ -41,8 +48,10 @@ export default {
 }
 </script>
 
+
 <template>
   <div class="row align-items-start">
+    <!-- this button should go away, the page should immediate try to fetch the data, this is just for example -->
     <button type="button" :class="[ogdata ? 'btn-primary' : 'btn-secondary']" class="btn" @click="tryAjax">Replace with Ajax Data</button>
     <div class="col-sm">
       <PostDetails v-bind="form" />

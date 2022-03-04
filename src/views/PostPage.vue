@@ -1,4 +1,7 @@
 <script>
+
+// the module that connects the form and details view together
+
 import PostForm from '../components/PostForm.vue'
 import PostDetails from '../components/PostDetails.vue'
 

@@ -2,6 +2,12 @@
 </script>
 
 <template>
+<!--- Need to implement
+This is just ugly, can you please update design. We should use CSUF colors for the site theme
+  we want a site wide theme standard set in one place, maybe in App.vue, use Sass, idk anything about this
+Also want to set up search bar to go to /post/:id for now, in future it should use a javascript autocomplete
+  function to find common terms easily
+-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <router-link to="/" class="navbar-brand">Post</router-link>

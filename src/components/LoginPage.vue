@@ -1,3 +1,11 @@
+<script>
+export default {};
+</script>
+
+<!--- need to implement the actually post/connection to backend.
+    Mirror the PostForm code, but we also need to look at login/cookie/seesion managment
+    i'm not sure how node and vue handle that yet. I saw something called "stores" that might be it?
+-->
 <template>
   <div class="container">
       <div class="row">
@@ -47,9 +55,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {};
-</script>
-
-<style scoped></style>
