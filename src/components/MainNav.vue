@@ -8,7 +8,7 @@ This is just ugly, can you please update design. We should use CSUF colors for t
 Also want to set up search bar to go to /post/:id for now, in future it should use a javascript autocomplete
   function to find common terms easily
 -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light "  style="background-color: #FF8C00" >
   <div class="container-fluid">
     <router-link to="/" class="navbar-brand">Post</router-link>
 
@@ -30,6 +30,9 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
           </li>
           <li class="nav-item">
             <router-link to="/login" class="nav-link">Login</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/register" class="nav-link">Register</router-link>
           </li>
         </ul>
       </div>
