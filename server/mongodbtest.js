@@ -2,7 +2,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const fs = require('fs');
 
 async function makeClient() {
-    const data = fs.readFileSync('.password', 'utf8');
+    const data = fs.readFileSync('server/.password', 'utf8');
     var uri = "mongodb+srv://tuffy:" + data + "@tufferup.5qlje.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
     return client
