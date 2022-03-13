@@ -6,6 +6,7 @@ import PostPage from './views/PostPage.vue'
 import PostPageView from './views/PostPageView.vue'
 import LoginPage from './components/LoginPage.vue'
 import NewPostDone from './components/NewPostDone.vue'
+import RegisterPage from './components/RegisterPage.vue'
 
 // add your imports and routes here to provide urls for your frontend pages
 // see server/index.js for backend routing for our api, very similar concept
@@ -19,6 +20,7 @@ const routes = [
   { path: '/newpost', name: 'NewPost', component: PostPage },
   { path: '/newpost/done', name: 'PostDone', component: NewPostDone },
   { path: '/login', name: 'Login', component: LoginPage },
+  { path: '/register', name: 'Register', component: RegisterPage },
 ]
 
 

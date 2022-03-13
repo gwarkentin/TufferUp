@@ -13,7 +13,7 @@ export default {};
         <div class="col-md-6">
           <div class="card">
             <div class="mt-3">
-              <h4 class="text-center">Login to TufferUp</h4>
+              <h4 class="text-center">Register for TufferUp</h4>
             </div>
             <form class="px-4 py-3">
               <div class="mb-3">
@@ -47,7 +47,7 @@ export default {};
                   </label>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary">Login</button>
+              <button type="submit" class="btn btn-primary">Register</button>
             </form>
           </div>
         <div class="col-md-9"></div>
