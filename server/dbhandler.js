@@ -45,10 +45,12 @@ function getLastPost(postID) {
         "database": "tufferup",
         "dataSource": "TufferUp",
         "filter": {
-            "id": postID 
+            "_id": { "$oid": postID }
         }
     });
     
+    console.log(data)
+
     var getconfig = {
         method: 'post',
         url: 'https://data.mongodb-api.com/app/data-pkysg/endpoint/data/beta/action/findOne',
