@@ -2,6 +2,11 @@
 import axios from 'axios'
 
 export default {
+  data() {
+    return {
+      'images': []
+    }
+  },
   // these are basically public variables that you can pass info between with parent
     props: {
         'title': String,
@@ -10,7 +15,7 @@ export default {
         'condition': String,
         'price': Number,
         'discountable': Boolean,
-        'imgs': Array
+        'imgs': Object
     },
     // to send updates to let parent know these changed
     emits: [
@@ -29,8 +34,9 @@ export default {
         collect the data from this page and submit to backend (server/index.js), receive back some response
         the respose should be the ID of the post you just made if succesful and then you use this.$router.push(path/:id)
       */
-      makePost() {
+      makePost(e) {
 
+        console.log(e)
         // put it all in one json object
         this.form = {
           'title': this.title,
@@ -41,6 +47,8 @@ export default {
           'discountable': this.discountable,
           'imgs': this.imgs
         }
+        // need to validate form on frontend here before submitting via axios
+
         console.log("Sending:" + JSON.stringify(this.form))
         axios({
           method: 'post', // post type is for one time submissions. Only post listener functions on backend will answer this call at this url
@@ -61,14 +69,24 @@ export default {
           */
 
           console.log("receiving:" + JSON.stringify(response.data))
-          this.$router.push('/newpost/done')
+          this.$router.push('/newpost/done') // should push to /post/:id
         })
         .catch(function (error) {
           console.log(error);
         })
         .then(function () {
           // always executed
-        }); 
+        });
+      },
+      getFiles(e) {
+        var imgs = [];
+        var ffm = e.target;
+        var files = ffm.files;
+        console.log(JSON.stringify(files));
+        for (let i = 0; i < files.length; i++) {
+          imgs.shift(files[i]);
+        }
+        this.images = imgs;
       }
     }
   }
@@ -119,10 +137,11 @@ access in these variables in server/index.js with something like req.body
       </div>
       <div class="mb-3">
         <label for="formFileMultiple" class="form-label">Upload Photos of Item</label>
-        <input class="form-control" type="file" id="formFileMultiple" multiple
-          @input="$emit('update:imgs', $event.target.value)">
+        <input class="form-control" id="formFileMultiple" type="file" multiple accept="image/*" 
+          @change="getFiles" />
+          <!--  @input="$emit('update:imgs', $event.target.value)" :value="imgs" /> !-->
       </div>
-      <button type="button" class="btn btn-primary" @click="makePost()">Submit</button>
+      <button type="button" class="btn btn-primary" @click="makePost">Submit</button>
     </form>
   </div>
 </template>

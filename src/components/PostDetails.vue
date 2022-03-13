@@ -31,7 +31,7 @@ export default {
         <p v-else class="card-text">${{ price }}</p>
       </div>
       <div>
-        <span v-for="image in imgs">
+        <span v-for="image in imgs" :key="image">
           <p>replace us with a carousel</p>
           <img :src="image" class="card-img-bottom" alt="picture of {{ title }}">
         </span>
