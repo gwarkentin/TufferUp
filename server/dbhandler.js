@@ -5,6 +5,7 @@ var axios = require('axios');
 function verifyPost(postForm) {
     return true
 }
+
 function addPost(collection, postForm) {
 
     var personDocument = JSON.stringify({
@@ -54,13 +55,9 @@ function getLastPost(postID) {
         "database": "tufferup",
         "dataSource": "TufferUp",
         "filter": {
-<<<<<<< HEAD
             "_id": {
                 "$oid": postID
             }
-=======
-            "_id": { "$oid": postID }
->>>>>>> c3ecbc4b580375f853b3309059ddb25db16f4aa1
         }
     });
     
