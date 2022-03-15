@@ -1,57 +1,46 @@
 
-
 var axios = require('axios');
 
-function verifyPost(postForm) {
-    return true
+// should actually verify format is good
+module.exports.verifyPost = function (postForm) {
+    return true;
 }
 
-function addPost(collection, postForm) {
+module.exports.addPost = async function (postForm) {
 
     var personDocument = JSON.stringify({
         "database": "tufferup",
         "dataSource": "TufferUp",
-
-        "collection": "people",  //replace with "collection": collection
-        "document": {
-    // replace with "docutment": postForm
-            "name": { "first": "Mialiani", "last": "Phommasa" },
-            "birth": new Date(2000, 7, 2), // June 23, 1912                                                                                                                                 
-            "death": new Date(2080, 5, 7),
-            "contribs": [ "Just existing", "Watching shows", "Solving world hunger" ],
-            "views": 789
-        }
-    });
+        "collection": "post",
+        "document": postForm
+        });
 
     var insertconfig = {
-    method: 'post',
-    url: 'https://data.mongodb-api.com/app/data-pkysg/endpoint/data/beta/action/insertOne', //only change url
-    headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Request-Headers': '*',
-        'api-key': 'h1FiSo3BRajY7wjyUkvup7imsnX5u9BDQ91WFz5NCs5K3qCkGU5TeQy3FHzm3VUr'
-    },
-    data : personDocument
+        method: 'post',
+        url: 'https://data.mongodb-api.com/app/data-pkysg/endpoint/data/beta/action/insertOne', //only change url
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Request-Headers': '*',
+            'api-key': 'h1FiSo3BRajY7wjyUkvup7imsnX5u9BDQ91WFz5NCs5K3qCkGU5TeQy3FHzm3VUr'
+        },
+        data : personDocument
     };           
 
-    axios(insertconfig)
-        .then(function (response) {
-            // mongoDB response here
-            const rd = response.data;
-            console.log(rd)
-            getLastPost(rd.insertedId)
-
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    try {
+        const response = await axios(insertconfig)
+        const rd = response.data;
+        console.log('dbhandler.js (mongodb response): ' +  JSON.stringify(rd))
+        return(rd.insertedId)
     }
-    ;
+    catch {
+        console.log(error);
+    }
+};
 
+module.exports.getPost = async function (postID) {
 
-function getLastPost(postID) {
     var data = JSON.stringify({
-        "collection": "people",
+        "collection": "post",
         "database": "tufferup",
         "dataSource": "TufferUp",
         "filter": {
@@ -60,10 +49,8 @@ function getLastPost(postID) {
             }
         }
     });
-    
-    console.log(data)
 
-    var getconfig = {
+    var config = {
         method: 'post',
         url: 'https://data.mongodb-api.com/app/data-pkysg/endpoint/data/beta/action/findOne',
         headers: {
@@ -74,12 +61,15 @@ function getLastPost(postID) {
         data : data
     };
 
-    axios(getconfig)
-        .then(function (response) {
-            const rd = response.data;
-            console.log(rd)
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    console.log('requesting mongo for id: ' + postID)
+    try {
+        const response = await axios(config)
+        const rd = response.data;
+        console.log('mongodb rd: ' + JSON.stringify(rd))
+        return(rd.document)
     }
+    catch {
+        console.log(error);
+        return( 'Error')
+    }
+};

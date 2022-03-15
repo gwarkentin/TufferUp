@@ -32,19 +32,11 @@ app.get('/api/post', (req, res) => {
 
 // accepting get url params
 app.get('/api/post/:id', (req, res) => {
-  res.send(
-    {
-    "form": {
-        "title": "Express id:" + req.params.id,
-        "description": "Express Api Sent this",
-        "category": "Api Category",
-        "condition": "Api Condition",
-        "price": 1.99,
-        "discountable": true,
-        "imgs": ["/src/assets/palms_and_snow.jpg", "/src/assets/tree.jpg"]
-    }
-    }
-  );
+  console.log('request for post: ' + req.params.id)
+  dbhandler.getPost(req.params.id)
+    .then(function (post) {
+      res.json(post)
+    })
 });
 
 // -------- These are helper functions for /api/newpost -------------
@@ -82,9 +74,22 @@ app.post('/api/newpost', (req,res) => {
 */
   console.log('receive post req');
   console.log(req.body);
-  dbres = dbhandler.insertPost(req.body)
-
-  res.json(req.body); // converts to string and sends to client
+  if (dbhandler.verifyPost(req.body)) {
+    dbhandler.addPost(req.body)
+    .then(function ( postID) {
+      res.json({
+        'postID': postID}
+        );
+    })
+    .catch(function (error) {
+      console.log(error)
+      res.json('fail')
+    });
+  }
+  else {
+    console.log('Invalid post')
+    res.json('invalid post')
+  }
 });
 
-app.listen(3001, console.log("Server listening on port 3001. Try http://localhost:3001/api/post/40"))
+app.listen(3001, console.log("Server listening on port 3001. Try http://localhost:3001/api/post/40"));

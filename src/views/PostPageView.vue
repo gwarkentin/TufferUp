@@ -34,7 +34,8 @@ export default {
       const id = (this.$route.params.id ? this.$route.params.id : "");
       axios.get('http://localhost:3001/api/post/' + id)
       .then(response => {
-        this.form = response.data.form
+        console.log(response.data)
+        this.form = response.data
         this.ogdata = false
       })
       .catch(function (error) {
