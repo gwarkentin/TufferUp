@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const dbhandler = require('./dbhandler');
+
 const app = express();
 
 // middleware
@@ -62,7 +64,6 @@ app.get('/api/post/:id', (req, res) => {
 // a post request receiving input from a form.
 // Right now it just sends it back to the sender as is and posts in your terminal.
 app.post('/api/newpost', (req,res) => {
-
   /* -- !need to implement!
  use the helper functions above to first
   1) verify the post,
@@ -79,9 +80,10 @@ app.post('/api/newpost', (req,res) => {
       "error": String // "" if success = true, "warning description" if some warning
     }
 */
-
- console.log('receive post req');
+  console.log('receive post req');
   console.log(req.body);
+  dbres = dbhandler.insertPost(req.body)
+
   res.json(req.body); // converts to string and sends to client
 });
 

@@ -7,7 +7,6 @@ import PostPageView from './views/PostPageView.vue'
 import LoginPage from './components/LoginPage.vue'
 import NewPostDone from './components/NewPostDone.vue'
 import RegisterPage from './components/RegisterPage.vue'
-import AllCategoryPage from './components/AllCategoryPage.vue'
 import CategoryPage from './views/CategoryPage.vue'
 
 // add your imports and routes here to provide urls for your frontend pages
@@ -23,7 +22,7 @@ const routes = [
   { path: '/newpost/done', name: 'PostDone', component: NewPostDone },
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/register', name: 'Register', component: RegisterPage },
-  { path: '/category', name: 'AllCategory', component: AllCategoryPage },
+  { path: '/category', name: 'AllCategory', component: CategoryPage },
   { path: '/category/:category', name: 'Category', component: CategoryPage },
 ]
 

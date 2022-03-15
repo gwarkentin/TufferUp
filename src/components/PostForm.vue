@@ -45,7 +45,8 @@ export default {
           'condition': this.condition,
           'price': this.price,
           'discountable': this.discountable,
-          'imgs': this.imgs
+          'imgs': this.imgs,
+          'rating': 0
         }
         // need to validate form on frontend here before submitting via axios
 
@@ -69,7 +70,7 @@ export default {
           */
 
           console.log("receiving:" + JSON.stringify(response.data))
-          this.$router.push('/newpost/done') // should push to /post/:id
+          this.$router.push('/post/' + response.data.postID) // should push to /post/:id
         })
         .catch(function (error) {
           console.log(error);
