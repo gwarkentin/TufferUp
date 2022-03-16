@@ -1,5 +1,12 @@
 
 var axios = require('axios');
+var passwords = require('./.password.js')
+
+var headers =  {
+    'Content-Type': 'application/json',
+    'Access-Control-Request-Headers': '*',
+    'api-key': passwords.apikey
+}
 
 // should actually verify format is good
 module.exports.verifyPost = function (postForm) {
@@ -16,14 +23,10 @@ module.exports.addPost = async function (postForm) {
         });
 
     var insertconfig = {
-        method: 'post',
-        url: 'https://data.mongodb-api.com/app/data-pkysg/endpoint/data/beta/action/insertOne', //only change url
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Request-Headers': '*',
-            'api-key': 'h1FiSo3BRajY7wjyUkvup7imsnX5u9BDQ91WFz5NCs5K3qCkGU5TeQy3FHzm3VUr'
-        },
-        data : personDocument
+        "method": 'post',
+        "url": 'https://data.mongodb-api.com/app/data-pkysg/endpoint/data/beta/action/insertOne',
+        "headers": headers,
+        "data": personDocument
     };           
 
     try {
@@ -51,25 +54,20 @@ module.exports.getPost = async function (postID) {
     });
 
     var config = {
-        method: 'post',
-        url: 'https://data.mongodb-api.com/app/data-pkysg/endpoint/data/beta/action/findOne',
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Request-Headers': '*',
-            'api-key': 'h1FiSo3BRajY7wjyUkvup7imsnX5u9BDQ91WFz5NCs5K3qCkGU5TeQy3FHzm3VUr'
-        },
-        data : data
+        'method': 'post',
+        'url': 'https://data.mongodb-api.com/app/data-pkysg/endpoint/data/beta/action/findOne',
+        'headers': headers,
+        'data': data
     };
 
-    console.log('requesting mongo for id: ' + postID)
+    console.log('requesting mongo for id: ' + postID);
     try {
-        const response = await axios(config)
+        const response = await axios(config);
         const rd = response.data;
-        console.log('mongodb rd: ' + JSON.stringify(rd))
-        return(rd.document)
+        console.log('mongodb rd: ' + JSON.stringify(rd));
+        return(rd.document);
     }
-    catch {
-        console.log(error);
-        return( 'Error')
+    catch (error) {
+        console.log('error');
     }
 };

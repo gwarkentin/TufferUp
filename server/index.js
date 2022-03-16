@@ -35,8 +35,17 @@ app.get('/api/post/:id', (req, res) => {
   console.log('request for post: ' + req.params.id)
   dbhandler.getPost(req.params.id)
     .then(function (post) {
-      res.json(post)
+      console.log(JSON.stringify(post));
+      res.json(post);
     })
+    .catch(function (error) {
+      res.json({
+        'success':false,
+        'id': null,
+        'error': JSON.stringify(error)
+      });
+    });
+    
 });
 
 // -------- These are helper functions for /api/newpost -------------
