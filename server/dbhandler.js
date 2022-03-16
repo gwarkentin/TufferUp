@@ -31,11 +31,12 @@ module.exports.addPost = async function (postForm) {
 
     try {
         const response = await axios(insertconfig)
+        //console.log(response)
         const rd = response.data;
         console.log('dbhandler.js (mongodb response): ' +  JSON.stringify(rd))
         return(rd.insertedId)
     }
-    catch {
+    catch (error) {
         console.log(error);
     }
 };
@@ -63,11 +64,18 @@ module.exports.getPost = async function (postID) {
     console.log('requesting mongo for id: ' + postID);
     try {
         const response = await axios(config);
+        //console.log(response)
         const rd = response.data;
         console.log('mongodb rd: ' + JSON.stringify(rd));
-        return(rd.document);
+        if (rd.document) {
+            return({'document': rd.document})
+        }
+        else {
+            return({'error': 'From Mongodb: '+ rd.document});
+        }
     }
     catch (error) {
-        console.log('error');
+        //console.log(error);
+        throw(error);
     }
 };

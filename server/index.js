@@ -40,9 +40,8 @@ app.get('/api/post/:id', (req, res) => {
     })
     .catch(function (error) {
       res.json({
-        'success':false,
-        'id': null,
-        'error': JSON.stringify(error)
+        'document':null,
+        'error': "From node.js index.js[45]: " + error.message 
       });
     });
     

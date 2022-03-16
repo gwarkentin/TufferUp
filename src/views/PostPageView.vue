@@ -16,7 +16,14 @@ export default {
         discountable: false,
         imgs: []
       },
-      ogdata: true
+      ogdata: true,
+      error: ""
+    }
+  },
+  computed: {
+      haserror() {
+        console.log('this.error: ' + this.error)
+        return this.error ? true : false;
     }
   },
   components: {
@@ -36,12 +43,16 @@ export default {
       const id = (this.$route.params.id ? this.$route.params.id : "");
       axios.get('http://localhost:3001/api/post/' + id)
       .then(response => {
-        console.log(response.data)
-        this.form = response.data
+        const rd = response.data;
+        console.log('response data: ' + rd);
+        if (rd.document) {
+          this.form = response.data.document
+        }
+        this.error = response.data.error
         this.ogdata = false
       })
       .catch(function (error) {
-        console.log(error);
+        this.error = error;
       })
       .then(function () {
         // always executed
@@ -54,6 +65,9 @@ export default {
 
 <template>
   <p><strong>{{ $route.params.id }}</strong></p>
+  <div v-if="haserror" class="alert alert-danger" role="alert">
+    <p>{{ error }}</p>
+  </div>
   <div class="row align-items-start">
     <!-- this button should go away, the page should immediate try to fetch the data, this is just for example -->
     <div class="col-sm">
