@@ -86,12 +86,18 @@ app.post('/api/newpost', (req,res) => {
     dbhandler.addPost(req.body)
     .then(function ( postID) {
       res.json({
-        'postID': postID}
-        );
+        'success': true,
+        'postID': postID,
+        'error': ''
+      });
     })
     .catch(function (error) {
       console.log(error)
-      res.json('fail')
+      res.json({
+        'success':false,
+        'postID':null,
+        'error':error
+      })
     });
   }
   else {

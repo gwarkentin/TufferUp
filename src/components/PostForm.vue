@@ -4,7 +4,8 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      'images': []
+      'images': [],
+      'error': ""
     }
   },
   // these are basically public variables that you can pass info between with parent
@@ -15,7 +16,7 @@ export default {
         'condition': String,
         'price': Number,
         'discountable': Boolean,
-        'imgs': Object
+        'imgs': Object,
     },
     // to send updates to let parent know these changed
     emits: [
@@ -27,6 +28,12 @@ export default {
     'update:discountable',
     'update:imgs'
     ],
+    computed: {
+      haserror() {
+        console.log(Boolean('this.error: ' + this.error))
+        return this.error ? true : false;
+      }
+    },
     // what functions you can call from <template> section below or the rest of the functions.
     methods:
     {
@@ -50,35 +57,25 @@ export default {
         }
         // need to validate form on frontend here before submitting via axios
 
-        console.log("Sending:" + JSON.stringify(this.form))
+        var self = this; // only way to get access to "this" from inside the catch??
         axios({
           method: 'post', // post type is for one time submissions. Only post listener functions on backend will answer this call at this url
           url:'http://localhost:3001/api/newpost', // we shouldn't hardcode the url like this
           data: this.form   
         }).then(response => {
-          /* -- ! need to implement
-            Expect response.data to be like:
-              {
-                "success": Boolean,
-                "postID": Int,  // 0 on failure
-                "error": String // "" if success=true, "warning description" if some warning
-              }
-            if so push to '/newpost/:id' where they can see the live result,
-            otherwise tell them it failed to submit and stay on this page,
-              use a vue var bound to an element with bootstrap styles for hidden or warning/danger 
-              if danger, show some text diagnosing the problem from backend and/or from this func.
-          */
-
-          console.log("receiving:" + JSON.stringify(response.data))
-          this.$router.push('/post/' + response.data.postID) // should push to /post/:id
+          if (response.data.success) {
+            this.$router.push('/post/' + response.data.postID) // should push to /post/:id
+          }
+          else {
+            this.error = response.data.error
+          }
         })
-        .catch(function (error) {
-          console.log(error);
-        })
-        .then(function () {
-          // always executed
+        .catch(function (err) {
+          self.error = err
         });
+
       },
+
       getFiles(e) {
         var imgs = [];
         var ffm = e.target;
@@ -98,6 +95,9 @@ export default {
 access in these variables in server/index.js with something like req.body
 -->
 <template>
+    <div v-show="haserror" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
   <div class="form">
     <form class="container" enctype="multipart/form-data" id="newpostform">
       <h4>Input Form:</h4>
