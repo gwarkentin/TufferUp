@@ -79,3 +79,41 @@ module.exports.getPost = async function (postID) {
         throw(error);
     }
 };
+
+
+module.exports.getManyPosts = async function (obj) {
+
+    var data = {
+        "collection": "post",
+        "database": "tufferup",
+        "dataSource": "TufferUp",
+    };
+    for (var key in obj) {
+        data[key] = obj[key];
+    }
+
+    var config = {
+        'method': 'post',
+        'url': 'https://data.mongodb-api.com/app/data-pkysg/endpoint/data/beta/action/find',
+        'headers': headers,
+        'data': data
+    };
+
+    // console.log('requesting mongo for id: ' + postID);
+    try {
+        const response = await axios(config);
+        //console.log(response)
+        const rd = response.data;
+        console.log('mongodb rd: ' + JSON.stringify(rd));
+        if (rd.documents) {
+            return({'documents': rd.documents, 'error':null})
+        }
+        else {
+            return({'documents': null, 'error': 'From Mongodb: '+ rd});
+        }
+    }
+    catch (error) {
+        //console.log(error);
+        throw(error);
+    }
+};

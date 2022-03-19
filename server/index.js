@@ -14,20 +14,27 @@ app.get('/api', (req, res) => {
     res.send("hello it's the api here");
 });
 
-app.get('/api/post', (req, res) => {
-  res.send(
-    {
-    "form": {
-        "title": "Express id: No post selected",
-        "description": "Express Api Sent this",
-        "category": "Api Category",
-        "condition": "Api Condition",
-        "price": 1.99,
-        "discountable": true,
-        "imgs": ["/src/assets/palms_and_snow.jpg"]
+app.get('/api/category/:category', (req, res) => {
+  filters = {
+    "filter": { "category": req.params.category },
+    "sort": { "_id":-1, "price": 1 },
+    "limit": 10,
+    "projection": {
+      "title":1,
+      "price":1
     }
-    }
-  );
+  }
+  dbhandler.getManyPosts(filters)
+    .then(function (dbres) {
+      console.log(JSON.stringify(dbres));
+      res.json(dbres);
+    })
+    .catch(function (error) {
+      res.json({
+        'documents':null,
+        'error': "From node.js index.js[45]: " + error.message 
+      });
+    });
 });
 
 // accepting get url params
