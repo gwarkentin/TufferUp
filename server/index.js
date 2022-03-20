@@ -57,15 +57,8 @@ app.get('/api/post/:id', (req, res) => {
 // -------- These are helper functions for /api/newpost -------------
 
   /* -- !need to implement!
-    verifyPostIsValid(post)
+    dbhandler.verifyPost(post)
     validates post data object has correct shape and fields before insert into db
-  */
-
-  /* -- !need to implement!
-    addPost(post)
-    returns the postID
-    if failed to connect, return 0.
-    ! QA should determine better ways to warn user and explain how to fix
   */
 
 // a post request receiving input from a form.
@@ -113,4 +106,4 @@ app.post('/api/newpost', (req,res) => {
   }
 });
 
-app.listen(3001, console.log("Server listening on port 3001. Try http://localhost:3001/api/post/40"));
+app.listen(3001, console.log("Server listening on port 3001. Try http://localhost:3001/api/category/Books"));

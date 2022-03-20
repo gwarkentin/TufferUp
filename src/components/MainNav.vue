@@ -23,9 +23,6 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
       <div class="navbar-nav container-fluid">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link to="/post/3" class="nav-link">Post 3</router-link>
-          </li>
-          <li class="nav-item">
             <router-link to="/newpost" class="nav-link">New Post</router-link>
           </li>
           <li class="nav-item">
