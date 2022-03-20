@@ -4,7 +4,7 @@ export default {
   props: {
       'postID': String,
       'title': String,
-      'price': Number,
+      'price': String,
       'img': String
   }
 }

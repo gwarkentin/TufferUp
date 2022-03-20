@@ -18,6 +18,9 @@ export default {
         this.tryAjax();
     }
   },
+  mounted() {
+    this.tryAjax();
+  },
   methods: {
     tryAjax() {
         axios.get('http://localhost:3001/api/category/' + this.category)
