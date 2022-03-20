@@ -14,6 +14,14 @@ app.get('/api', (req, res) => {
     res.send("hello it's the api here");
 });
 
+app.get('/api', (req, res) => {
+  res.send("hello it's the api here");
+});
+
+app.post('/api/register', (req, res) => {
+  console.log("register: " + JSON.stringify(req.body));
+});
+
 app.get('/api/category/:category', (req, res) => {
   filters = {
     "filter": { "category": req.params.category },

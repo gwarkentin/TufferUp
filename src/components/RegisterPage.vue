@@ -1,5 +1,46 @@
 <script>
-export default {};
+import axios from 'axios'
+export default {
+  data() {
+    return {
+      'email': "",
+      'password': "",
+      'error': "",
+    }
+  },
+  methods:
+  {
+  registerUser(e) {
+
+        console.log(e)
+        // put it all in one json object
+        this.form = {
+          'email': this.email,
+          'password': this.password,
+        }
+        console.log(JSON.stringify(this.form));
+        // need to validate form on frontend here before submitting via axios
+
+        var self = this; // only way to get access to "this" from inside the catch??
+        axios({
+          method: 'post', // post type is for one time submissions. Only post listener functions on backend will answer this call at this url
+          url:'http://localhost:3001/api/register', // we shouldn't hardcode the url like this
+          data: this.form
+        }).then(response => {
+          if (response.data.success) {
+            this.$router.push('/category') // should push to /post/:id
+          }
+          else {
+            this.error = response.data.error
+          }
+        })
+        .catch(function (err) {
+          self.error = err
+        });
+
+      },
+  }
+};
 </script>
 
 <!--- need to implement the actually post/connection to backend.
@@ -20,6 +61,7 @@ export default {};
                 <label for="exampleDropdownFormEmail1" class="form-label"
                   >Email address</label>
                 <input
+                  v-model="email"
                   type="email"
                   class="form-control"
                   id="exampleDropdownFormEmail1"
@@ -29,6 +71,7 @@ export default {};
               <div class="mb-3">
                 <label for="exampleDropdownFormPassword1" class="form-label">Password</label>
                 <input
+                  v-model="password"
                   type="password"
                   class="form-control"
                   id="exampleDropdownFormPassword1"
@@ -47,7 +90,7 @@ export default {};
                   </label>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary">Register</button>
+              <button type="button" class="btn btn-primary" @click="registerUser">Register</button>
             </form>
           </div>
         <div class="col-md-9"></div>
