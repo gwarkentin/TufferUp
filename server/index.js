@@ -1,23 +1,15 @@
-var passwords = require('./.password.js')
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const dbhandler = require('./dbhandler');
 
-var hash = require('pbkdf2-password');
-var session = require('express-session');
 const app = express();
 
 // middleware
 app.use(bodyParser.json()); //read json input from requests
 app.use(express.urlencoded({ extended: true })); // read web form input
 app.use(cors());
-app.use(session({
-  resave: false, // don't save session if unmodified
-  saveUninitialized: false, // don't create session until something stored
-  secret: passwords.sessionkey
-}));
 
 app.get('/api', (req, res) => {
     res.send("hello it's the api here");
@@ -27,6 +19,7 @@ app.get('/api', (req, res) => {
   res.send("hello it's the api here");
 });
 
+// need to connect to auth.js
 app.post('/api/register', (req, res) => {
   console.log("register: " + JSON.stringify(req.body));
 });
@@ -38,7 +31,8 @@ app.get('/api/category/:category', (req, res) => {
     "limit": 10,
     "projection": {
       "title":1,
-      "price":1
+      "price":1,
+      "imgs":1
     }
   }
   dbhandler.getManyPosts(filters)
@@ -59,7 +53,7 @@ app.get('/api/post/:id', (req, res) => {
   console.log('request for post: ' + req.params.id)
   dbhandler.getPost(req.params.id)
     .then(function (post) {
-      console.log(JSON.stringify(post));
+      //console.log(JSON.stringify(post));
       res.json(post);
     })
     .catch(function (error) {
@@ -93,22 +87,22 @@ app.post('/api/newpost', (req,res) => {
  send obj that looks like this for frontend:
     {
       "success": Boolean,
-      "postID": Int,  // 0 on failure
+      "postID": String,  // 0 on failure
       "error": String // "" if success = true, "warning description" if some warning
     }
 */
   console.log('receive post req');
   console.log(req.body);
-  if (dbhandler.verifyPost(req.body)) {
-    dbhandler.addPost(req.body)
-    .then(function ( postID) {
-      res.json({
-        'success': true,
-        'postID': postID,
-        'error': ''
-      });
-    })
-    .catch(function (error) {
+  dbhandler.verifyPost(req.body).then(function (post) {
+    dbhandler.addPost(post)
+      .then(function ( postID) {
+         res.json({
+          'success': true,
+          'postID': postID,
+          'error': ''
+        });
+      })
+  }).catch(function (error) {
       console.log(error)
       res.json({
         'success':false,
@@ -116,11 +110,6 @@ app.post('/api/newpost', (req,res) => {
         'error':error
       })
     });
-  }
-  else {
-    console.log('Invalid post')
-    res.json('invalid post')
-  }
 });
 
 app.listen(3001, console.log("Server listening on port 3001. Try http://localhost:3001/api/category/Books"));

@@ -1,4 +1,5 @@
 
+const { toNumber } = require('@vue/shared');
 var axios = require('axios');
 var passwords = require('./.password.js')
 
@@ -9,12 +10,14 @@ var headers =  {
 }
 
 // should actually verify format is good
-module.exports.verifyPost = function (postForm) {
-    return true;
+module.exports.verifyPost = async function (postForm) {
+    postForm.price = toNumber(postForm.price)
+    return(postForm)
 }
 
 module.exports.addPost = async function (postForm) {
 
+    postForm.price
     var personDocument = JSON.stringify({
         "database": "tufferup",
         "dataSource": "TufferUp",
@@ -104,7 +107,7 @@ module.exports.getManyPosts = async function (obj) {
         const response = await axios(config);
         //console.log(response)
         const rd = response.data;
-        console.log('mongodb rd: ' + JSON.stringify(rd));
+        //console.log('mongodb rd: ' + JSON.stringify(rd));
         if (rd.documents) {
             return({'documents': rd.documents, 'error':null})
         }

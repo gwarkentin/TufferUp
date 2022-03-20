@@ -4,11 +4,11 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      'images': [],
+      'images': {},
       'error': ""
     }
   },
-  // these are basically public variables that you can pass info between with parent
+  // these are basically public variables that you can receive info from parent
     props: {
         'title': String,
         'description': String,
@@ -32,17 +32,15 @@ export default {
       haserror() {
         console.log(Boolean('this.error: ' + this.error))
         return this.error ? true : false;
-      }
+      },
     },
     // what functions you can call from <template> section below or the rest of the functions.
-    methods:
-    {
-      /*
-        collect the data from this page and submit to backend (server/index.js), receive back some response
-        the respose should be the ID of the post you just made if succesful and then you use this.$router.push(path/:id)
-      */
+    methods: {
       makePost(e) {
-
+        /*
+          collect the data from this page and submit to backend (server/index.js), receive back some response
+          the respose should be the ID of the post you just made if succesful and then you use this.$router.push(path/:id)
+        */
         console.log(e)
         // put it all in one json object
         this.form = {
@@ -77,14 +75,29 @@ export default {
       },
 
       getFiles(e) {
-        var imgs = [];
-        var ffm = e.target;
-        var files = ffm.files;
-        console.log(JSON.stringify(files));
+        var self = this; // only way to get access to "this" from inside the catch??
+        var imgs = {};
+        var files = e.target.files;
         for (let i = 0; i < files.length; i++) {
-          imgs.shift(files[i]);
+          const file = files[i]
+          if (!file.type.startsWith('image/')){ continue }
+
+          const reader = new FileReader();
+          reader.addEventListener("load", function () {
+            self.updateFiles( {
+              'name': file.name,
+              'data': reader.result
+            }
+            )
+          }, false);
+          reader.readAsDataURL(file);
         }
-        this.images = imgs;
+        console.log(imgs);
+      },
+
+      updateFiles(aImg) {
+        this.images[aImg.name] = aImg.data
+        this.$emit('update:imgs', this.images );
       }
     }
   }
@@ -129,7 +142,7 @@ access in these variables in server/index.js with something like req.body
         <label for="formPrice" class="form-label">Price:</label>
         <input 
           :value="price" @input="$emit('update:price', $event.target.value)"
-        class="form-control" id="formPrice">
+        class="form-control" type="number" id="formPrice">
       </div>
       <div class="mb-3 form-check form-switch">
         <label for="formDiscountableT" class="form-check-label">Discountable</label>
@@ -140,7 +153,6 @@ access in these variables in server/index.js with something like req.body
         <label for="formFileMultiple" class="form-label">Upload Photos of Item</label>
         <input class="form-control" id="formFileMultiple" type="file" multiple accept="image/*" 
           @change="getFiles" />
-          <!--  @input="$emit('update:imgs', $event.target.value)" :value="imgs" /> !-->
       </div>
       <button type="button" class="btn btn-primary" @click="makePost">Submit</button>
     </form>

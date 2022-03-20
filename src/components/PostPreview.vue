@@ -4,17 +4,22 @@ export default {
   props: {
       'postID': String,
       'title': String,
-      'price': String,
-      'img': String
+      'price': Number,
+      'imgs': Object
   }
 }
 </script>
 
 <template>
 <div class="container border">
-  <h5 class="card-title">{{ title }}</h5>
-  <p class="card-text">${{ price }}</p>
-  <img :src="img" class="card-img-bottom" alt="picture of {{ title }}">
+    <router-link :to="{ name: 'SpecificPost' , params: { id: postID }}" class="nav-link">
+      <h5 class="card-title">{{ title }}</h5>
+      <p class="card-text">${{ price }}</p>
+    </router-link>
+    <span v-for="image in imgs" :key="image">
+      <p>replace us with a carousel</p>
+      <img :src="image" class="card-img-bottom" alt="picture of {{ title }}">
+    </span>
 </div>
 </template>
 

@@ -8,8 +8,8 @@ export default {
       'condition': String,
       'price': Number,
       'discountable': Boolean,
-      'imgs': Array
-  }
+      'imgs': Object
+  },
 }
 </script>
 

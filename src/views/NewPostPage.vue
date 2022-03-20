@@ -13,13 +13,13 @@ export default {
       // and they are passing them from the form -> parent, then the parent -> post details. Any updates are
       // emitted by form, the parent updates itself with the v-models, then uses v-bind on the details to pass them on.
       form: {
-        title: "Item Title",
-        description: "Some book",
-        category: "Books",
-        condition: "Sandy",
-        price: 99.00,
+        title: "",
+        description: "",
+        category: "",
+        condition: "",
+        price: 0,
         discountable: true,
-        imgs: ["/src/assets/book.jpg"]
+        imgs:{} 
       }
     }
   },
@@ -42,6 +42,7 @@ export default {
         v-model:condition="form.condition"
         v-model:price="form.price"
         v-model:discountable="form.discountable"
+        v-model:imgs="form.imgs"
          />
     </div>
     <div class="col-sm">
