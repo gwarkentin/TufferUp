@@ -65,7 +65,7 @@ export default {
             this.$router.push('/post/' + response.data.postID) // should push to /post/:id
           }
           else {
-            this.error = response.data.error
+            self.error = response.data.error
           }
         })
         .catch(function (err) {
@@ -75,6 +75,11 @@ export default {
       },
 
       getFiles(e) {
+        // replace these two lines with the ability to sort and remove images you uploaded
+        // then it's easier to add a photo from one folder, then add another from another etc.
+        this.images = {}
+        this.$emit('update:imgs', this.images );
+
         var self = this; // only way to get access to "this" from inside the catch??
         var imgs = {};
         var files = e.target.files;
@@ -89,7 +94,7 @@ export default {
               'data': reader.result
             }
             )
-          }, false);
+          }, {once:true});
           reader.readAsDataURL(file);
         }
         console.log(imgs);
