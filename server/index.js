@@ -1,14 +1,23 @@
+var passwords = require('./.password.js')
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const dbhandler = require('./dbhandler');
 
+var hash = require('pbkdf2-password');
+var session = require('express-session');
 const app = express();
 
 // middleware
 app.use(bodyParser.json()); //read json input from requests
 app.use(express.urlencoded({ extended: true })); // read web form input
 app.use(cors());
+app.use(session({
+  resave: false, // don't save session if unmodified
+  saveUninitialized: false, // don't create session until something stored
+  secret: passwords.sessionkey
+}));
 
 app.get('/api', (req, res) => {
     res.send("hello it's the api here");
