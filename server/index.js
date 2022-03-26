@@ -6,7 +6,7 @@ const dbhandler = require('./dbhandler');
 
 const app = express();
 
-// middleware
+
 app.use(bodyParser.json({ limit: '500kb'})); //read json input from requests
 app.use(express.urlencoded({ extended: true })); // read web form input
 app.use(cors());
@@ -24,6 +24,30 @@ app.post('/api/register', (req, res) => {
   console.log("register: " + JSON.stringify(req.body));
 });
 
+/*
+app.get('/api/category', (req, res) => {
+  filters = {
+    "sort": { "_id":-1, "price": 1 },
+    "limit": 10,
+    "projection": {
+      "title":1,
+      "price":1,
+      "imgs":1
+    }
+  }
+  dbhandler.getManyPosts(filters)
+    .then(function (dbres) {
+      console.log(JSON.stringify(dbres));
+      res.json(dbres);
+    })
+    .catch(function (error) {
+      res.json({
+        'documents':null,
+        'error': "From node.js index.js[45]: " + error.message 
+      });
+    });
+});
+*/
 app.get('/api/category/:category', (req, res) => {
   filters = {
     "filter": { "category": req.params.category },
@@ -37,7 +61,7 @@ app.get('/api/category/:category', (req, res) => {
   }
   dbhandler.getManyPosts(filters)
     .then(function (dbres) {
-      console.log(JSON.stringify(dbres));
+      // console.log(JSON.stringify(dbres)); // makes very slow
       res.json(dbres);
     })
     .catch(function (error) {
@@ -74,8 +98,10 @@ app.get('/api/post/:id', (req, res) => {
 
 // a post request receiving input from a form.
 // Right now it just sends it back to the sender as is and posts in your terminal.
+
+
 app.post('/api/newpost', (req,res) => {
-  /* -- !need to implement!
+/*
  use the helper functions above to first
   1) verify the post,
   2) if good, submit it
@@ -91,8 +117,8 @@ app.post('/api/newpost', (req,res) => {
       "error": String // "" if success = true, "warning description" if some warning
     }
 */
-  console.log('receive post req');
-  console.log(req.body);
+  // console.log('receive post req');
+  // console.log(req.body); // slow for image uploads
   dbhandler.verifyPost(req.body).then(function (post) {
     dbhandler.addPost(post)
       .then(function ( postID) {

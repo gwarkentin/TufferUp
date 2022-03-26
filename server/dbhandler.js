@@ -36,7 +36,7 @@ module.exports.addPost = async function (postForm) {
         const response = await axios(insertconfig)
         //console.log(response)
         const rd = response.data;
-        console.log('dbhandler.js (mongodb response): ' +  JSON.stringify(rd))
+        // console.log('dbhandler.js (mongodb response): ' +  JSON.stringify(rd))
         return(rd.insertedId)
     }
     catch (error) {
@@ -69,7 +69,7 @@ module.exports.getPost = async function (postID) {
         const response = await axios(config);
         //console.log(response)
         const rd = response.data;
-        console.log('mongodb rd: ' + JSON.stringify(rd));
+        // console.log('mongodb rd: ' + JSON.stringify(rd));
         if (rd.document) {
             return({'document': rd.document})
         }
