@@ -7,7 +7,7 @@ const dbhandler = require('./dbhandler');
 const app = express();
 
 // middleware
-app.use(bodyParser.json()); //read json input from requests
+app.use(bodyParser.json({ limit: '500kb'})); //read json input from requests
 app.use(express.urlencoded({ extended: true })); // read web form input
 app.use(cors());
 
