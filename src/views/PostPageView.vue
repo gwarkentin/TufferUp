@@ -63,9 +63,10 @@ export default {
       var self = this
       axios({
             method: 'post', // post type is for one time submissions. Only post listener functions on backend will answer this call at this url
-            url:'http://localhost:3000/api/post/' + id + '/delete', // we shouldn't hardcode the url like this
+            url:'http://localhost:3001/api/post/' + id + '/delete', // we shouldn't hardcode the url like this
             data: this.form   
           }).then(response => {
+            console.log(response.data)
             if (response.data.success) {
               this.$router.push('/category') // should push to /post/:id
             }
@@ -89,7 +90,7 @@ export default {
   <div class="row align-items-start">
     <!-- this button should go away, the page should immediate try to fetch the data, this is just for example -->
     <div class="col-sm">
-      <button @click="deletePost(postID)" class="btn btn-danger">Delete {{ postID }}</button>
+      <!--- <button @click="deletePost(postID)" class="btn btn-danger">Delete {{ postID }}</button> !--->
       <PostDetails v-bind="form" v-bind:postID="postID" />
     </div>
   </div>
