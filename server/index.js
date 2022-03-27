@@ -89,6 +89,22 @@ app.get('/api/post/:id', (req, res) => {
     
 });
 
+app.post('/api/post/:id/delete', (req, res) => {
+  console.log('request to delete post: ' + req.params.id)
+  dbhandler.deletePost(req.params.id)
+    .then(function (post) {
+      //console.log(JSON.stringify(post));
+      res.json(post);
+    })
+    .catch(function (error) {
+      res.json({
+        'document':null,
+        'error': "From node.js index.js[45]: " + error.message 
+      });
+    });
+    
+});
+
 // -------- These are helper functions for /api/newpost -------------
 
   /* -- !need to implement!

@@ -7,6 +7,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      postID: "",
       form: {
         title: "",
         description: "",
@@ -40,8 +41,8 @@ export default {
      later if something is going wrong
      */
     tryAjax() {
-      const id = (this.$route.params.id ? this.$route.params.id : "");
-      axios.get('http://localhost:3001/api/post/' + id)
+      this.postID = (this.$route.params.id ? this.$route.params.id : "");
+      axios.get('http://localhost:3001/api/post/' + this.postID)
       .then(response => {
         const rd = response.data;
         console.log('response data: ' + rd);
@@ -58,20 +59,38 @@ export default {
         // always executed
       });  
     },
+    deletePost(id) {
+      var self = this
+      axios({
+            method: 'post', // post type is for one time submissions. Only post listener functions on backend will answer this call at this url
+            url:'http://localhost:3000/api/post/' + id + '/delete', // we shouldn't hardcode the url like this
+            data: this.form   
+          }).then(response => {
+            if (response.data.success) {
+              this.$router.push('/category') // should push to /post/:id
+            }
+            else {
+              this.error = response.data.error
+            }
+          })
+          .catch(function (err) {
+            self.error = err
+          });
+    }
   }
 }
 </script>
 
 
 <template>
-  <p><strong>{{ $route.params.id }}</strong></p>
   <div v-if="haserror" class="alert alert-danger" role="alert">
     <p>{{ error }}</p>
   </div>
   <div class="row align-items-start">
     <!-- this button should go away, the page should immediate try to fetch the data, this is just for example -->
     <div class="col-sm">
-      <PostDetails v-bind="form" />
+      <button @click="deletePost(postID)" class="btn btn-danger">Delete {{ postID }}</button>
+      <PostDetails v-bind="form" v-bind:postID="postID" />
     </div>
   </div>
 </template>
