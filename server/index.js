@@ -55,4 +55,4 @@ app.get('/', (req, res) => {
 
 });
 
-app.listen(3001, console.log("Server listening on port 3001. Try http://localhost:3001/api/category/Books"));
+app.listen(3001, console.log("Server listening on port 3001. Try http://localhost:3001/signup or http://localhost:3001/api/category/Books"));
