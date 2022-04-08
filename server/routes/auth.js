@@ -12,7 +12,6 @@ var router = express.Router();
 
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},
 function verify(email, password, cb) {
-    console.log('localstrat');
     mongoose.connect(uri, function(err) {
         if (err) { return cb(err); }
     });
