@@ -1,29 +1,60 @@
 
 const express = require('express');
+var session = require('express-session');
+const path = require('path');
+var logger = require('morgan');
+const passwords = require('./.password.js')
+
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const dbhandler = require('./dbhandler');
+
+
+var passport = require('passport');
+
+var MongoDBStore = require('connect-mongodb-session')(session);
+const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
+var store = new MongoDBStore({
+    uri: uri,
+    collection: 'sessions'
+  }, function(error) {
+  // didn't connect to db
+});
+store.on('error', function(error) {
+  console.log(error);
+});
 
 const app = express();
 
+<<<<<<< HEAD
+app.use(session({
+  secret: passwords.sessionkey,
+  resave: false,
+  saveUninitialized: false,
+  store: store 
+}));
+app.use(passport.authenticate('session'));
+
+app.use(bodyParser.json()); //read json input from requests
+=======
 
 app.use(bodyParser.json({ limit: '500kb'})); //read json input from requests
+>>>>>>> main
 app.use(express.urlencoded({ extended: true })); // read web form input
 app.use(cors());
 
-app.get('/api', (req, res) => {
-    res.send("hello it's the api here");
-});
+//just for now for login/signup page
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-app.get('/api', (req, res) => {
-  res.send("hello it's the api here");
-});
 
-// need to connect to auth.js
-app.post('/api/register', (req, res) => {
-  console.log("register: " + JSON.stringify(req.body));
-});
+// import routes
+var authRouter = require('./routes/auth');
+app.use('/', authRouter);
 
+<<<<<<< HEAD
+var apiRouter = require('./routes/api');
+app.use('/api', apiRouter);
+=======
 /*
 app.get('/api/category', (req, res) => {
   filters = {
@@ -71,24 +102,14 @@ app.get('/api/category/:category', (req, res) => {
       });
     });
 });
+>>>>>>> main
 
-// accepting get url params
-app.get('/api/post/:id', (req, res) => {
-  console.log('request for post: ' + req.params.id)
-  dbhandler.getPost(req.params.id)
-    .then(function (post) {
-      //console.log(JSON.stringify(post));
-      res.json(post);
-    })
-    .catch(function (error) {
-      res.json({
-        'document':null,
-        'error': "From node.js index.js[45]: " + error.message 
-      });
-    });
-    
-});
 
+<<<<<<< HEAD
+app.get('/', (req, res) => {
+  res.send(JSON.stringify(req.session) + " is logged in")
+
+=======
 app.post('/api/post/:id/delete', (req, res) => {
   console.log('request to delete post: ' + req.params.id)
   dbhandler.deletePost(req.params.id)
@@ -152,6 +173,7 @@ app.post('/api/newpost', (req,res) => {
         'error':error
       })
     });
+>>>>>>> main
 });
 
-app.listen(3001, console.log("Server listening on port 3001. Try http://localhost:3001/api/category/Books"));
+app.listen(3001, console.log("Server listening on port 3001. Try http://localhost:3001/signup or http://localhost:3001/api/category/Books"));
