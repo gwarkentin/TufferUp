@@ -1,15 +1,17 @@
 <script>
+import axios from 'axios'
+
 export default {
   //these are public variables that parents can v-bind to
   props: {
-      'title': String,
-      'description' : String,
-      'category': String,
-      'condition': String,
-      'price': Number,
-      'discountable': Boolean,
-      'imgs': Object
-  },
+        'title': String,
+        'description' : String,
+        'category': String,
+        'condition': String,
+        'price': Number,
+        'discountable': Boolean,
+        'imgs': Object,
+  }
 }
 </script>
 

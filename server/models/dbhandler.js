@@ -36,7 +36,7 @@ module.exports.addPost = async function (postForm) {
         const response = await axios(insertconfig)
         //console.log(response)
         const rd = response.data;
-        console.log('dbhandler.js (mongodb response): ' +  JSON.stringify(rd))
+        // console.log('dbhandler.js (mongodb response): ' +  JSON.stringify(rd))
         return(rd.insertedId)
     }
     catch (error) {
@@ -69,7 +69,7 @@ module.exports.getPost = async function (postID) {
         const response = await axios(config);
         //console.log(response)
         const rd = response.data;
-        console.log('mongodb rd: ' + JSON.stringify(rd));
+        // console.log('mongodb rd: ' + JSON.stringify(rd));
         if (rd.document) {
             return({'document': rd.document})
         }
@@ -113,6 +113,46 @@ module.exports.getManyPosts = async function (obj) {
         }
         else {
             return({'documents': null, 'error': 'From Mongodb: '+ rd});
+        }
+    }
+    catch (error) {
+        //console.log(error);
+        throw(error);
+    }
+};
+
+
+module.exports.deletePost = async function (postID) {
+
+    var data = JSON.stringify({
+        "collection": "post",
+        "database": "tufferup",
+        "dataSource": "TufferUp",
+        "filter": {
+            "_id": {
+                "$oid": postID
+            }
+        }
+    });
+
+    var config = {
+        'method': 'post',
+        'url': 'https://data.mongodb-api.com/app/data-pkysg/endpoint/data/beta/action/deleteOne',
+        'headers': headers,
+        'data': data
+    };
+
+    console.log('requesting mongo to delete id: ' + postID);
+    try {
+        const response = await axios(config);
+        //console.log(response)
+        const rd = response.data;
+        console.log('mongodb rd: ' + JSON.stringify(rd));
+        if (rd.document) {
+            return({'document': 'successfully deleted'})
+        }
+        else {
+            return({'error': 'From Mongodb: '+ rd.document});
         }
     }
     catch (error) {
