@@ -14,7 +14,8 @@ User.findOne({ username: 'jmar777' }, function(err, user) {
      
     if (!user) {
         var testUser = new User({
-            username: 'jmar777',
+            email: 'gabrielwarkentin@csu.fullerton.edu',
+            displayname: 'Gabe W',
             password: 'Password123'
         });
         testUser.save(function(err) {
