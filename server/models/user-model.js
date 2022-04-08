@@ -12,7 +12,6 @@ var UserSchema = new Schema({
     },
     displayname: {
         type: String,
-        required: true,
     },
     password: {
         type: String,

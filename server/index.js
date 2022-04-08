@@ -1,27 +1,59 @@
 
 const express = require('express');
+var session = require('express-session');
+const path = require('path');
+var logger = require('morgan');
+const passwords = require('./.password.js')
+
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
 const dbhandler = require('./dbhandler');
 
+var passport = require('passport');
+
+var MongoDBStore = require('connect-mongodb-session')(session);
+const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
+var store = new MongoDBStore({
+    uri: uri,
+    collection: 'sessions'
+  }, function(error) {
+  // didn't connect to db
+});
+store.on('error', function(error) {
+  console.log(error);
+});
+
 const app = express();
+
+app.use(session({
+  secret: passwords.sessionkey,
+  resave: false,
+  saveUninitialized: false,
+  store: store 
+}));
+app.use(passport.authenticate('session'));
+
+
 
 // middleware
 app.use(bodyParser.json()); //read json input from requests
 app.use(express.urlencoded({ extended: true })); // read web form input
 app.use(cors());
 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+var authRouter = require('./routes/auth');
+app.use('/', authRouter);
+
+app.get('/', (req, res) => {
+  res.send(JSON.stringify(req.session) + " is logged in")
+
+});
+
 app.get('/api', (req, res) => {
     res.send("hello it's the api here");
-});
-
-app.get('/api', (req, res) => {
-  res.send("hello it's the api here");
-});
-
-// need to connect to auth.js
-app.post('/api/register', (req, res) => {
-  console.log("register: " + JSON.stringify(req.body));
 });
 
 app.get('/api/category/:category', (req, res) => {
@@ -37,7 +69,6 @@ app.get('/api/category/:category', (req, res) => {
   }
   dbhandler.getManyPosts(filters)
     .then(function (dbres) {
-      console.log(JSON.stringify(dbres));
       res.json(dbres);
     })
     .catch(function (error) {
