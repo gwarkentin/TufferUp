@@ -1,7 +1,7 @@
 
 const { toNumber } = require('@vue/shared');
 var axios = require('axios');
-var passwords = require('./.password.js')
+var passwords = require('../.password.js')
 
 var headers =  {
     'Content-Type': 'application/json',
