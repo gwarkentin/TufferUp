@@ -1,11 +1,13 @@
 var express = require('express');
 const passwords = require('./../.password.js')
 var passport = require('passport');
+const cors = require('cors');
 
 const dbhandler = require('./../models/dbhandler')
 
 var router = express.Router();
 
+router.use(cors());
 
 router.get('/', (req, res) => {
     res.send("hello it's the api here");

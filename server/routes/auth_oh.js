@@ -1,11 +1,11 @@
 var express = require('express');
-const passwords = require('../.password.js')
+const passwords = require('./../.password.js')
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 
 var mongoose = require("mongoose");
-var User = require('../models/user-model.js');
+var User = require('./../models/user-model.js');
 const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
 
 var router = express.Router();
@@ -39,13 +39,15 @@ passport.serializeUser(function(user, cb) {
     });
   });
 
-router.post('/login',
-  passport.authenticate('local'),
-  function(req, res) {
-      console.log(req)
-      if (!req.user) { res.json({ err: req.err }) }
-      res.json( { user: req.user } )
-  });
+router.get('/login', function(req, res, next) {
+  req.logout();
+  res.render('login');
+});
+
+router.post('/login/password', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+}));
 
 router.post('/logout', function(req, res, next) {
     req.logout();

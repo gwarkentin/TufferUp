@@ -21,12 +21,12 @@ export default {
 
       var self = this; // only way to get access to "this" from inside the catch??
       axios({
-        method: 'post', // post type is for one time submissions. Only post listener functions on backend will answer this call at this url
-        url:'http://localhost:3001/api/register', // we shouldn't hardcode the url like this
+        method: 'post',
+        url:'http://localhost:3001/auth/signup',
         data: this.form
       }).then(response => {
         if (response.data.success) {
-          this.$router.push('/category') // should push to /post/:id
+          this.$router.push('/') // should push to /post/:id
         }
         else {
           this.error = response.data.error
@@ -40,10 +40,6 @@ export default {
 };
 </script>
 
-<!--- need to implement the actually post/connection to backend.
-    Mirror the PostForm code, but we also need to look at login/cookie/seesion managment
-    i'm not sure how node and vue handle that yet. I saw something called "stores" that might be it?
--->
 <template>
   <div class="container">
       <div class="row">

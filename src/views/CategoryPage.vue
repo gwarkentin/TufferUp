@@ -1,6 +1,5 @@
 <script>
 import PostPreview from '../components/PostPreview.vue'
-import axios from 'axios'
 
 export default {
   data() {
@@ -24,7 +23,7 @@ export default {
   },
   methods: {
     tryAjax() {
-        axios.get('http://localhost:3001/api/category/' + this.category)
+        this.axios.get('http://localhost:3001/api/category/' + this.category)
         .then(response => {
           const rd = response.data;
           console.log(rd)

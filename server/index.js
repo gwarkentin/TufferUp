@@ -44,7 +44,10 @@ app.set('view engine', 'ejs');
 
 // import routes
 var authRouter = require('./routes/auth');
-app.use('/', authRouter);
+app.use('/auth', authRouter);
+
+var auth_ohRouter = require('./routes/auth_oh');
+app.use('/', auth_ohRouter);
 
 var apiRouter = require('./routes/api');
 app.use('/api', apiRouter);

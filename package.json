@@ -23,6 +23,7 @@
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
     "vue": "^3.2.29",
+    "vue-axios": "^3.4.1",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {

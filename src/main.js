@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory} from 'vue-router'
 import App from './App.vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 import NewPostPage from './views/NewPostPage.vue'
 import PostPageView from './views/PostPageView.vue'
@@ -35,4 +37,4 @@ const router = createRouter({
   routes, // short for `routes: routes`
 })
 
-createApp(App).use(router).mount('#app')
+createApp(App).use(router).use(VueAxios, axios).mount('#app')

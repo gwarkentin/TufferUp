@@ -1,6 +1,5 @@
 <script>
 import PostDetails from '../components/PostDetails.vue'
-import axios from 'axios'
 
 // this view dynamically requests data from express runnin at server/index.js
 
@@ -42,7 +41,7 @@ export default {
      */
     tryAjax() {
       this.postID = (this.$route.params.id ? this.$route.params.id : "");
-      axios.get('http://localhost:3001/api/post/' + this.postID)
+      this.axios.get('http://localhost:3001/api/post/' + this.postID)
       .then(response => {
         const rd = response.data;
         console.log('response data: ' + rd);
@@ -61,7 +60,7 @@ export default {
     },
     deletePost(id) {
       var self = this
-      axios({
+      this.axios({
             method: 'post', // post type is for one time submissions. Only post listener functions on backend will answer this call at this url
             url:'http://localhost:3001/api/post/' + id + '/delete', // we shouldn't hardcode the url like this
             data: this.form   
