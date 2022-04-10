@@ -39,7 +39,10 @@ export const useUser = defineStore('user', {
           return
         }
       })
-    },
+    }
+  },
+  persist: {
+    enabled: true
   }
 })
   

@@ -5,6 +5,8 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import { createPinia } from 'pinia'
 
+import piniaPersist from 'pinia-plugin-persist'
+
 axios.defaults.withCredentials = true;
 
 import NewPostPage from './views/NewPostPage.vue';
@@ -43,4 +45,6 @@ const router = createRouter({
   routes, // short for `routes: routes`
 })
 
-const app = createApp(App).use(router).use(createPinia()).use(VueAxios, axios).mount('#app')
+const pinia = createPinia()
+pinia.use(piniaPersist)
+const app = createApp(App).use(router).use(pinia).use(VueAxios, axios).mount('#app')
