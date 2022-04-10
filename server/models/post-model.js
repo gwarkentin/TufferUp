@@ -1,19 +1,36 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var PostSchema = new Schema({
-    email: {
+var categorySchema = new Schema ({
+    category: {
         type: String,
         required: true,
         index: true,
         unique: true
-    },
-    name: {
+    }
+});
+
+var conditionSchema = new Schema ({
+    condition: {
         type: String,
-    },
-    password: {
-        type: String,
-        required: true
+        required: true,
+        index: true,
+        unique: true
+    }
+});
+
+var PostSchema = new Schema({
+    title: String,
+    description: String,
+    category: categorySchema,
+    condition: conditionSchema,
+    price: Number,
+    discountable: Boolean,
+    imgs: Object,
+    rating: {
+        type:Number,
+        min: [0, 'Rating must be >= 0'],
+        max: [5, 'Rating must be <= 5']
     }
 });
 
