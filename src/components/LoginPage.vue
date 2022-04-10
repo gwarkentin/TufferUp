@@ -1,5 +1,45 @@
 <script>
-export default {};
+import { useUser } from '@/stores/user'
+export default {
+  setup() {
+    const userStore = useUser()
+    return {
+      userStore,
+    }
+  },
+  data() {
+    return {
+      'email': "",
+      'password': "",
+      'error': "",
+    }
+  },
+  computed: {
+      haserror() {
+        console.log('this.error: ' + this.error)
+        return this.error ? true : false;
+    }
+  },
+  methods: {
+    loginUser(e) {
+      var self = this
+      const form = {
+        'email': this.email,
+        'password': this.password,
+      }
+      console.log(JSON.stringify(form));
+      // need to validate form on frontend here before submitting via axios
+      this.userStore.loginUser(form).then( (err)=> {
+        if (err) {self.error = err}
+        else {
+          this.$router.push('/') // should push to /post/:id
+        }
+      }).catch(function (err) {
+        self.error = err
+      });
+    },
+  }
+};
 </script>
 
 <!--- need to implement the actually post/connection to backend.
@@ -15,11 +55,15 @@ export default {};
             <div class="mt-3">
               <h4 class="text-center">Login to TufferUp</h4>
             </div>
+            <div v-if="haserror" class="alert alert-danger" role="alert">
+              <p>{{ error }}</p>
+            </div>
             <form class="px-4 py-3">
               <div class="mb-3">
                 <label for="exampleDropdownFormEmail1" class="form-label"
                   >Email address</label>
                 <input
+                  v-model="email"
                   type="email"
                   class="form-control"
                   id="exampleDropdownFormEmail1"
@@ -29,6 +73,7 @@ export default {};
               <div class="mb-3">
                 <label for="exampleDropdownFormPassword1" class="form-label">Password</label>
                 <input
+                  v-model="password"
                   type="password"
                   class="form-control"
                   id="exampleDropdownFormPassword1"
@@ -47,7 +92,7 @@ export default {};
                   </label>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary">Login</button>
+              <button type="button" class="btn btn-primary" @click="loginUser">Register</button>
             </form>
           </div>
         <div class="col-md-9"></div>

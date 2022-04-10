@@ -1,4 +1,14 @@
 <script>
+import { useUser } from '@/stores/user'
+
+export default {
+  setup() {
+    const userStore = useUser()
+    return {
+      userStore,
+    }
+  },
+}
 </script>
 
 <template>
@@ -10,7 +20,7 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
 -->
 <nav class="navbar navbar-expand-lg navbar-light "  style="background-color: #FF8C00" >
   <div class="container-fluid">
-    <router-link to="/HomePage" class="navbar-brand">TufferUp</router-link>
+    <router-link to="/" class="navbar-brand">TufferUp</router-link>
 
     <form class="nav-item d-flex">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -25,12 +35,19 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
           <li class="nav-item">
             <router-link to="/newpost" class="nav-link">New Post</router-link>
           </li>
-          <li class="nav-item">
-            <router-link to="/login" class="nav-link">Login</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/register" class="nav-link">Register</router-link>
-          </li>
+          <template v-if="userStore.user">
+            <li class="nav-item">
+              <router-link to="/" class="nav-link">{{ userStore.user.name }}</router-link>
+            </li>
+          </template>
+          <template v-else>
+            <li class="nav-item">
+              <router-link to="/login" class="nav-link">Login</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/register" class="nav-link">Register</router-link>
+            </li>
+          </template>
         </ul>
       </div>
     </div>

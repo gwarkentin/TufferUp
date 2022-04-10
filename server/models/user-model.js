@@ -10,7 +10,7 @@ var UserSchema = new Schema({
         index: true,
         unique: true
     },
-    displayname: {
+    name: {
         type: String,
     },
     password: {

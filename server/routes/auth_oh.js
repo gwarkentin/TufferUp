@@ -1,24 +1,14 @@
 var express = require('express');
-const passwords = require('../.password.js')
-
-const cors = require('cors');
+const passwords = require('./../.password.js')
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 
 var mongoose = require("mongoose");
-var User = require('../models/user-model.js');
+var User = require('./../models/user-model.js');
 const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
 
 var router = express.Router();
-router.use(cors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-    ],
-    credentials: true,
-    exposedHeaders: ['set-cookie']
-}));
 
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},
 function verify(email, password, cb) {
@@ -49,27 +39,21 @@ passport.serializeUser(function(user, cb) {
     });
   });
 
-router.post('/login',
-  passport.authenticate('local'),
-  function(req, res) {
-      if (!req.user) { res.json({ error: req.err }) }
-      console.log(req.user)
-      res.json( {
-          user: req.user._id,
-          email: req.user.email,
-          name: req.user.name,
-        })
-  });
+router.get('/login', function(req, res, next) {
+  req.logout();
+  res.render('login');
+});
+
+router.post('/login/password', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+}));
 
 router.post('/logout', function(req, res, next) {
     req.logout();
-    res.json({ user: null});
+    res.redirect('/');
 });
 
-router.all('/checklogin', function(req, res) {
-    console.log(req.session)
-    res.status(req.session.passport.user ? 200 : 401).send('OK')
-});
 
 const createUser = async function (userinfo, cb) {
     mongoose.connect(uri, function(err) {
@@ -84,21 +68,21 @@ const createUser = async function (userinfo, cb) {
     return cb(null, newuser);
 };
 
+router.get('/signup', function(req, res, next) {
+  req.logout();
+  res.render('signup');
+});
+
 router.post('/signup', function(req, res, next) {
-    var userinfo = req.body
-    console.log(req.body)
+    var userinfo = { email: req.body.email, password: req.body.password}
     createUser(userinfo, function(err, user) {
         if (err == 'user_exists') {
-            res.json( {error: err})
+            res.redirect('/login')
         }
         else {
             req.login(user, function(err) {
                 if (err) { return next(err); }
-                res.json( {
-                    user: user._id,
-                    email: user.email,
-                    name: user.name,
-                });
+                res.redirect('/');
             })
         }
     });
