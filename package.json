@@ -8,30 +8,30 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "axios": "^0.26.0",
+    "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
-    "body-parser": "^1.19.2",
+    "body-parser": "^1.20.0",
     "connect-mongodb-session": "^3.1.1",
     "cors": "^2.8.5",
     "ejs": "^3.1.6",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
-    "mongodb": "^4.4.0",
+    "mongodb": "^4.5.0",
     "mongoose": "^6.2.10",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
     "vue": "^3.2.29",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.14"
   },
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.1.0",
-    "@vitejs/plugin-vue": "^2.1.0",
+    "@rushstack/eslint-patch": "^1.1.2",
+    "@vitejs/plugin-vue": "^2.3.1",
     "@vue/eslint-config-prettier": "^7.0.0",
-    "eslint": "^8.5.0",
-    "eslint-plugin-vue": "^8.2.0",
-    "prettier": "^2.5.1",
-    "vite": "^2.7.13"
+    "eslint": "^8.13.0",
+    "eslint-plugin-vue": "^8.6.0",
+    "prettier": "^2.6.2",
+    "vite": "^2.9.1"
   }
 }
