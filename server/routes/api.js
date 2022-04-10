@@ -42,6 +42,29 @@ router.get('/category/:category', (req, res) => {
     });
 });
 
+router.get('/user/:user', (req, res) => {
+  filters = {
+    "filter": { "user": req.params.user },
+    "sort": { "_id":-1, "price": 1 },
+    "limit": 10,
+    "projection": {
+      "title":1,
+      "price":1,
+      "imgs":1
+    }
+  }
+  dbhandler.getManyPosts(filters)
+    .then(function (dbres) {
+      res.json(dbres);
+    })
+    .catch(function (error) {
+      res.json({
+        'documents':null,
+        'error': "From node.js index.js[45]: " + error.message 
+      });
+    });
+});
+
 // accepting get url params
 router.get('/post/:id', (req, res) => {
   console.log('request for post: ' + req.params.id)

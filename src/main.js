@@ -14,7 +14,7 @@ import NewPostDone from './components/NewPostDone.vue';
 import RegisterPage from './components/RegisterPage.vue';
 import CategoryPage from './views/CategoryPage.vue';
 import HomePage from './components/HomePage.vue';
-import UserPage from './components/UserPage.vue'
+import UserPage from './views/UserPage.vue'
 
 
 // add your imports and routes here to provide urls for your frontend pages
