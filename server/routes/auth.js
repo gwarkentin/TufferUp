@@ -1,6 +1,8 @@
 var express = require('express');
 const passwords = require('../.password.js')
 
+const cors = require('cors');
+
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 
@@ -9,6 +11,14 @@ var User = require('../models/user-model.js');
 const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
 
 var router = express.Router();
+router.use(cors({
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+    ],
+    credentials: true,
+    exposedHeaders: ['set-cookie']
+}));
 
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},
 function verify(email, password, cb) {
@@ -42,16 +52,23 @@ passport.serializeUser(function(user, cb) {
 router.post('/login',
   passport.authenticate('local'),
   function(req, res) {
-      console.log(req)
-      if (!req.user) { res.json({ err: req.err }) }
-      res.json( { user: req.user } )
+      if (!req.user) { res.json({ error: req.err }) }
+      res.json( {
+          user: req.user._id,
+          email: req.user.email,
+          name: req.user.displayname
+        })
   });
 
 router.post('/logout', function(req, res, next) {
     req.logout();
-    res.redirect('/');
+    res.json({ user: null});
 });
 
+router.all('/checklogin', function(req, res) {
+    console.log(req.session)
+    res.status(req.session.passport.user ? 200 : 401).send('OK')
+});
 
 const createUser = async function (userinfo, cb) {
     mongoose.connect(uri, function(err) {
@@ -66,21 +83,20 @@ const createUser = async function (userinfo, cb) {
     return cb(null, newuser);
 };
 
-router.get('/signup', function(req, res, next) {
-  req.logout();
-  res.render('signup');
-});
-
 router.post('/signup', function(req, res, next) {
-    var userinfo = { email: req.body.email, password: req.body.password}
+    var userinfo = req.body
     createUser(userinfo, function(err, user) {
         if (err == 'user_exists') {
-            res.redirect('/login')
+            res.json( {error: err})
         }
         else {
             req.login(user, function(err) {
                 if (err) { return next(err); }
-                res.redirect('/');
+                res.json( {
+                    user: user._id,
+                    email: user.email,
+                    name: user.displayname
+                });
             })
         }
     });

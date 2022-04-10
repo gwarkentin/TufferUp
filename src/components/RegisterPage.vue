@@ -1,6 +1,12 @@
 <script>
-import axios from 'axios'
+import { useUser } from '@/stores/user'
 export default {
+  setup() {
+    const userStore = useUser()
+    return {
+      userStore,
+    }
+  },
   data() {
     return {
       'email': "",
@@ -10,29 +16,19 @@ export default {
   },
   methods: {
     registerUser(e) {
-      console.log(e)
-      // put it all in one json object
+      var self = this
       this.form = {
         'email': this.email,
         'password': this.password,
       }
       console.log(JSON.stringify(this.form));
       // need to validate form on frontend here before submitting via axios
-
-      var self = this; // only way to get access to "this" from inside the catch??
-      axios({
-        method: 'post',
-        url:'http://localhost:3001/auth/signup',
-        data: this.form
-      }).then(response => {
-        if (response.data.success) {
+      this.userStore.registerUser(this.form).then( ()=> {
           this.$router.push('/') // should push to /post/:id
         }
-        else {
-          this.error = response.data.error
-        }
-      })
+      )
       .catch(function (err) {
+        console.log(err)
         self.error = err
       });
     },

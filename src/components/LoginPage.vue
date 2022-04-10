@@ -23,8 +23,8 @@ export default {
         url:'http://localhost:3001/auth/login',
         data: this.form
       }).then(response => {
-        console.log(response.data)
-        if (response.data.success) {
+        console.log(JSON.stringify(response.data));
+        if (response.data.user) {
           this.$router.push('/') // should push to /post/:id
         }
         else {

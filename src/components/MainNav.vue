@@ -1,4 +1,14 @@
 <script>
+import { useUser } from '@/stores/user'
+
+export default {
+  setup() {
+    const userStore = useUser()
+    return {
+      userStore,
+    }
+  },
+}
 </script>
 
 <template>
@@ -10,7 +20,7 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
 -->
 <nav class="navbar navbar-expand-lg navbar-light "  style="background-color: #FF8C00" >
   <div class="container-fluid">
-    <router-link to="/HomePage" class="navbar-brand">TufferUp</router-link>
+    <router-link to="/" class="navbar-brand">TufferUp</router-link>
 
     <form class="nav-item d-flex">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -30,6 +40,9 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
           </li>
           <li class="nav-item">
             <router-link to="/register" class="nav-link">Register</router-link>
+          </li>
+          <li v-if="userStore.userData" class="nav-item">
+            <span>{{ userStore.userData.email }}</span>
           </li>
         </ul>
       </div>

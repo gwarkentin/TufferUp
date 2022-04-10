@@ -40,6 +40,7 @@ export default {
      later if something is going wrong
      */
     tryAjax() {
+      var self = this
       this.postID = (this.$route.params.id ? this.$route.params.id : "");
       this.axios.get('http://localhost:3001/api/post/' + this.postID)
       .then(response => {
@@ -52,7 +53,7 @@ export default {
         this.ogdata = false
       })
       .catch(function (error) {
-        this.error = error;
+        self.error = error;
       })
       .then(function () {
         // always executed

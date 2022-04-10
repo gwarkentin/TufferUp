@@ -6,8 +6,14 @@ const cors = require('cors');
 const dbhandler = require('./../models/dbhandler')
 
 var router = express.Router();
-
-router.use(cors());
+router.use(cors({
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+    ],
+    credentials: true,
+    exposedHeaders: ['set-cookie']
+}));
 
 router.get('/', (req, res) => {
     res.send("hello it's the api here");
@@ -53,32 +59,7 @@ router.get('/post/:id', (req, res) => {
     
 });
 
-// -------- These are helper functions for /api/newpost -------------
-
-  /* -- !need to implement!
-    dbhandler.verifyPost(post)
-    validates post data object has correct shape and fields before insert into db
-  */
-
-// a post request receiving input from a form.
-// Right now it just sends it back to the sender as is and posts in your terminal.
 router.post('/newpost', (req,res) => {
-  /* -- !need to implement!
- use the helper functions above to first
-  1) verify the post,
-  2) if good, submit it
-  3) send back result either way
-  
-  If there are errors on either one, send back to the user the error message
-  A try/catch logic may be better here.
-
- send obj that looks like this for frontend:
-    {
-      "success": Boolean,
-      "postID": String,  // 0 on failure
-      "error": String // "" if success = true, "warning description" if some warning
-    }
-*/
   console.log('receive post req');
   console.log(req.body);
   dbhandler.verifyPost(req.body).then(function (post) {

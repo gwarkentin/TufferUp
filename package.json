@@ -22,9 +22,11 @@
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
+    "pinia": "^2.0.13",
     "vue": "^3.2.29",
     "vue-axios": "^3.4.1",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "vue-session": "^1.0.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",
