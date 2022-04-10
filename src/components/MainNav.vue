@@ -41,8 +41,8 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
           <li class="nav-item">
             <router-link to="/register" class="nav-link">Register</router-link>
           </li>
-          <li v-if="userStore.userData" class="nav-item">
-            <span>{{ userStore.userData.email }}</span>
+          <li v-if="userStore.user" class="nav-item">
+            <span>Welcome {{ userStore.user.name }}</span>
           </li>
         </ul>
       </div>

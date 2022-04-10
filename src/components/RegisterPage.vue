@@ -10,25 +10,35 @@ export default {
   data() {
     return {
       'email': "",
+      'displayname': "",
       'password': "",
       'error': "",
+    }
+  },
+  computed: {
+      haserror() {
+        console.log('this.error: ' + this.error)
+        return this.error ? true : false;
     }
   },
   methods: {
     registerUser(e) {
       var self = this
-      this.form = {
+      const form = {
         'email': this.email,
+        'displayname': this.displayname,
         'password': this.password,
       }
-      console.log(JSON.stringify(this.form));
+      console.log("vue sending this to store.registerUser:" + JSON.stringify(form));
       // need to validate form on frontend here before submitting via axios
-      this.userStore.registerUser(this.form).then( ()=> {
-          this.$router.push('/') // should push to /post/:id
+      this.userStore.registerUser(form).then( (err)=> {
+        if (err) {
+          self.error = err
         }
-      )
-      .catch(function (err) {
-        console.log(err)
+        else {
+          this.$router.push('/')
+        }
+      }).catch(function (err) {
         self.error = err
       });
     },
@@ -44,6 +54,9 @@ export default {
           <div class="card">
             <div class="mt-3">
               <h4 class="text-center">Register for TufferUp</h4>
+            </div>
+            <div v-if="haserror" class="alert alert-danger" role="alert">
+              <p>{{ error }}</p>
             </div>
             <form class="px-4 py-3">
               <div class="mb-3">
@@ -64,6 +77,16 @@ export default {
                   type="password"
                   class="form-control"
                   id="exampleDropdownFormPassword1"
+                  placeholder="Password"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="displayname" class="form-label">Display Name</label>
+                <input
+                  v-model="displayname"
+                  type="text"
+                  class="form-control"
+                  id="displayname"
                   placeholder="Password"
                 />
               </div>

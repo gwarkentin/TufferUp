@@ -1,5 +1,12 @@
 <script>
+import { useUser } from '@/stores/user'
 export default {
+  setup() {
+    const userStore = useUser()
+    return {
+      userStore,
+    }
+  },
   data() {
     return {
       'email': "",
@@ -7,31 +14,27 @@ export default {
       'error': "",
     }
   },
+  computed: {
+      haserror() {
+        console.log('this.error: ' + this.error)
+        return this.error ? true : false;
+    }
+  },
   methods: {
-    registerUser(e) {
-      // put it all in one json object
-      this.form = {
+    loginUser(e) {
+      var self = this
+      const form = {
         'email': this.email,
         'password': this.password,
       }
-      console.log(JSON.stringify(this.form));
+      console.log(JSON.stringify(form));
       // need to validate form on frontend here before submitting via axios
-
-      var self = this; // only way to get access to "this" from inside the catch??
-      this.axios({
-        method: 'post',
-        url:'http://localhost:3001/auth/login',
-        data: this.form
-      }).then(response => {
-        console.log(JSON.stringify(response.data));
-        if (response.data.user) {
+      this.userStore.loginUser(form).then( (err)=> {
+        if (err) {self.error = err}
+        else {
           this.$router.push('/') // should push to /post/:id
         }
-        else {
-          this.error = response.data.error
-        }
-      })
-      .catch(function (err) {
+      }).catch(function (err) {
         self.error = err
       });
     },
@@ -51,6 +54,9 @@ export default {
           <div class="card">
             <div class="mt-3">
               <h4 class="text-center">Login to TufferUp</h4>
+            </div>
+            <div v-if="haserror" class="alert alert-danger" role="alert">
+              <p>{{ error }}</p>
             </div>
             <form class="px-4 py-3">
               <div class="mb-3">
@@ -86,7 +92,7 @@ export default {
                   </label>
                 </div>
               </div>
-              <button type="button" class="btn btn-primary" @click="registerUser">Register</button>
+              <button type="button" class="btn btn-primary" @click="loginUser">Register</button>
             </form>
           </div>
         <div class="col-md-9"></div>

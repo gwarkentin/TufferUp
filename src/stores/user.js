@@ -9,20 +9,39 @@ export const useUser = defineStore('user', {
   },
   actions: {
     async registerUser(userForm) {
+      this.$reset()
       axios({
         method: 'post',
         url:'http://localhost:3001/auth/signup',
         data: userForm
       }).then( response => {
-        console.log(JSON.stringify(response.data));
-        if (response.data.user) {
-          this.user = user
-        }
-        else {
+        console.log('store got back: ' + JSON.stringify(response.data));
+        if (response.data.error) {
           return response.data.error
         }
+        else {
+          this.user = response.data
+          return
+        }
       })
-    }
+    },
+    async loginUser(userForm) {
+      this.$reset()
+      axios({
+        method: 'post',
+        url:'http://localhost:3001/auth/login',
+        data: userForm
+      }).then( response => {
+        console.log('store got back: ' + JSON.stringify(response.data));
+        if (response.data.error) {
+          return response.data.error
+        }
+        else {
+          this.user = response.data
+          return
+        }
+      })
+    },
   }
 })
   
