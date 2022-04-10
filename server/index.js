@@ -6,8 +6,6 @@ var logger = require('morgan');
 const passwords = require('./.password.js')
 
 const bodyParser = require('body-parser');
-const cors = require('cors');
-
 
 var passport = require('passport');
 
@@ -35,7 +33,6 @@ app.use(passport.authenticate('session'));
 
 app.use(bodyParser.json()); //read json input from requests
 app.use(express.urlencoded({ extended: true })); // read web form input
-app.use(cors());
 
 //just for now for login/signup page
 app.set('views', path.join(__dirname, 'views'));
@@ -44,15 +41,17 @@ app.set('view engine', 'ejs');
 
 // import routes
 var authRouter = require('./routes/auth');
-app.use('/', authRouter);
+app.use('/auth', authRouter);
+
+var auth_ohRouter = require('./routes/auth_oh');
+app.use('/', auth_ohRouter);
 
 var apiRouter = require('./routes/api');
 app.use('/api', apiRouter);
 
 
 app.get('/', (req, res) => {
-  res.send(JSON.stringify(req.session) + " is logged in")
-
+  res.send(JSON.stringify(req.session.passport) + " is logged in")
 });
 
 app.listen(3001, console.log("Server listening on port 3001. Try http://localhost:3001/signup or http://localhost:3001/api/category/Books"));

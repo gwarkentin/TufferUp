@@ -1,6 +1,4 @@
 <script>
-import axios from 'axios'
-
 export default {
   data() {
     return {
@@ -56,7 +54,7 @@ export default {
         // need to validate form on frontend here before submitting via axios
 
         var self = this; // only way to get access to "this" from inside the catch??
-        axios({
+        this.axios({
           method: 'post', // post type is for one time submissions. Only post listener functions on backend will answer this call at this url
           url:'http://localhost:3001/api/newpost', // we shouldn't hardcode the url like this
           data: this.form   
