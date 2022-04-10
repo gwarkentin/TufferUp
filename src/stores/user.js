@@ -9,7 +9,6 @@ export const useUser = defineStore('user', {
   },
   actions: {
     async registerUser(userForm) {
-      this.$reset()
       axios({
         method: 'post',
         url:'http://localhost:3001/auth/signup',
@@ -26,7 +25,6 @@ export const useUser = defineStore('user', {
       })
     },
     async loginUser(userForm) {
-      this.$reset()
       axios({
         method: 'post',
         url:'http://localhost:3001/auth/login',
