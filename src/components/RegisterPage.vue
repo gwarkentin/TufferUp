@@ -10,7 +10,7 @@ export default {
   data() {
     return {
       'email': "",
-      'displayname': "",
+      'name': "",
       'password': "",
       'error': "",
     }
@@ -26,7 +26,7 @@ export default {
       var self = this
       const form = {
         'email': this.email,
-        'displayname': this.displayname,
+        'name': this.name,
         'password': this.password,
       }
       console.log("vue sending this to store.registerUser:" + JSON.stringify(form));
@@ -83,7 +83,7 @@ export default {
               <div class="mb-3">
                 <label for="displayname" class="form-label">Display Name</label>
                 <input
-                  v-model="displayname"
+                  v-model="name"
                   type="text"
                   class="form-control"
                   id="displayname"

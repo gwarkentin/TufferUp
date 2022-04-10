@@ -39,8 +39,4 @@ const router = createRouter({
   routes, // short for `routes: routes`
 })
 
-var sessOptions = {
-  persist: true
-}
 const app = createApp(App).use(router).use(createPinia()).use(VueAxios, axios).mount('#app')
-// 
