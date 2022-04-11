@@ -1,10 +1,8 @@
 var express = require('express');
 const passwords = require('../.password.js')
-
-const cors = require('cors');
-
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
+const cors = require('cors');
 
 var mongoose = require("mongoose");
 var User = require('../models/user-model.js');

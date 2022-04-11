@@ -1,9 +1,18 @@
 <script>
+import { useUser } from '@/stores/user'
 export default {
   data() {
     return {
       'images': {},
-      'error': ""
+      'error': "",
+      'categories': {},
+      'conditions': {}
+    }
+  },
+  setup() {
+    const userStore = useUser()
+    return {
+      userStore,
     }
   },
   // these are basically public variables that you can receive info from parent
@@ -32,16 +41,40 @@ export default {
         return this.error ? true : false;
       },
     },
-    // what functions you can call from <template> section below or the rest of the functions.
+    mounted() {
+     this.getCategoryList();
+     this.getConditionList();
+    },
     methods: {
+      getCategoryList() {
+        var self = this
+        this.axios.get('http://localhost:3001/api/category/all')
+        .then(response => {
+          const rd = response.data;
+          console.log(rd)
+          this.categories = rd.categories
+          this.error = response.data.error
+        })
+        .catch(function (error) {
+          self.error = error;
+        });  
+      },
+      getConditionList() {
+        var self = this
+        this.axios.get('http://localhost:3001/api/condition/all')
+        .then(response => {
+          const rd = response.data;
+          this.conditions = rd.conditions
+          this.error = response.data.error
+        })
+        .catch(function (error) {
+          self.error = error;
+        });  
+      },
       makePost(e) {
-        /*
-          collect the data from this page and submit to backend (server/index.js), receive back some response
-          the respose should be the ID of the post you just made if succesful and then you use this.$router.push(path/:id)
-        */
-        console.log(e)
-        // put it all in one json object
+        console.log(this.userStore)
         this.form = {
+          'user': this.userStore.user.user,
           'title': this.title,
           'description': this.description,
           'category': this.category,
@@ -49,35 +82,23 @@ export default {
           'price': this.price,
           'discountable': this.discountable,
           'imgs': this.imgs,
-          'rating': 0
         }
-        // need to validate form on frontend here before submitting via axios
-
         var self = this; // only way to get access to "this" from inside the catch??
         this.axios({
-          method: 'post', // post type is for one time submissions. Only post listener functions on backend will answer this call at this url
-          url:'http://localhost:3001/api/newpost', // we shouldn't hardcode the url like this
+          method: 'post', 
+          url:'http://localhost:3001/api/post',
           data: this.form   
         }).then(response => {
-          if (response.data.success) {
-            this.$router.push('/post/' + response.data.postID) // should push to /post/:id
-          }
-          else {
-            self.error = response.data.error
-          }
+          if (response.data.error) {self.error = response.data.error}
+          else {this.$router.push('/post/' + response.data.postID)}
         })
         .catch(function (err) {
           self.error = err
         });
-
       },
-
       getFiles(e) {
-        // replace these two lines with the ability to sort and remove images you uploaded
-        // then it's easier to add a photo from one folder, then add another from another etc.
         this.images = {}
         this.$emit('update:imgs', this.images );
-
         var self = this; // only way to get access to "this" from inside the catch??
         var imgs = {};
         var files = e.target.files;
@@ -107,9 +128,6 @@ export default {
 
 </script>
 
-<!-- Just a bunch of inputs and their associated id attributes. When you receive the post with the backend, you can
-access in these variables in server/index.js with something like req.body
--->
 <template>
     <div v-show="haserror" class="alert alert-danger" role="alert">
       {{ error }}
@@ -131,15 +149,19 @@ access in these variables in server/index.js with something like req.body
       </div>
       <div class="mb-3">
         <label for="formCategory" class="form-label">Category:</label>
-        <input 
-          :value="category" @input="$emit('update:category', $event.target.value)"
-        class="form-control" id="formCategory">
+        <select :value="category" @input="$emit('update:category', $event.target.value)" class="form-control" id="formCategory">
+          <template v-for="cat in categories" :key="cat">
+            <option :value="cat._id">{{ cat.category }}</option>
+          </template>
+        </select>
       </div>
       <div class="mb-3">
         <label for="formCondition" class="form-label">Condition:</label>
-        <input 
-          :value="condition" @input="$emit('update:condition', $event.target.value)"
-        class="form-control" id="formCondition">
+        <select :value="condition" @input="$emit('update:condition', $event.target.value)" class="form-control" id="formCondition">
+          <template v-for="cond in conditions" :key="cond">
+            <option :value="cond._id">{{ cond.condition }}</option>
+          </template>
+        </select>
       </div>
       <div class="mb-3">
         <label for="formPrice" class="form-label">Price:</label>

@@ -4,6 +4,7 @@ var bcrypt = require("bcrypt");
 const SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
+    creationDate: { type: Date, required: true, default: Date.now },
     email: {
         type: String,
         required: true,
@@ -16,7 +17,8 @@ var UserSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    posts: [ {type: Schema.Types.ObjectId, ref:'Post'}]
 });
 
 UserSchema.pre("save", function(next) {

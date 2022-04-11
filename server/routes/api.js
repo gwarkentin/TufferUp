@@ -1,9 +1,23 @@
 var express = require('express');
 const passwords = require('./../.password.js')
 var passport = require('passport');
-const cors = require('cors');
 
+const cors = require('cors');
 const dbhandler = require('./../models/dbhandler')
+
+var mongoose = require("mongoose");
+const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
+var {Post, Category, Condition} = require('../models/post-model.js');
+
+mongoose.connect(uri, function(err) {
+    if (err) throw err;
+});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, "connection error: "));
+db.once('open', () => {
+  console.log('connection succesful');
+});
+  
 
 var router = express.Router();
 router.use(cors({
@@ -15,93 +29,75 @@ router.use(cors({
     exposedHeaders: ['set-cookie']
 }));
 
-router.get('/', (req, res) => {
-    res.send("hello it's the api here");
+router.post('/category/add', (req,res) => {
+  const newcat = new Category({ category: req.data.category });
+  newcat.save().then(savedDoc=> {
+    res.json({msg: 'created category: '+ savedDoc.category});
+  }).catch(err=>{
+    console.log(err)
+    res.json({error: err})
+  });
 });
 
-router.get('/category/:category', (req, res) => {
-  filters = {
-    "filter": { "category": req.params.category },
-    "sort": { "_id":-1, "price": 1 },
-    "limit": 10,
-    "projection": {
-      "title":1,
-      "price":1,
-      "imgs":1
+router.get('/category/all', (req,res) => {
+  Category.find(function(err,cats) {
+    if (err) {res.json({error:err})}
+    else {
+      res.json( {categories: cats});
     }
-  }
-  dbhandler.getManyPosts(filters)
-    .then(function (dbres) {
-      res.json(dbres);
-    })
-    .catch(function (error) {
-      res.json({
-        'documents':null,
-        'error': "From node.js index.js[45]: " + error.message 
-      });
-    });
+  });
 });
 
-router.get('/user/:user', (req, res) => {
-  filters = {
-    "filter": { "user": req.params.user },
-    "sort": { "_id":-1, "price": 1 },
-    "limit": 10,
-    "projection": {
-      "title":1,
-      "price":1,
-      "imgs":1
+router.get('/category/id/:category', (req,res) => {
+  Post.find({category: req.params.category}, function(err,posts) {
+    if (err) {res.json({error:err})}
+    else {
+      console.log(posts);
+      res.json( {posts: posts});
     }
-  }
-  dbhandler.getManyPosts(filters)
-    .then(function (dbres) {
-      res.json(dbres);
-    })
-    .catch(function (error) {
-      res.json({
-        'documents':null,
-        'error': "From node.js index.js[45]: " + error.message 
-      });
-    });
+  });
 });
 
-// accepting get url params
-router.get('/post/:id', (req, res) => {
-  console.log('request for post: ' + req.params.id)
-  dbhandler.getPost(req.params.id)
-    .then(function (post) {
-      //console.log(JSON.stringify(post));
-      res.json(post);
-    })
-    .catch(function (error) {
-      res.json({
-        'document':null,
-        'error': "From node.js index.js[45]: " + error.message 
-      });
-    });
-    
+router.post('/condition/add', (req,res) => {
+  const newcat = new Condition({ condition: req.data.condition });
+  newcat.save().then(savedDoc=> {
+    res.json({msg: 'created condition: '+ savedDoc.condition});
+  }).catch(err=>{
+    console.log(err)
+    res.json({error: err})
+  });
 });
 
-router.post('/newpost', (req,res) => {
+router.get('/condition/all', (req,res) => {
+  Condition.find(function(err,cond) {
+    if (err) {res.json({error:err})}
+    else {
+      res.json( {conditions: cond});
+    }
+  });
+});
+
+router.get('/condition/posts/:condition', (req,res) => {
+  Post.find(function(err,posts) {
+    if (err) {res.json({error:err})}
+    else {
+      res.json( {posts: posts});
+    }
+  });
+});
+
+router.post('/post', (req,res) => {
   console.log('receive post req');
   console.log(req.body);
-  dbhandler.verifyPost(req.body).then(function (post) {
-    dbhandler.addPost(post)
-      .then(function ( postID) {
-         res.json({
-          'success': true,
-          'postID': postID,
-          'error': ''
-        });
-      })
-  }).catch(function (error) {
-      console.log(error)
-      res.json({
-        'success':false,
-        'postID':null,
-        'error':error
-      })
-    });
+  var newpost = new Post(req.body);
+  // newpost.validate() is automatically run before save
+  newpost.save().then(savedDoc => {
+    console.log(savedDoc)
+    res.json({postID: savedDoc._id})
+  }).catch(err => {
+    console.log(err)
+    res.json({error: err})
+  });
 });
 
 module.exports = router;

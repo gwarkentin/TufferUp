@@ -24,7 +24,7 @@ export default {
   methods: {
     tryAjax() {
       var self = this
-        this.axios.get('http://localhost:3001/api/category/' + this.category)
+        this.axios.get('http://localhost:3001/api/category/id/' + this.category)
         .then(response => {
           const rd = response.data;
           console.log(rd)

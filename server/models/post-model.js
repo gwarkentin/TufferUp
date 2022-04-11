@@ -1,37 +1,32 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var categorySchema = new Schema ({
+var CategorySchema = new Schema ({
     category: {
         type: String,
         required: true,
-        index: true,
-        unique: true
     }
 });
 
-var conditionSchema = new Schema ({
+var ConditionSchema = new Schema ({
     condition: {
         type: String,
         required: true,
-        index: true,
-        unique: true
     }
 });
 
 var PostSchema = new Schema({
-    title: String,
-    description: String,
-    category: categorySchema,
-    condition: conditionSchema,
-    price: Number,
-    discountable: Boolean,
-    imgs: Object,
-    rating: {
-        type:Number,
-        min: [0, 'Rating must be >= 0'],
-        max: [5, 'Rating must be <= 5']
-    }
+    user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    creationDate: { type: Date, required: true, default: Date.now },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    category: { type: Schema.Types.ObjectId, required: true, ref: 'Category'},
+    condition: { type: Schema.Types.ObjectId, required: true, ref: 'Condition'},
+    price: { type:Number, required: true, min: [0, 'Must have price >= 0'] },
+    discountable: { type: Boolean, default: true },
+    imgs: Object, // is it time for gridfs?
 });
 
-module.exports = mongoose.model('Post', PostSchema);
+module.exports.Post = mongoose.model('Post', PostSchema);
+module.exports.Condition = mongoose.model('Condition', ConditionSchema);
+module.exports.Category = mongoose.model('Category', CategorySchema);

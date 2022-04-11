@@ -1,7 +1,31 @@
 <script>
-
+export default {
+  data() {
+    return {
+      'categories': {},
+      'error': ''
+    }
+  },
+  mounted() {
+    this.getCategoryList();
+  },
+  methods: {
+    getCategoryList() {
+      var self = this
+      this.axios.get('http://localhost:3001/api/category/all')
+      .then(response => {
+        const rd = response.data;
+        console.log(rd)
+        this.categories = rd.categories
+        this.error = response.data.error
+      })
+      .catch(function (error) {
+        self.error = error;
+      });  
+    }
+  }
+}
 </script>
-
 <template>
 <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #00008B">
   <a class="navbar-brand text-white" href="/category">Categories</a>
@@ -10,18 +34,11 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ">
-      <li class="nav-item active">
-        <router-link to="/category/Books" class="nav-link text-white">Books</router-link>
-      </li>
-      <li class="nav-item active">
-        <router-link to="/category/Dorm" class="nav-link text-white">Dorm</router-link>
-      </li>
-      <li class="nav-item active">
-        <router-link to="/category/Food" class="nav-link text-white">Food</router-link>
-      </li>
-      <li class="nav-item active">
-        <router-link to="/category/Computer" class="nav-link text-white">Computer</router-link>
-      </li>
+      <template v-for="cat in categories" :key="cat">
+        <li class="nav-item active">
+          <router-link :to="'/category/' + cat._id" class="nav-link text-white">{{ cat.category }}</router-link>
+        </li>
+      </template>
     </ul>
   </div>
 </nav>
