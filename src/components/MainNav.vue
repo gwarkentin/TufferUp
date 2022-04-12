@@ -35,6 +35,9 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
           <li class="nav-item">
             <router-link to="/newpost" class="nav-link">New Post</router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/category/add" class="nav-link">Add Category</router-link>
+          </li>
           <template v-if="userStore.user">
             <li class="nav-item">
               <router-link to="/profile" class="nav-link">{{ userStore.user.name }}</router-link>

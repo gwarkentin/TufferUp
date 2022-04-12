@@ -15,6 +15,7 @@ import LoginPage from './components/LoginPage.vue';
 import NewPostDone from './components/NewPostDone.vue';
 import RegisterPage from './components/RegisterPage.vue';
 import CategoryPage from './views/CategoryPage.vue';
+import AddCategoryPage from './views/AddCategoryPage.vue';
 import HomePage from './components/HomePage.vue';
 import UserPage from './views/UserPage.vue'
 
@@ -33,6 +34,7 @@ const routes = [
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/register', name: 'Register', component: RegisterPage },
   { path: '/category', name: 'AllCategory', component: CategoryPage },
+  { path: '/category/add', name: 'AddCategory', component: AddCategoryPage },
   { path: '/category/:category', name: 'Category', component: CategoryPage },
   { path: '/homepage', name: 'HomePage', component: HomePage },
   { path: '/profile', name: 'UserPage', component: UserPage },

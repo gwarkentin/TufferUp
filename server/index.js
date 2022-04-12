@@ -4,6 +4,7 @@ var session = require('express-session');
 const path = require('path');
 var logger = require('morgan');
 const passwords = require('./.password.js')
+require('./routes/lazypopulate')
 
 const bodyParser = require('body-parser');
 

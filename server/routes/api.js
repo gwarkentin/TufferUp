@@ -18,7 +18,6 @@ db.once('open', () => {
   console.log('connection succesful');
 });
   
-
 var router = express.Router();
 router.use(cors({
     origin: [
@@ -53,7 +52,18 @@ router.get('/post/:id', (req,res) => {
 });
 
 router.post('/category/add', (req,res) => {
-  const newcat = new Category({ category: req.data.category });
+  console.log(req.body);
+  const category = req.body.category;
+  const subcategories = req.body.subcategories
+  const keyedsubcats = []
+  subcategories.forEach(subcat=>{
+    keyedsubcats.unshift({"subcategory": subcat })
+  })
+  const cat = {
+    category: category,
+    subcategories: keyedsubcats
+  }
+  const newcat = new Category(cat);
   newcat.save().then(savedDoc=> {
     res.json({msg: 'created category: '+ savedDoc.category});
   }).catch(err=>{
