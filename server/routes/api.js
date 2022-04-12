@@ -29,6 +29,29 @@ router.use(cors({
     exposedHeaders: ['set-cookie']
 }));
 
+router.post('/post', (req,res) => {
+  console.log('receive post req');
+  var newpost = new Post(req.body);
+  // newpost.validate() is automatically run before save
+  newpost.save().then(savedDoc => {
+    res.json({postID: savedDoc._id})
+  }).catch(err => {
+    console.log(err)
+    res.json({error: err})
+  });
+});
+
+router.get('/post/:id', (req,res) => {
+  Post.findOne({_id: { _id: req.params.id}}).
+  populate('category condition').
+  exec(function(err,post) {
+    if (err) {res.json({error:err})}
+    else {
+      res.json( {post: post});
+    }
+  });
+});
+
 router.post('/category/add', (req,res) => {
   const newcat = new Category({ category: req.data.category });
   newcat.save().then(savedDoc=> {
@@ -48,11 +71,10 @@ router.get('/category/all', (req,res) => {
   });
 });
 
-router.get('/category/id/:category', (req,res) => {
-  Post.find({category: req.params.category}, function(err,posts) {
+router.get('/category/posts/:category', (req,res) => {
+  Post.find({category: { _id: req.params.category}}, 'title price imgs', function(err,posts) {
     if (err) {res.json({error:err})}
     else {
-      console.log(posts);
       res.json( {posts: posts});
     }
   });
@@ -83,20 +105,6 @@ router.get('/condition/posts/:condition', (req,res) => {
     else {
       res.json( {posts: posts});
     }
-  });
-});
-
-router.post('/post', (req,res) => {
-  console.log('receive post req');
-  console.log(req.body);
-  var newpost = new Post(req.body);
-  // newpost.validate() is automatically run before save
-  newpost.save().then(savedDoc => {
-    console.log(savedDoc)
-    res.json({postID: savedDoc._id})
-  }).catch(err => {
-    console.log(err)
-    res.json({error: err})
   });
 });
 

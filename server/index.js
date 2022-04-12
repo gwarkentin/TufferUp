@@ -31,7 +31,9 @@ app.use(session({
 }));
 app.use(passport.authenticate('session'));
 
-app.use(bodyParser.json()); //read json input from requests
+app.use(bodyParser.json({
+  limit: '4MB'
+})); //read json input from requests
 app.use(express.urlencoded({ extended: true })); // read web form input
 
 //just for now for login/signup page

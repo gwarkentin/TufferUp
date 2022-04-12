@@ -33,31 +33,29 @@ export default {
     this.tryAjax()
   },
   methods: {
-
-    /* !need to implement
-     the page should immediate try to fetch the data
-     look at vue lifecycle hooks. We should calling tryAjax() from in Created(), but maybe check again
-     later if something is going wrong
-     */
     tryAjax() {
       var self = this
       this.postID = (this.$route.params.id ? this.$route.params.id : "");
       this.axios.get('http://localhost:3001/api/post/' + this.postID)
       .then(response => {
         const rd = response.data;
-        console.log('response data: ' + rd);
-        if (rd.document) {
-          this.form = response.data.document
+        if (rd.error) {this.error = rd.error}
+        const post = rd.post
+        const fields = Object.keys(this.form)
+        if (post) {
+          // thanks stack overflow. I was actually going to write something like this if I hadn't found it no cap
+          const form = Object.keys(post).
+            filter(key=> fields.includes(key)).
+            reduce((obj,key)=>{obj[key] = post[key];return obj;}, {});
+          form.category = form.category.category;
+          form.condition = form.condition.condition;
+          this.form = form;
+        this.ogdata = false;
         }
-        this.error = response.data.error
-        this.ogdata = false
       })
       .catch(function (error) {
         self.error = error;
       })
-      .then(function () {
-        // always executed
-      });  
     },
     deletePost(id) {
       var self = this

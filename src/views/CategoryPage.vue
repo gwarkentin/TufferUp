@@ -24,13 +24,11 @@ export default {
   methods: {
     tryAjax() {
       var self = this
-        this.axios.get('http://localhost:3001/api/category/id/' + this.category)
+        this.axios.get('http://localhost:3001/api/category/posts/' + this.category)
         .then(response => {
           const rd = response.data;
-          console.log(rd)
-          this.posts = rd.documents
+          this.posts = rd.posts;
           this.error = response.data.error
-          this.ogdata = false
         })
         .catch(function (error) {
           self.error = error;
