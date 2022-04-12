@@ -1,11 +1,14 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
+var SubcategorySchema = new Schema({subcategory: String})
+
 var CategorySchema = new Schema ({
     category: {
         type: String,
         required: true,
-    }
+    },
+    subcategories: [SubcategorySchema]
 });
 
 var ConditionSchema = new Schema ({
