@@ -24,7 +24,6 @@ export default {
   methods: {
     tryAjax() {
       var self = this
-        
         this.axios.get('http://localhost:3001/api/posts/user/' + this.userStore.user.user)
         .then(response => {
           const rd = response.data;

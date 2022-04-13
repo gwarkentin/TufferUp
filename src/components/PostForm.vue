@@ -97,6 +97,7 @@ export default {
         });
       },
       getFiles(e) {
+        console.log('getfile')
         this.images = []
         this.$emit('update:imgs', this.images);
         var imgs = [];
@@ -109,7 +110,7 @@ export default {
           const reader = new FileReader();
           reader.addEventListener("load", function () {
             console.log('reader.result ' + reader.result)
-            self.addImageTemp({data:reader.result});
+            self.addImageTemp(reader.result);
           }, {once:true});
           reader.readAsArrayBuffer(file);
         }
@@ -121,19 +122,23 @@ export default {
         this.$emit('update:imgs', this.images );
       },
       addImageTemp(image) {
-        console.log('image ' + image)
+        var formdata = new FormData()
+        formdata.append('image',image)
+        console.log(image.type)
         this.axios.post({
-          url:'http://localhost:3001/image/add',
-          data: {image:image}
+          url:'http://localhost:3001/api/image/add',
+          data: formdata 
         }).then(res => {
           if (res.data.error) {
             console.log(res.data.error)
           }
           else {
-            console.log(res.data)
-            return res.data.imageid
+            console.log(res)
+            updateFiles(res.data.image);
           }
-        }).then(imageid=>{updateFiles(imageid)});
+        }).then(imageid=>{updateFiles(imageid)}).catch(function(err) {
+          console.log(err);
+        });
       },
     }
   }

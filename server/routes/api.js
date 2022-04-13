@@ -92,7 +92,7 @@ router.get('/category/all', (req,res) => {
 });
 
 router.post('/condition/add', (req,res) => {
-  const newcat = new Condition({ condition: req.data.condition });
+  const newcat = new Condition({ condition: req.body.condition });
   newcat.save().then(savedDoc=> {
     res.json({msg: 'created condition: '+ savedDoc.condition});
   }).catch(err=>{
@@ -158,8 +158,8 @@ router.get('/image/:id', (req,res) => {
 
 router.post('/image/add', (req,res) => {
   console.log('receive image req');
-  console.log(req.body.image);
-  var newimage = new Image({image: req.body.image});
+  console.log(req.body);
+  var newimage = new Image({image: req.body.image });
   newimage.save().then(image => {
     res.json({image: image._id})
   }).catch(err => {
