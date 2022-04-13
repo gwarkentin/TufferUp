@@ -13,18 +13,20 @@ export default {
   },
   watch:{
     $route (newroute, oldroute){
+      if (newroute) {
         this.category = newroute.params.category;
-        this.tryAjax();
+        this.getPosts();
+      }
     }
   },
   mounted() {
     this.category = this.$route.params.category;
-    this.tryAjax();
+    this.getPosts();
   },
   methods: {
-    tryAjax() {
+    getPosts() {
       var self = this
-        this.axios.get('http://localhost:3001/api/category/posts/' + this.category)
+        this.axios.get('http://localhost:3001/api/posts/category/' + this.category)
         .then(response => {
           const rd = response.data;
           this.posts = rd.posts;

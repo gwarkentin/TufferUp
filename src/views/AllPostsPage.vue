@@ -1,31 +1,23 @@
 <script>
 import PostPreview from '../components/PostPreview.vue'
-import { useUser } from '@/stores/user'
 
 export default {
   data() {
     return {
       'posts': Object,
-      'error': String
-    }
-  },
-  setup() {
-    const userStore = useUser()
-    return {
-      userStore,
+      'category': String,
     }
   },
   components: {
     PostPreview
   },
   mounted() {
-    this.tryAjax();
+    this.getposts();
   },
   methods: {
-    tryAjax() {
+    getposts() {
       var self = this
-        
-        this.axios.get('http://localhost:3001/api/posts/user/' + this.userStore.user.user)
+        this.axios.get('http://localhost:3001/api/posts/')
         .then(response => {
           const rd = response.data;
           this.posts = rd.posts;
@@ -36,7 +28,7 @@ export default {
         })
         .then(function () {
           // always executed
-      }); 
+      });  
     }
   }
 }

@@ -7,7 +7,7 @@ const dbhandler = require('./../models/dbhandler')
 
 var mongoose = require("mongoose");
 const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
-var {Post, Category, Condition} = require('../models/post-model.js');
+var {Post, Category, Condition, Image} = require('../models/post-model.js');
 
 mongoose.connect(uri, function(err) {
     if (err) throw err;
@@ -19,6 +19,7 @@ db.once('open', () => {
 });
   
 var router = express.Router();
+
 router.use(cors({
     origin: [
       'http://localhost:3000',
@@ -31,7 +32,6 @@ router.use(cors({
 router.post('/post', (req,res) => {
   console.log('receive post req');
   var newpost = new Post(req.body);
-  // newpost.validate() is automatically run before save
   newpost.save().then(savedDoc => {
     res.json({postID: savedDoc._id})
   }).catch(err => {
@@ -50,6 +50,16 @@ router.get('/post/:id', (req,res) => {
     }
   });
 });
+
+router.post('/post/:id/delete', (req,res) => {
+  Post.deleteOne({_id: { _id: req.params.id}}, function(err, post) {
+    if (err) {res.json({error:err})}
+    else {
+      res.json( {post: post});
+    }
+  });
+});
+
 
 router.post('/category/add', (req,res) => {
   console.log(req.body);
@@ -81,15 +91,6 @@ router.get('/category/all', (req,res) => {
   });
 });
 
-router.get('/category/posts/:category', (req,res) => {
-  Post.find({category: { _id: req.params.category}}, 'title price imgs', function(err,posts) {
-    if (err) {res.json({error:err})}
-    else {
-      res.json( {posts: posts});
-    }
-  });
-});
-
 router.post('/condition/add', (req,res) => {
   const newcat = new Condition({ condition: req.data.condition });
   newcat.save().then(savedDoc=> {
@@ -109,13 +110,63 @@ router.get('/condition/all', (req,res) => {
   });
 });
 
-router.get('/condition/posts/:condition', (req,res) => {
-  Post.find(function(err,posts) {
+router.get('/posts/', (req,res) => {
+  Post.find({},'creationDate title price imgs').limit(5).sort('-createdDate').exec(function(err,posts) {
+    console.log(err)
     if (err) {res.json({error:err})}
     else {
       res.json( {posts: posts});
     }
   });
 });
+
+router.get('/posts/category/:category', (req,res) => {
+  Post.find( { category: req.params.category}, function(err,posts) {
+    if (err) {res.json({error:err})}
+    else {
+      res.json( {posts: posts});
+    }
+  });
+});
+
+router.get('/posts/condition/:condition', (req,res) => {
+  Post.find( { condition: req.params.condition}, function(err,posts) {
+    if (err) {res.json({error:err})}
+    else {
+      res.json( {posts: posts});
+    }
+  });
+})
+
+router.get('/posts/user/:userid', (req,res) => {
+  Post.find( { user: req.params.userid }, function(err,posts) {
+    if (err) {res.json({error:err})}
+    else {
+      res.json( {posts: posts});
+    }
+  });
+});
+
+router.get('/image/:id', (req,res) => {
+  Image.findOne({_id: { _id: req.params.id}}).then(function(err,post) {
+    if (err) {res.json({error:err})}
+    else {
+      res.json( {post: post});
+    }
+  });
+});
+
+router.post('/image/add', (req,res) => {
+  console.log('receive image req');
+  console.log(req.body.image);
+  var newimage = new Image({image: req.body.image});
+  newimage.save().then(image => {
+    res.json({image: image._id})
+  }).catch(err => {
+    console.log(err)
+    res.json({error: err})
+  });
+});
+
 
 module.exports = router;

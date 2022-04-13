@@ -3,7 +3,7 @@ import { useUser } from '@/stores/user'
 export default {
   data() {
     return {
-      'images': {},
+      'images': [],
       'error': "",
       'categories': {},
       'conditions': {}
@@ -97,10 +97,10 @@ export default {
         });
       },
       getFiles(e) {
-        this.images = {}
-        this.$emit('update:imgs', this.images );
-        var self = this; // only way to get access to "this" from inside the catch??
-        var imgs = {};
+        this.images = []
+        this.$emit('update:imgs', this.images);
+        var imgs = [];
+        const self = this;
         var files = e.target.files;
         for (let i = 0; i < files.length; i++) {
           const file = files[i]
@@ -108,21 +108,33 @@ export default {
 
           const reader = new FileReader();
           reader.addEventListener("load", function () {
-            self.updateFiles( {
-              'name': file.name,
-              'data': reader.result
-            }
-            )
+            console.log('reader.result ' + reader.result)
+            self.addImageTemp({data:reader.result});
           }, {once:true});
-          reader.readAsDataURL(file);
+          reader.readAsArrayBuffer(file);
         }
-        console.log(imgs);
       },
-
-      updateFiles(aImg) {
-        this.images[aImg.name] = aImg.data
+      updateFiles(imageid) {
+        console.log('update ' + imageid)
+        this.images.unshift(imageid)
+        console.log(this.images);
         this.$emit('update:imgs', this.images );
-      }
+      },
+      addImageTemp(image) {
+        console.log('image ' + image)
+        this.axios.post({
+          url:'http://localhost:3001/image/add',
+          data: {image:image}
+        }).then(res => {
+          if (res.data.error) {
+            console.log(res.data.error)
+          }
+          else {
+            console.log(res.data)
+            return res.data.imageid
+          }
+        }).then(imageid=>{updateFiles(imageid)});
+      },
     }
   }
 

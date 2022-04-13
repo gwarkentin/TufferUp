@@ -1,8 +1,6 @@
 <script>
 import PostDetails from '../components/PostDetails.vue'
 
-// this view dynamically requests data from express runnin at server/index.js
-
 export default {
   data() {
     return {
@@ -30,10 +28,10 @@ export default {
     PostDetails
   },
   mounted() {
-    this.tryAjax()
+    this.getPostDetails()
   },
   methods: {
-    tryAjax() {
+    getPostDetails() {
       var self = this
       this.postID = (this.$route.params.id ? this.$route.params.id : "");
       this.axios.get('http://localhost:3001/api/post/' + this.postID)

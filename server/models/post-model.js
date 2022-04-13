@@ -18,6 +18,10 @@ var ConditionSchema = new Schema ({
     }
 });
 
+var ImageSchema = new Schema ({
+    imgdata: { type: Buffer, required: true },
+});
+
 var PostSchema = new Schema({
     user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     creationDate: { type: Date, required: true, default: Date.now },
@@ -27,9 +31,10 @@ var PostSchema = new Schema({
     condition: { type: Schema.Types.ObjectId, required: true, ref: 'Condition'},
     price: { type:Number, required: true, min: [0, 'Must have price >= 0'] },
     discountable: { type: Boolean, default: true },
-    imgs: Object, // is it time for gridfs?
+    imgs: [{ type:Schema.Types.ObjectId, required: true, ref:'Image'}], // is it time for gridfs?
 });
 
 module.exports.Post = mongoose.model('Post', PostSchema);
 module.exports.Condition = mongoose.model('Condition', ConditionSchema);
 module.exports.Category = mongoose.model('Category', CategorySchema);
+module.exports.Image = mongoose.model('Image', ImageSchema);

@@ -1,4 +1,6 @@
 <script>
+import ImageGetter from './ImageGetter.vue'
+
 export default {
   //these are public variables that parents can v-bind to
   props: {
@@ -6,6 +8,9 @@ export default {
       'title': String,
       'price': Number,
       'imgs': Object
+  },
+  components: {
+    ImageGetter
   }
 }
 </script>
@@ -18,7 +23,7 @@ export default {
     </router-link>
     <span v-for="image in imgs" :key="image">
       <p>replace us with a carousel</p>
-      <img :src="image" class="card-img-bottom" alt="picture of {{ title }}">
+      <ImageGetter :id="image"/>
     </span>
 </div>
 </template>
