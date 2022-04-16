@@ -5,8 +5,8 @@ import { useUser } from '@/stores/user'
 export default {
   data() {
     return {
-      'posts': Object,
-      'error': String
+      posts: Object,
+      error: String
     }
   },
   setup() {
@@ -17,6 +17,12 @@ export default {
   },
   components: {
     PostPreview
+  },
+  computed: {
+      haserror() {
+        console.log('this.error: ' + this.error)
+        return this.error ? true : false;
+    }
   },
   mounted() {
     this.tryAjax();

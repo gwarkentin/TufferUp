@@ -8,9 +8,10 @@ import { createPinia } from 'pinia'
 import piniaPersist from 'pinia-plugin-persist'
 
 axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://localhost:3001/';
 
 import NewPostPage from './views/NewPostPage.vue';
-import PostPageView from './views/PostPageView.vue';
+import PostPage from './views/PostPage.vue';
 import LoginPage from './components/LoginPage.vue';
 import NewPostDone from './components/NewPostDone.vue';
 import RegisterPage from './components/RegisterPage.vue';
@@ -28,8 +29,8 @@ import UserPage from './views/UserPage.vue'
 // see vuerouter docs for more on url children and nested views
 const routes = [
   { path: '/', name: 'Home', component: HomePage },
-  { path: '/post', name: 'Post', component: PostPageView },
-  { path: '/post/:id', name: 'SpecificPost', component: PostPageView },
+  { path: '/post', name: 'Post', component: PostPage },
+  { path: '/post/:id', name: 'SpecificPost', component: PostPage },
   { path: '/newpost', name: 'NewPost', component: NewPostPage },
   { path: '/newpost/done', name: 'PostDone', component: NewPostDone },
   { path: '/login', name: 'Login', component: LoginPage },

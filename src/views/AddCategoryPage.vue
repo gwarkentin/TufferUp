@@ -40,7 +40,7 @@ export default {
       // need to validate form on frontend here before submitting via axios
       this.axios({
           method: 'post', 
-          url:'http://localhost:3001/api/category/add',
+          url:'/api/category/add',
           data: data   
         }).then(response => {
           if (err) {self.error = err}
@@ -61,6 +61,9 @@ export default {
 -->
 <template>
   <div class="container">
+  <div v-if="haserror" class="alert alert-danger" role="alert">
+    <p>{{ error }}</p>
+  </div>
       <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">

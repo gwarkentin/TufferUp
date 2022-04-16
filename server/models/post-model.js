@@ -19,7 +19,7 @@ var ConditionSchema = new Schema ({
 });
 
 var ImageSchema = new Schema ({
-    image: { type: Buffer, required: true },
+    image: { type: String, required: true },
 });
 
 var PostSchema = new Schema({

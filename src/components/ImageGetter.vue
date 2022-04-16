@@ -15,16 +15,20 @@ export default {
     },
     methods: {
     getImagesById: function() {
-        this.axios.get('/image/' + this.id).then((req,res) => {
-            if (res.error) {
-                console.log(error)
-            } 
-            this.image = res.data.image
+        this.axios({
+            method:'get', 
+            url:'/api/image/get/' + this.id
+        })
+        .then((res)=>{
+            if(res.data.error) { console.log(res.data.error)}
+            else {
+                this.image = res.data.image
+            }
         })
     },
   }
 }
 </script>
 <template>
-    <img :img="image" :id='id' class="card-img-bottom" alt="picture of {{ title }}">
+    <img :src="image" :id='id' class="card-img-bottom" alt="picture of ">
 </template>

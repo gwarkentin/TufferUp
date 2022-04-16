@@ -48,7 +48,7 @@ export default {
     methods: {
       getCategoryList() {
         var self = this
-        this.axios.get('http://localhost:3001/api/category/all')
+        this.axios.get('/api/category/all')
         .then(response => {
           const rd = response.data;
           console.log(rd)
@@ -61,7 +61,7 @@ export default {
       },
       getConditionList() {
         var self = this
-        this.axios.get('http://localhost:3001/api/condition/all')
+        this.axios.get('/api/condition/all')
         .then(response => {
           const rd = response.data;
           this.conditions = rd.conditions
@@ -83,10 +83,11 @@ export default {
           'discountable': this.discountable,
           'imgs': this.imgs,
         }
+        console.log(this.form)
         var self = this; // only way to get access to "this" from inside the catch??
         this.axios({
           method: 'post', 
-          url:'http://localhost:3001/api/post',
+          url:'/api/post/add',
           data: this.form   
         }).then(response => {
           if (response.data.error) {self.error = response.data.error}
@@ -106,39 +107,35 @@ export default {
         for (let i = 0; i < files.length; i++) {
           const file = files[i]
           if (!file.type.startsWith('image/')){ continue }
-
           const reader = new FileReader();
           reader.addEventListener("load", function () {
-            console.log('reader.result ' + reader.result)
             self.addImageTemp(reader.result);
           }, {once:true});
-          reader.readAsArrayBuffer(file);
+          reader.readAsDataURL(file);
         }
       },
-      updateFiles(imageid) {
-        console.log('update ' + imageid)
-        this.images.unshift(imageid)
-        console.log(this.images);
-        this.$emit('update:imgs', this.images );
-      },
       addImageTemp(image) {
-        var formdata = new FormData()
-        formdata.append('image',image)
-        console.log(image.type)
-        this.axios.post({
-          url:'http://localhost:3001/api/image/add',
-          data: formdata 
+        this.axios({
+          method:'post',
+          url:'/api/image/add',
+          data: { image: String(image) } 
         }).then(res => {
           if (res.data.error) {
             console.log(res.data.error)
           }
           else {
-            console.log(res)
-            updateFiles(res.data.image);
+            console.log(res.data.image)
+            this.updateFiles(res.data.image)
           }
-        }).then(imageid=>{updateFiles(imageid)}).catch(function(err) {
+        }).catch(function(err) {
           console.log(err);
         });
+      },
+      updateFiles(imageid) {
+        console.log('added img: ' + imageid)
+        this.images.unshift(imageid)
+        console.log(this.images);
+        this.$emit('update:imgs', this.images );
       },
     }
   }
