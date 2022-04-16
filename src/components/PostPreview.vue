@@ -28,7 +28,6 @@ export default {
         {{ title }}
     </h4>
     <p class="card-text">{{ price }}</p>
-    <p>{{ posterid }}</p>
     <router-link :to="{ name: 'UserPage' , params: { id: posterid }}" class="">
       <p class="card-text"><small class="text-muted">{{ postername }}</small></p>
     </router-link> 

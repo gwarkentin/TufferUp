@@ -32,7 +32,7 @@ export default {
     <div class="container">
     <div class="row">
         <div v-for="post in posts" :key="post" class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <PostPreview :title="post.title" :price="post.price" :postID="post._id" :imgs="post.imgs" :posterid="post.user" :postername="post.user" />
+            <PostPreview :title="post.title" :price="post.price" :postID="post._id" :imgs="post.imgs" :posterid="post.user._id" :postername="post.user.name" />
         </div>
         </div>
 </div>
