@@ -20,8 +20,10 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
 -->
 <nav class="navbar navbar-expand-lg navbar-light "  style="background-color: #FF8C00" >
   <div class="container-fluid">
-    <router-link to="/" class="navbar-brand">TufferUp</router-link>
-
+    <router-link to="/" class="navbar-brand">
+      <img src="/Tuffy.png" width="32" height="32" style="backgroud-colo:transparent;" class="d-inline-block align-text-top">
+      TufferUp
+    </router-link>
     <form class="nav-item d-flex">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success" type="submit">Search</button>

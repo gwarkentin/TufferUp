@@ -16,15 +16,17 @@ export default {
 </script>
 
 <template>
-<div class="container border">
-    <router-link :to="{ name: 'SpecificPost' , params: { id: postID }}" class="nav-link">
-      <h5 class="card-title">{{ title }}</h5>
-      <p class="card-text">${{ price }}</p>
-    </router-link>
-    <span v-if="imgs">
+<router-link :to="{ name: 'SpecificPost' , params: { id: postID }}" class="nav-link">
+<div class="card h-100">
+    <template v-if="imgs">
       <ImageGetter :id="imgs[0]"/>
-      <p> Image: {{ imgs[0] }}</p>
-    </span>
-</div>
+    </template>
+  <div class="card-body">
+    <h4 class="card-title">
+        {{ title }}
+    </h4>
+    <p class="card-text">{{ price }}</p>
+    </div>
+  </div>
+</router-link>
 </template>
-
