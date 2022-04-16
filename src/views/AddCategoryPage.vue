@@ -42,10 +42,10 @@ export default {
           method: 'post', 
           url:'/api/category/add',
           data: data   
-        }).then(response => {
-          if (err) {self.error = err}
+        }).then(res => {
+          if (res.data.err) {self.error = res.data.errerr}
           else {
-            //this.$router.push('/') // should push to /post/:id
+            this.$router.push('/')
           }
         }).catch(function (err) {
           self.error = err
