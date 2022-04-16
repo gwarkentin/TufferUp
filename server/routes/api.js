@@ -122,7 +122,7 @@ router.get('/condition/all', (req,res) => {
 });
 
 router.get('/posts/', (req,res) => {
-  Post.find({},'creationDate title price imgs').limit(5).sort('-createdDate').exec(function(err,posts) {
+  Post.find({}).limit(50).populate('user.name').sort('-createdDate').exec(function(err,posts) {
     console.log(err)
     if (err) {res.json({error:err})}
     else {
@@ -132,7 +132,7 @@ router.get('/posts/', (req,res) => {
 });
 
 router.get('/posts/category/:category', (req,res) => {
-  Post.find( { category: req.params.category}, function(err,posts) {
+  Post.find( { category: req.params.category}).limit(50).populate('user.name').sort('-createdDate').exec( function(err,posts) {
     if (err) {res.json({error:err})}
     else {
       res.json( {posts: posts});
@@ -141,7 +141,7 @@ router.get('/posts/category/:category', (req,res) => {
 });
 
 router.get('/posts/condition/:condition', (req,res) => {
-  Post.find( { condition: req.params.condition}, function(err,posts) {
+  Post.find( { condition: req.params.condition}).limit(50).sort('-createdDate').exec(function(err,posts) {
     if (err) {res.json({error:err})}
     else {
       res.json( {posts: posts});
@@ -150,7 +150,7 @@ router.get('/posts/condition/:condition', (req,res) => {
 })
 
 router.get('/posts/user/:userid', (req,res) => {
-  Post.find( { user: req.params.userid }, function(err,posts) {
+  Post.find( { user: req.params.userid }).limit(50).sort('-createdDate').exec(function(err,posts) {
     if (err) {res.json({error:err})}
     else {
       res.json( {posts: posts});
