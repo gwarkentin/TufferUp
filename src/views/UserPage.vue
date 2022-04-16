@@ -5,7 +5,7 @@ import { useUser } from '@/stores/user'
 export default {
   data() {
     return {
-      posts: Object,
+      posts: Array,
       error: String
     }
   },
@@ -25,35 +25,44 @@ export default {
     }
   },
   mounted() {
-    this.tryAjax();
+    this.getPosts();
   },
   methods: {
-    tryAjax() {
-      var userid = this.userStore.user.user
+    getPosts() {
+      this.error = ""
+      var userid = null
+      if (this.userStore.user) {
+        userid = this.userStore.user.user
+      }
       if (this.$route.params.id) {
         userid = this.$route.params.id
       }
-      var self = this
-        this.axios.get('http://localhost:3001/api/posts/user/' + userid)
-        .then(response => {
-          const rd = response.data;
-          this.posts = rd.posts;
-          this.error = response.data.error
-        })
-        .catch(function (error) {
-          self.error = error;
-        })
-        .then(function () {
-          // always executed
-      }); 
+      if (!userid) {
+        this.error = "No user to search for"
+      }
+      else {
+        var self = this
+        this.axios.get('/api/posts/user/' + userid)
+          .then(response => {
+            const rd = response.data;
+            const posts = rd.posts
+            this.error = response.data.error
+            if (posts.length == 0) {
+              this.error = 'No posts found'
+            }
+            else {
+              this.posts = posts;
+            }
+          })
+          .catch(function (error) {
+            self.error = error;
+          });  
+      }
     }
   }
 }
 </script>
 
-<!-- need to implement
-  properly designed with carousel view etc. Should look good in any screen size
-  !-->
 <template>
   <template v-if="posts">
     <posts-list v-bind:posts="posts"></posts-list>

@@ -1,9 +1,15 @@
 <script>
+import { isArray } from '@vue/shared';
 import PostPreview from '../components/PostPreview.vue'
 
 export default {
+  data() {
+    return {
+      postscleaned: []
+    }
+  },
   props:{
-      posts: Object,
+      posts: Array,
       category: String,
       error: "",
   },
@@ -16,6 +22,34 @@ export default {
         return this.error ? true : false;
     }
   },
+  watch: {
+    posts(newposts, oldposts) {
+      if (isArray(newposts)) {
+        this.cleanPosts(newposts);
+      }
+    }
+  },
+  methods: {
+    cleanPosts(newposts) {
+      this.postscleaned = []
+      newposts.forEach(post => {
+        try {
+          const p = {
+            postID: post._id,
+            title: post.title,
+            price: post.price,
+            imgs: post.imgs,
+            posterid: post.user._id,
+            postername: post.user.name
+          }
+          this.postscleaned.unshift(p)
+        }
+        catch (err) {
+          console.log(err)
+        }
+      });
+    }
+  }
 }
 </script>
 
@@ -31,10 +65,12 @@ export default {
 
     <div class="container">
     <div class="row">
-        <div v-for="post in posts" :key="post" class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <PostPreview :title="post.title" :price="post.price" :postID="post._id" :imgs="post.imgs" :posterid="post.user._id" :postername="post.user.name" />
+      <template v-if="postscleaned.length > 0">
+        <div v-for="post in postscleaned" :key="post" class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <PostPreview v-bind="post" />
         </div>
-        </div>
+      </template>
+    </div>
 </div>
   <!-- /.row -->
 

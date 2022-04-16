@@ -97,9 +97,6 @@ export default {
                     class="form-check-input"
                     id="dropdownCheck"
                   />
-                  <label class="form-check-label" for="dropdownCheck">
-                    Remember me
-                  </label>
                 </div>
               </div>
               <button type="button" class="btn btn-primary" @click="registerUser">Register</button>

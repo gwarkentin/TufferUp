@@ -4,7 +4,7 @@ import PostsList from '../components/PostsList.vue'
 export default {
   data() {
     return {
-      'posts': Object,
+      'posts': Array,
       'category': String,
     }
   },

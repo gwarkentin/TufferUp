@@ -87,12 +87,9 @@ export default {
                     class="form-check-input"
                     id="dropdownCheck"
                   />
-                  <label class="form-check-label" for="dropdownCheck">
-                    Remember me
-                  </label>
                 </div>
               </div>
-              <button type="button" class="btn btn-primary" @click="loginUser">Register</button>
+              <button type="button" class="btn btn-primary" @click="loginUser">Log In</button>
             </form>
           </div>
         <div class="col-md-9"></div>
