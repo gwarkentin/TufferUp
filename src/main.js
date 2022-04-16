@@ -8,15 +8,17 @@ import { createPinia } from 'pinia'
 import piniaPersist from 'pinia-plugin-persist'
 
 axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://localhost:3001/';
 
 import NewPostPage from './views/NewPostPage.vue';
-import PostPageView from './views/PostPageView.vue';
+import PostPage from './views/PostPage.vue';
 import LoginPage from './components/LoginPage.vue';
 import NewPostDone from './components/NewPostDone.vue';
 import RegisterPage from './components/RegisterPage.vue';
 import CategoryPage from './views/CategoryPage.vue';
 import AddCategoryPage from './views/AddCategoryPage.vue';
 import HomePage from './components/HomePage.vue';
+import AllPostsPage from './views/AllPostsPage.vue';
 import UserPage from './views/UserPage.vue'
 
 
@@ -27,13 +29,14 @@ import UserPage from './views/UserPage.vue'
 // see vuerouter docs for more on url children and nested views
 const routes = [
   { path: '/', name: 'Home', component: HomePage },
-  { path: '/post', name: 'Post', component: PostPageView },
-  { path: '/post/:id', name: 'SpecificPost', component: PostPageView },
+  { path: '/post', name: 'Post', component: PostPage },
+  { path: '/post/:id', name: 'SpecificPost', component: PostPage },
   { path: '/newpost', name: 'NewPost', component: NewPostPage },
   { path: '/newpost/done', name: 'PostDone', component: NewPostDone },
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/register', name: 'Register', component: RegisterPage },
-  { path: '/category', name: 'AllCategory', component: CategoryPage },
+  { path: '/category', name: 'AllCategory', component: AllPostsPage},
+  { path: '/posts', name: 'AllPosts', component: AllPostsPage },
   { path: '/category/add', name: 'AddCategory', component: AddCategoryPage },
   { path: '/category/:category', name: 'Category', component: CategoryPage },
   { path: '/homepage', name: 'HomePage', component: HomePage },

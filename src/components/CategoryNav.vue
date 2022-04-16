@@ -12,7 +12,7 @@ export default {
   methods: {
     getCategoryList() {
       var self = this
-      this.axios.get('http://localhost:3001/api/category/all')
+      this.axios.get('/api/category/all')
       .then(response => {
         const rd = response.data;
         console.log(rd)
