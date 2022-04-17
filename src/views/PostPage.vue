@@ -12,7 +12,7 @@ export default {
         condition: String,
         price: Number,
         discountable: Boolean,
-        imgs: Array
+        imgs: null
       },
       ogdata: true,
       error: ""

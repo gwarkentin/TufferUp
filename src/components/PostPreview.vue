@@ -1,5 +1,5 @@
 <script>
-import ImageGetter from './ImageGetter.vue'
+import ImageCarousel from './ImageCarousel.vue'
 
 export default {
   //these are public variables that parents can v-bind to
@@ -12,26 +12,26 @@ export default {
       'postername': String,
   },
   components: {
-    ImageGetter
+    ImageCarousel
   }
 }
 </script>
 
 <template>
-<router-link :to="{ name: 'SpecificPost' , params: { id: postID }}" class="nav-link">
-<div class="card h-100">
+  <div class="card h-100">
     <template v-if="imgs">
-      <ImageGetter :id="imgs[0]"/>
+        <ImageCarousel :imgs="Array(imgs[0])" :isthumbnail="true"/>
     </template>
-  <div class="card-body">
-    <h4 class="card-title">
-        {{ title }}
-    </h4>
-    <p class="card-text">{{ price }}</p>
-    <router-link :to="{ name: 'UserPage' , params: { id: posterid }}" class="">
-      <p class="card-text"><small class="text-muted">{{ postername }}</small></p>
-    </router-link> 
+    <div class="card-body">
+      <router-link :to="{ name: 'SpecificPost' , params: { id: postID }}" class="card-link" >
+        <h6 class="card-title">
+            {{ title }}
+        </h6>
+      </router-link>
+      <p class="card-text">${{ price }}</p>
+      <router-link :to="{ name: 'UserPage' , params: { id: posterid }}" class="">
+        <p class="card-text"><small class="text-muted">{{ postername }}</small></p>
+      </router-link> 
     </div>
   </div>
-</router-link>
 </template>
