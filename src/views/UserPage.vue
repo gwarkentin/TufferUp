@@ -18,12 +18,6 @@ export default {
   components: {
     PostsList
   },
-  computed: {
-      haserror() {
-        console.log('this.error: ' + this.error)
-        return this.error ? true : false;
-    }
-  },
   mounted() {
     this.getPosts();
   },
@@ -47,7 +41,7 @@ export default {
             const rd = response.data;
             const posts = rd.posts
             this.error = response.data.error
-            if (posts.length == 0) {
+            if (!Array.isArray(posts)) {
               this.error = 'No posts found'
             }
             else {
@@ -65,6 +59,6 @@ export default {
 
 <template>
   <template v-if="posts">
-    <posts-list v-bind:posts="posts"></posts-list>
+    <posts-list v-bind:posts="posts" :error="error"></posts-list>
   </template>
 </template>

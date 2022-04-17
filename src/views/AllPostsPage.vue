@@ -6,16 +6,11 @@ export default {
     return {
       'posts': Array,
       'category': String,
+      'error': ''
     }
   },
   components: {
     PostsList
-  },
-  computed: {
-      haserror() {
-        console.log('this.error: ' + this.error)
-        return this.error ? true : false;
-    }
   },
   mounted() {
     this.getposts();
@@ -25,15 +20,18 @@ export default {
       var self = this
         this.axios.get('/api/posts/')
         .then(response => {
-          const rd = response.data;
-          this.posts = rd.posts;
-          this.error = response.data.error
-        })
-        .catch(function (error) {
-          self.error = error;
-        })
-        .then(function () {
-          // always executed
+        const rd = response.data;
+        const posts = rd.posts
+        this.error = response.data.error
+        if (!Array.isArray(posts)) {
+          this.error = 'No posts found'
+        }
+        else {
+          this.posts = posts;
+        }
+      })
+      .catch(function (error) {
+        self.error = error;
       });  
     }
   }
@@ -45,7 +43,7 @@ export default {
   !-->
 <template>
   <template v-if="posts">
-    <posts-list v-bind:posts="posts"></posts-list>
+    <posts-list v-bind:posts="posts" :error="error"></posts-list>
   </template>
 </template>
 

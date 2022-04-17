@@ -1,4 +1,5 @@
 <script>
+import { isArray } from '@vue/shared';
 import PostsList from '../components/PostsList.vue'
 
 export default {
@@ -20,12 +21,6 @@ export default {
       }
     }
   },
-  computed: {
-      haserror() {
-        console.log('this.error: ' + this.error)
-        return this.error ? true : false;
-    }
-  },
   mounted() {
     this.category = this.$route.params.category;
     this.getPosts();
@@ -34,21 +29,20 @@ export default {
     getPosts() {
       this.error = ""
       var self = this
-        this.axios.get('/api/posts/category/' + this.category)
-        .then(response => {
-          const rd = response.data;
-          this.posts = rd.posts;
-          console.log(this.posts.length)
-          this.error = response.data.error
-          if (this.posts.length == 0) {
-            this.error = 'No posts found'
-          }
-        })
-        .catch(function (error) {
-          self.error = error;
-        })
-        .then(function () {
-          // always executed
+      this.axios.get('/api/posts/category/' + this.category)
+      .then(response => {
+        const rd = response.data;
+        const posts = rd.posts
+        this.error = response.data.error
+        if (!Array.isArray(posts)) {
+          this.error = 'No posts found'
+        }
+        else {
+          this.posts = posts;
+        }
+      })
+      .catch(function (error) {
+        self.error = error;
       });  
     }
   }
@@ -60,6 +54,6 @@ export default {
   !-->
 <template>
   <template v-if="posts">
-    <posts-list v-bind:posts="posts"></posts-list>
+    <posts-list v-bind:posts="posts" v-bind:error="error"></posts-list>
   </template>
 </template>
