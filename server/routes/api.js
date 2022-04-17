@@ -71,7 +71,6 @@ router.post('/post/delete/:id', (req,res) => {
   });
 });
 
-
 router.post('/category/add', (req,res) => {
   console.log(req.body);
   const category = req.body.category;

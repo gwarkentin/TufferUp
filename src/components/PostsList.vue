@@ -5,13 +5,14 @@ import PostPreview from '../components/PostPreview.vue'
 export default {
   data() {
     return {
-      postscleaned: []
+      posts: Array,
+      postscleaned: [],
+      error: "",
     }
   },
   props:{
-      posts: Array,
       category: String,
-      error: "",
+      url: String,
   },
   components: {
     PostPreview
@@ -22,14 +23,39 @@ export default {
         return this.error ? true : false;
     }
   },
-  watch: {
-    posts(newposts, oldposts) {
-      if (isArray(newposts)) {
-        this.cleanPosts(newposts);
-      }
+  watch:{
+    url() {
+      console.log(this.url)
+      this.getposts()
     }
   },
+  mounted() {
+    this.getposts() 
+  },
   methods: {
+    getposts() {
+      if (this.url) {
+      this.axios.get(this.url).then(response => {
+        const rd = response.data;
+        const posts = rd.posts
+        this.error = response.data.error
+        // add error check first
+        if (!Array.isArray(posts)) {
+          this.error = 'No posts found'
+        }
+        else {
+          this.posts = posts;
+          return posts
+        }
+      })
+      .then(posts => {
+        this.cleanPosts(posts)
+      })
+      .catch(function (error) {
+        self.error = error;
+        }); 
+      }
+    },
     cleanPosts(newposts) {
       this.postscleaned = []
       newposts.forEach(post => {

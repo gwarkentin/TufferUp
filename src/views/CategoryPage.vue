@@ -17,35 +17,12 @@ export default {
     $route (newroute, oldroute){
       if (newroute) {
         this.category = newroute.params.category;
-        this.getPosts();
       }
     }
   },
   mounted() {
     this.category = this.$route.params.category;
-    this.getPosts();
   },
-  methods: {
-    getPosts() {
-      this.error = ""
-      var self = this
-      this.axios.get('/api/posts/category/' + this.category)
-      .then(response => {
-        const rd = response.data;
-        const posts = rd.posts
-        this.error = response.data.error
-        if (!Array.isArray(posts)) {
-          this.error = 'No posts found'
-        }
-        else {
-          this.posts = posts;
-        }
-      })
-      .catch(function (error) {
-        self.error = error;
-      });  
-    }
-  }
 }
 </script>
 
@@ -54,6 +31,9 @@ export default {
   !-->
 <template>
   <template v-if="posts">
-    <posts-list v-bind:posts="posts" v-bind:error="error"></posts-list>
+    <p>{{ '/api/posts/category/' + String(category) }}</p>
+    <template v-if="category">
+     <posts-list v-bind:posts="posts" :url="'/api/posts/category/' + String(category)"></posts-list>
+    </template>
   </template>
 </template>
