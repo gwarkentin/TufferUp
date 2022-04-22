@@ -16,7 +16,6 @@ import LoginPage from './components/LoginPage.vue';
 import RegisterPage from './components/RegisterPage.vue';
 import CategoryPage from './views/CategoryPage.vue';
 import AddCategoryPage from './views/AddCategoryPage.vue';
-import HomePage from './components/HomePage.vue';
 import AllPostsPage from './views/AllPostsPage.vue';
 import UserPage from './views/UserPage.vue'
 

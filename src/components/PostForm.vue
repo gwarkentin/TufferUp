@@ -1,18 +1,22 @@
 <script>
 import { useUser } from '@/stores/user'
+import { useCatCond} from '@/stores/cat_cond'
+
 export default {
   data() {
     return {
       'images': [],
       'error': "",
-      'categories': {},
-      'conditions': {}
+      'categoryid': null,
+      'conditionid': null
     }
   },
   setup() {
     const userStore = useUser()
+    const catcondStore = useCatCond();
     return {
       userStore,
+      catcondStore
     }
   },
   // these are basically public variables that you can receive info from parent
@@ -41,35 +45,28 @@ export default {
         return this.error ? true : false;
       },
     },
-    mounted() {
-     this.getCategoryList();
-     this.getConditionList();
-    },
     methods: {
-      getCategoryList() {
-        var self = this
-        this.axios.get('/api/category/all')
-        .then(response => {
-          const rd = response.data;
-          console.log(rd)
-          this.categories = rd.categories
-          this.error = response.data.error
-        })
-        .catch(function (error) {
-          self.error = error;
-        });  
+      updateCategory(e) {
+        const catid = e.target.value
+        var catname = ""
+        this.catcondStore.categories.forEach((cat) => {
+          if (cat._id === catid){
+            catname = cat.category
+          }
+        });
+        this.$emit('update:category', catname)
+        this.categoryid = catid 
       },
-      getConditionList() {
-        var self = this
-        this.axios.get('/api/condition/all')
-        .then(response => {
-          const rd = response.data;
-          this.conditions = rd.conditions
-          this.error = response.data.error
-        })
-        .catch(function (error) {
-          self.error = error;
-        });  
+      updateCondition(e) {
+        const condid = e.target.value
+        var condname = ""
+        this.catcondStore.conditions.forEach((cond) => {
+          if (cond._id === condid){
+            condname = cond.condition
+          }
+        });
+        this.$emit('update:condition', condname)
+        this.conditionid = condid 
       },
       makePost(e) {
         console.log(this.userStore)
@@ -77,8 +74,8 @@ export default {
           'user': this.userStore.user.user,
           'title': this.title,
           'description': this.description,
-          'category': this.category,
-          'condition': this.condition,
+          'category': this.categoryid,
+          'condition': this.conditionid,
           'price': this.price,
           'discountable': this.discountable,
           'imgs': this.imgs,
@@ -163,17 +160,21 @@ export default {
       </div>
       <div class="mb-3">
         <label for="formCategory" class="form-label">Category:</label>
-        <select :value="category" @input="$emit('update:category', $event.target.value)" class="form-control" id="formCategory">
-          <template v-for="cat in categories" :key="cat">
-            <option :value="cat._id">{{ cat.category }}</option>
+        <select :value="categoryid" @input="updateCategory" class="form-control" id="formCategory">
+          <template v-if="catcondStore">
+            <template v-for="cat in catcondStore.categories" :key="cat">
+              <option :value="cat._id">{{ cat.category }}</option>
+            </template>
           </template>
         </select>
       </div>
       <div class="mb-3">
         <label for="formCondition" class="form-label">Condition:</label>
-        <select :value="condition" @input="$emit('update:condition', $event.target.value)" class="form-control" id="formCondition">
-          <template v-for="cond in conditions" :key="cond">
-            <option :value="cond._id">{{ cond.condition }}</option>
+        <select :value="conditionid" @input="updateCondition" class="form-control" id="formCondition">
+          <template v-if="catcondStore">
+            <template v-for="cond in catcondStore.conditions" :key="cond">
+              <option :value="cond._id">{{ cond.condition }}</option>
+            </template>
           </template>
         </select>
       </div>

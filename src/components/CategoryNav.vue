@@ -1,29 +1,18 @@
 <script>
+import { useCatCond } from '@/stores/cat_cond'
+
 export default {
+  setup() {
+    const catcondStore = useCatCond();
+    return {
+      catcondStore
+    }
+  },
   data() {
     return {
-      'categories': {},
-      'error': ''
+      error: ''
     }
   },
-  mounted() {
-    this.getCategoryList();
-  },
-  methods: {
-    getCategoryList() {
-      var self = this
-      this.axios.get('/api/category/all')
-      .then(response => {
-        const rd = response.data;
-        console.log(rd)
-        this.categories = rd.categories
-        this.error = response.data.error
-      })
-      .catch(function (error) {
-        self.error = error;
-      });  
-    }
-  }
 }
 </script>
 <template>
@@ -33,10 +22,12 @@ export default {
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ">
-      <template v-for="cat in categories" :key="cat">
-        <li class="nav-item active">
-          <router-link :to="'/category/get/' + cat._id" class="nav-link text-white">{{ cat.category }}</router-link>
-        </li>
+      <template v-if="catcondStore">
+        <template v-for="cat in catcondStore.categories" :key="cat">
+          <li class="nav-item active">
+            <router-link :to="'/category/get/' + cat._id" class="nav-link text-white">{{ cat.category }}</router-link>
+          </li>
+        </template>
       </template>
     </ul>
   </div>

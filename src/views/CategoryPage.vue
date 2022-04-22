@@ -31,7 +31,8 @@ export default {
   !-->
 <template>
   <template v-if="posts">
-    <p>{{ '/api/posts/category/' + String(category) }}</p>
+    <div class="text-center">
+    <h2>{{ String(category) }}</h2></div>
     <template v-if="category">
      <posts-list v-bind:posts="posts" :url="'/api/posts/category/' + String(category)"></posts-list>
     </template>

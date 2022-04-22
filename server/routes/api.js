@@ -57,14 +57,14 @@ router.post('/post/delete/:id', (req,res) => {
     if (err) {res.json({error:err})}
     else {
       if (post.imgs) {
-        if (Array.length(post.imgs) > 1) {
+        if (Array(post.imgs).length > 1) {
           const imgs = post.imgs.map(img => ObjectID(String(img))) //weird that I had to do this. img was a =  new ObjectID(':id')
+          Image.deleteMany({ _id: { $in: imgs } }) // I feel like this should happen asynchronosly, no need for user to wait
         }
         else {
-          const imgs = ObjectID(String(post.imgs))
+          const img = ObjectID(String(post.imgs))
+          Image.deleteOne({ _id: img }) // I feel like this should happen asynchronosly, no need for user to wait
         }
-        console.log(imgs)
-        Image.deleteMany({ _id: { $in: imgs } }) // I feel like this should happen asynchronosly, no need for user to wait
       }
       res.json( {postid: post._id});
     }
