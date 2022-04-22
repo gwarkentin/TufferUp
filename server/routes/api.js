@@ -97,7 +97,7 @@ router.get('/category/all', (req,res) => {
     if (err) {res.json({error:err})}
     else {
       var namedcats = {};
-      cats.forEach(cat => namedcats[cat._id] = cat );
+      cats.forEach(cat => namedcats[String(cat._id)] = cat );
       res.json( {categories: namedcats});
     }
   });
@@ -118,7 +118,7 @@ router.get('/condition/all', (req,res) => {
     if (err) {res.json({error:err})}
     else {
       var namedconds = {};
-      conds.forEach(cond => namedconds[cond._id] = cond );
+      conds.forEach(cond => namedconds[String(cond._id)] = cond );
       res.json( {conditions: namedconds});
     }
   });

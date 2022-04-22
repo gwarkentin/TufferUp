@@ -1,5 +1,4 @@
 <script>
-import { isArray } from '@vue/shared';
 import PostsList from '../components/PostsList.vue'
 import { useCatCond } from '@/stores/cat_cond'
 
@@ -39,7 +38,7 @@ export default {
 <template>
   <template v-if="posts">
     <div class="text-center">
-    <h2>{{ String(category) }}</h2></div>
+    <h2 v-if="catcondStore.categories[String(category)]">{{ catcondStore.categories[String(category)].category }}</h2></div>
     <template v-if="category">
      <posts-list v-bind:posts="posts" :url="'/api/posts/category/' + String(category)"></posts-list>
     </template>
