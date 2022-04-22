@@ -49,23 +49,13 @@ export default {
       updateCategory(e) {
         const catid = e.target.value
         var catname = ""
-        this.catcondStore.categories.forEach((cat) => {
-          if (cat._id === catid){
-            catname = cat.category
-          }
-        });
-        this.$emit('update:category', catname)
+        this.$emit('update:category', this.catcondStore.categories[catid].category)
         this.categoryid = catid 
       },
       updateCondition(e) {
         const condid = e.target.value
         var condname = ""
-        this.catcondStore.conditions.forEach((cond) => {
-          if (cond._id === condid){
-            condname = cond.condition
-          }
-        });
-        this.$emit('update:condition', condname)
+        this.$emit('update:condition', this.catcondStore.conditions[condid].condition)
         this.conditionid = condid 
       },
       makePost(e) {

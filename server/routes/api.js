@@ -96,7 +96,9 @@ router.get('/category/all', (req,res) => {
   Category.find(function(err,cats) {
     if (err) {res.json({error:err})}
     else {
-      res.json( {categories: cats});
+      var namedcats = {};
+      cats.forEach(cat => namedcats[cat._id] = cat );
+      res.json( {categories: namedcats});
     }
   });
 });
@@ -112,10 +114,12 @@ router.post('/condition/add', (req,res) => {
 });
 
 router.get('/condition/all', (req,res) => {
-  Condition.find(function(err,cond) {
+  Condition.find(function(err,conds) {
     if (err) {res.json({error:err})}
     else {
-      res.json( {conditions: cond});
+      var namedconds = {};
+      conds.forEach(cond => namedconds[cond._id] = cond );
+      res.json( {conditions: namedconds});
     }
   });
 });

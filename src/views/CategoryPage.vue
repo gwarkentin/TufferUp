@@ -1,8 +1,15 @@
 <script>
 import { isArray } from '@vue/shared';
 import PostsList from '../components/PostsList.vue'
+import { useCatCond } from '@/stores/cat_cond'
 
 export default {
+  setup() {
+    const catcondStore = useCatCond();
+    return {
+      catcondStore
+    }
+  },
   data() {
     return {
       posts: Array,
