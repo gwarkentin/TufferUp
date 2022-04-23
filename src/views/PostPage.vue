@@ -1,7 +1,17 @@
 <script>
 import PostDetails from '../components/PostDetails.vue'
+import { useUser } from '@/stores/user'
 
 export default {
+  setup() {
+    const userStore = useUser()
+    userStore.$subscribe((mutation, state) => {
+    console.log(state)
+  })
+    return {
+      userStore,
+    }
+  },
   data() {
     return {
       postID: String,
@@ -26,6 +36,15 @@ export default {
   },
   components: {
     PostDetails
+  },
+  watch: {
+    userStore(newstore, oldstore) {
+      console.log(newstore)
+      console.log(oldstore)
+      if (!newstore.user) {
+        this.$router.push('/')
+      }
+    }
   },
   mounted() {
     this.getPostDetails()
@@ -71,7 +90,7 @@ export default {
           })
           .catch(function (err) {
             self.error = err
-          });
+      });
     }
   }
 }
