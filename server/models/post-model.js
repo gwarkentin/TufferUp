@@ -34,6 +34,8 @@ var PostSchema = new Schema({
     imgs: [{ type:Schema.Types.ObjectId, required: true, ref:'Image'}], // is it time for gridfs?
 });
 
+PostSchema.index( { title: 'text', description: 'text'})
+
 module.exports.Post = mongoose.model('Post', PostSchema);
 module.exports.Condition = mongoose.model('Condition', ConditionSchema);
 module.exports.Category = mongoose.model('Category', CategorySchema);
