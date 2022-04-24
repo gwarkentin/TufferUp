@@ -35,6 +35,6 @@ export default {
 
 <template>
   <template v-if="userid">
-    <posts-list v-bind:posts="posts" :url="'/api/posts/user/' + userid"></posts-list>
+    <posts-list :url="'/api/posts/user/' + userid"></posts-list>
   </template>
 </template>

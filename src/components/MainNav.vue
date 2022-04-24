@@ -8,9 +8,21 @@ export default {
       userStore,
     }
   },
+  data() {
+    return {
+      keywords: ""
+    }
+  },
   methods: {
     logoutUser() {
       this.userStore.$patch({user:null});
+    },
+    searchByKeywords() {
+      if (this.keywords) {
+        const kwarray = this.keywords.trim().toLowerCase().split(' ')
+        const kstr = kwarray.join('/')
+        this.$router.push('/search/' + kstr)
+      }
     }
   }
 }
@@ -29,10 +41,10 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
       <img src="/Tuffy.png" width="32" height="32" style="backgroud-colo:transparent;" class="d-inline-block align-text-top">
       TufferUp
     </router-link>
-    <form class="nav-item d-flex">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
+    <div class="nav-item d-flex">
+      <input v-model="keywords" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" @keyup.enter="searchByKeywords">
+      <button class="btn btn-outline-success" type="button" @click="searchByKeywords">Search</button>
+    </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>

@@ -20,7 +20,7 @@ export default {
   !-->
 <template>
   <template v-if="posts">
-    <posts-list v-bind:posts="posts" :error="error" :url="'/api/posts'"></posts-list>
+    <posts-list :error="error" :url="'/api/posts'"></posts-list>
   </template>
 </template>
 

@@ -38,7 +38,7 @@ export default {
     <div class="text-center">
     <h2 v-if="catcondStore.categories[String(category)]">{{ catcondStore.categories[String(category)].category }}</h2></div>
     <template v-if="category">
-     <posts-list v-bind:posts="posts" :url="'/api/posts/category/' + String(category)"></posts-list>
+     <posts-list :url="'/api/posts/category/' + String(category)"></posts-list>
     </template>
   </template>
 </template>

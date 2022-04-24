@@ -11,8 +11,8 @@ export default {
     }
   },
   props:{
-      category: String,
       url: String,
+      reqdata: Object,
   },
   components: {
     PostPreview
@@ -21,11 +21,15 @@ export default {
     haserror() {
         console.log('this.error: ' + this.error)
         return this.error ? true : false;
-    }
+    },
   },
   watch:{
-    url() {
+    reqdata() {
       console.log(this.url)
+      console.log(this.reqdata)
+      this.getposts()
+    },
+    url() {
       this.getposts()
     }
   },
@@ -35,7 +39,12 @@ export default {
   methods: {
     getposts() {
       if (this.url) {
-      this.axios.get(this.url).then(response => {
+      console.log(this.reqdata)
+      this.axios({
+        method: this.reqdata ? 'post' : 'get',
+        url: this.url,
+        data: this.reqdata
+        }).then(response => {
         const rd = response.data;
         const posts = rd.posts
         this.error = response.data.error

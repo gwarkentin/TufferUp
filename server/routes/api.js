@@ -125,7 +125,7 @@ router.get('/condition/all', (req,res) => {
 });
 
 router.get('/posts/', (req,res) => {
-  Post.find({}).limit(50).populate('user').sort('-createdDate').exec(function(err,posts) {
+  Post.find({}).limit(50).populate('user', 'name').sort('-createdDate').exec(function(err,posts) {
     console.log(err)
     if (err) {res.json({error:err})}
     else {
@@ -135,7 +135,7 @@ router.get('/posts/', (req,res) => {
 });
 
 router.get('/posts/category/:category', (req,res) => {
-  Post.find( { category: req.params.category}).limit(50).populate('user').sort('-createdDate').exec( function(err,posts) {
+  Post.find( { category: req.params.category}).limit(50).populate('user', 'name').sort('-createdDate').exec( function(err,posts) {
     if (err) {res.json({error:err})}
     else {
       res.json( {posts: posts});
@@ -143,8 +143,41 @@ router.get('/posts/category/:category', (req,res) => {
   });
 });
 
+router.post('/posts/keywords/', (req,res) => {
+  const kws = req.body.keywords
+  const kwfilt = { 
+    "compound": {
+      "should": [
+        {
+          "autocomplete": {
+            "query": kws.join(' '),
+            "path": 'title' 
+          }
+        },
+        {
+          "autocomplete": {
+            "query": kws.join(' '),
+            "path": 'description' 
+          }
+        },
+      ],
+      "minimumShouldMatch": 1
+    }
+  }
+  console.log(JSON.stringify(kwfilt))
+
+  Post.aggregate().search(kwfilt).limit(50).then(function(posts) {
+    Post.populate(posts, {path: 'user category'}, function(err,posts) {
+      if (err) {res.json({error:err})}
+      else {
+        res.json( {posts: posts});
+      }
+    })
+  })
+});
+
 router.get('/posts/condition/:condition', (req,res) => {
-  Post.find( { condition: req.params.condition}).limit(50).populate('user').sort('-createdDate').exec(function(err,posts) {
+  Post.find( { condition: req.params.condition}).limit(50).populate('user', 'name').sort('-createdDate').exec(function(err,posts) {
     if (err) {res.json({error:err})}
     else {
       res.json( {posts: posts});
@@ -153,7 +186,7 @@ router.get('/posts/condition/:condition', (req,res) => {
 })
 
 router.get('/posts/user/:userid', (req,res) => {
-  Post.find( { user: req.params.userid }).limit(50).populate('user').sort('-createdDate').exec(function(err,posts) {
+  Post.find( { user: req.params.userid }).limit(50).populate('user', 'name').sort('-createdDate').exec(function(err,posts) {
     if (err) {res.json({error:err})}
     else {
       res.json( {posts: posts});
