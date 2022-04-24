@@ -28,13 +28,11 @@ export default {
   },
   mounted() {
     this.category = this.$route.params.category;
+    console.log(this.catcondStore.categories[String(this.category)])
   },
 }
 </script>
 
-<!-- need to implement
-  properly designed with carousel view etc. Should look good in any screen size
-  !-->
 <template>
   <template v-if="posts">
     <div class="text-center">
