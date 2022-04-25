@@ -5,6 +5,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import { createPinia } from 'pinia'
 
+
 import piniaPersist from 'pinia-plugin-persist'
 
 axios.defaults.withCredentials = true;
@@ -43,4 +44,11 @@ const router = createRouter({
 
 const pinia = createPinia()
 pinia.use(piniaPersist)
-const app = createApp(App).use(router).use(pinia).use(VueAxios, axios).mount('#app')
+
+import {firebaseMessaging} from './firebase'
+
+const app = createApp(App)
+app.provide('$messaging', firebaseMessaging)
+app.use(router).use(pinia).use(VueAxios, axios)
+
+app.mount('#app')

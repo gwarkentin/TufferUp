@@ -2,6 +2,7 @@
 import { useUser } from '@/stores/user'
 
 export default {
+  inject: ['$messaging'],
   setup() {
     const userStore = useUser()
     return {
@@ -13,6 +14,9 @@ export default {
       error: ''
     }
   },
+  mounted() {
+    console.log('Firebase cloud messaging object', this.$messaging)
+  }
 }
 </script>
 
