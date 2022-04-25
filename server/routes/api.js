@@ -7,6 +7,7 @@ const cors = require('cors');
 var mongoose = require("mongoose");
 const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
 var {Post, Category, Condition, Image} = require('../models/post-model.js');
+var { Message } = require('../models/message-model.js')
 const { ObjectId, ObjectID } = require('bson');
 
 mongoose.connect(uri, function(err) {
@@ -228,5 +229,21 @@ router.post('/image/add', (req,res) => {
     res.json({error: err})
   });
 });
+
+router.post('/messenger/send', (req,res) => {
+  var newmsg = new Message(req.body);
+  newmsg.save().then(message => {
+    console.log('sending message ack: '+ message._id)
+    res.json({message: message})
+  }).catch(err => {
+    res.json({error: err})
+  });
+});
+
+router.get('/messenger/get', (req,res) => {
+  var newmsg = new Message(req.body);
+});
+
+
 
 module.exports = router;

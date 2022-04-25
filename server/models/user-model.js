@@ -5,19 +5,9 @@ const SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
     creationDate: { type: Date, required: true, default: Date.now },
-    email: {
-        type: String,
-        required: true,
-        index: true,
-        unique: true
-    },
-    name: {
-        type: String,
-    },
-    password: {
-        type: String,
-        required: true
-    },
+    email: { type: String, required: true, index: true, unique: true },
+    name: { type: String },
+    password: { type: String, required: true },
     posts: [ {type: Schema.Types.ObjectId, ref:'Post'}]
 });
 
