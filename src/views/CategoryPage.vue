@@ -9,36 +9,21 @@ export default {
       catcondStore
     }
   },
-  data() {
-    return {
-      posts: Array,
-      category: String,
-      error: "",
-    }
-  },
   components: {
     PostsList
   },
-  watch:{
-    $route (newroute, oldroute){
-      if (newroute) {
-        this.category = newroute.params.category;
-      }
+  computed: {
+    category() {
+      return String(this.$route.params.category)
     }
-  },
-  mounted() {
-    this.category = this.$route.params.category;
-    console.log(this.catcondStore.categories[String(this.category)])
-  },
+  }
 }
 </script>
 
 <template>
-  <template v-if="posts">
-    <div class="text-center">
-    <h2 v-if="catcondStore.categories[String(category)]">{{ catcondStore.categories[String(category)].category }}</h2></div>
-    <template v-if="category">
-     <posts-list :url="'/api/posts/category/' + String(category)"></posts-list>
-    </template>
+  <div class="text-center">
+  <h2 v-if="catcondStore.categories[category]">{{ catcondStore.categories[category].category }}</h2></div>
+  <template v-if="category">
+    <PostsList :url="'/api/posts/category/' + category"></PostsList>
   </template>
 </template>

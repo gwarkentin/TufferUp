@@ -43,4 +43,4 @@ const router = createRouter({
 
 const pinia = createPinia()
 pinia.use(piniaPersist)
-const app = createApp(App).use(router).use(pinia).use(VueAxios, axios).mount('#app')
+const app = createApp(App).use(router).use(VueAxios, axios).use(pinia).mount('#app')

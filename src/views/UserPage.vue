@@ -3,11 +3,6 @@ import PostsList from '../components/PostsList.vue'
 import { useUser } from '@/stores/user'
 
 export default {
-  data() {
-    return {
-      userid: String 
-    }
-  },
   setup() {
     const userStore = useUser()
     return {
@@ -17,24 +12,24 @@ export default {
   components: {
     PostsList
   },
-  mounted() {
-    this.getUser();
-  },
-  methods: {
-    getUser() {
+  computed: {
+    userid() {
       if (this.userStore.user) {
-        this.userid = this.userStore.user.user
+        return this.userStore.user.user
       }
       if (this.$route.params.id) {
-        this.userid = this.$route.params.id
+        return this.$route.params.id
       }
-     }
+    }
   }
 }
 </script>
 
 <template>
   <template v-if="userid">
+    <div class="text-center">
+      <h2>Posts By: {{ userid }}</h2>
+    </div>
     <posts-list :url="'/api/posts/user/' + userid"></posts-list>
   </template>
 </template>
