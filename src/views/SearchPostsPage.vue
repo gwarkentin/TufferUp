@@ -1,19 +1,19 @@
 <script>
+import { isArray } from '@vue/shared'
 import PostsList from '../components/PostsList.vue'
 
 export default {
-  data() {
-    return {
-      'error': ''
-    }
-  },
   components: {
+    PostsList,
     PostsList
-  },
+},
   computed: {
     keywords() {
       var kw = this.$route.params.keywords
       return kw
+    },
+    kwstr() {
+      return this.keywords.join(', ')
     },
     reqdata() {
       var rd = {}
@@ -33,7 +33,10 @@ export default {
   !-->
 <template>
   <template v-if="keywords">
-    <posts-list :error="error" :reqdata="reqdata" :url="'/api/posts/keywords/'"></posts-list>
+    <div class="text-center">
+      <h2>Search results for: {{ kwstr }}</h2>
+    </div>
+    <PostsList :reqdata="reqdata" :url="'/api/posts/keywords/'"></PostsList>
   </template>
 </template>
 

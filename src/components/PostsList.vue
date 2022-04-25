@@ -25,8 +25,6 @@ export default {
   },
   watch:{
     reqdata() {
-      console.log(this.url)
-      console.log(this.reqdata)
       this.getposts()
     },
     url() {
@@ -39,7 +37,6 @@ export default {
   methods: {
     getposts() {
       if (this.url) {
-      console.log(this.reqdata)
       this.axios({
         method: this.reqdata ? 'post' : 'get',
         url: this.url,
