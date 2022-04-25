@@ -1,5 +1,6 @@
 
-import { initializeApp } from "firebase/app";
+importScripts('https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js')
+importScripts('https://www.gstatic.com/firebasejs/8.2.7/firebase-messaging.js')
 
 const firebaseConfig = {
   apiKey: "AIzaSyAoj6rnaTbi3OSa-k9Tck6RU-LG15NxZCU",
@@ -10,4 +11,4 @@ const firebaseConfig = {
   appId: "1:649046470013:web:0ecfd72c298ed91135b014"
 };
 
-const app = initializeApp(firebaseConfig)
+const app = firebase.initializeApp(firebaseConfig)
