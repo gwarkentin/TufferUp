@@ -230,7 +230,9 @@ router.post('/image/add', (req,res) => {
   });
 });
 
+
 router.post('/messenger/send', (req,res) => {
+  console.log('message request: ' + JSON.stringify(req.body))
   var newmsg = new Message(req.body);
   newmsg.save().then(message => {
     console.log('sending message ack: '+ message._id)
@@ -240,10 +242,16 @@ router.post('/messenger/send', (req,res) => {
   });
 });
 
+//gets entire message thread
 router.get('/messenger/get', (req,res) => {
-  var newmsg = new Message(req.body);
+  Message.find({
+    thread: String(req.body.thread),
+    deleted: false
+  }).populate('imgs').exec(function(err, messages) {
+    if (err) {res.json({error:err})}
+    res.json({messages: messages})
+  });
 });
-
 
 
 module.exports = router;
