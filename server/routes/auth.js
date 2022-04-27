@@ -78,15 +78,20 @@ const createUser = async function (userinfo, cb) {
     if (user) return cb('user_exists');
 
     var newuser = new User(userinfo);
-    var userid = await newuser.save();
-    return cb(null, newuser);
+    try {
+        var userid = await newuser.save();
+        return cb(null, newuser);
+    }
+    catch (err) {
+        return cb(err)
+    }
 };
 
 router.post('/signup', function(req, res, next) {
     var userinfo = req.body
     console.log(req.body)
     createUser(userinfo, function(err, user) {
-        if (err == 'user_exists') {
+        if (err) {
             res.json( {error: err})
         }
         else {

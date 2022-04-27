@@ -1,15 +1,11 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory} from 'vue-router';
 import App from './App.vue';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
+import axios from './http'
+import VueAxios from 'vue-axios'
 import { createPinia } from 'pinia'
 
-
 import piniaPersist from 'pinia-plugin-persist'
-
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:3001/';
 
 import NewPostPage from './views/NewPostPage.vue';
 import PostPage from './views/PostPage.vue';
@@ -44,11 +40,10 @@ const router = createRouter({
 
 const pinia = createPinia()
 pinia.use(piniaPersist)
-
 import {firebaseMessaging} from './firebase'
 
 const app = createApp(App)
-app.provide('$messaging', firebaseMessaging)
-app.use(router).use(pinia).use(VueAxios, axios)
+app.provide('$firebasemessaging', firebaseMessaging)
+app.use(router).use(VueAxios, axios).use(pinia)
 
 app.mount('#app')

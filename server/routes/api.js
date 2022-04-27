@@ -7,8 +7,9 @@ const cors = require('cors');
 var mongoose = require("mongoose");
 const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
 var {Post, Category, Condition, Image} = require('../models/post-model.js');
-var { Message } = require('../models/message-model.js')
+var { Message, MessageThread } = require('../models/message-model.js')
 const { ObjectId, ObjectID } = require('bson');
+const { resetTracking } = require('@vue/reactivity');
 
 mongoose.connect(uri, function(err) {
     if (err) throw err;
@@ -231,27 +232,42 @@ router.post('/image/add', (req,res) => {
 });
 
 
-router.post('/messenger/send', (req,res) => {
-  console.log('message request: ' + JSON.stringify(req.body))
-  var newmsg = new Message(req.body);
-  newmsg.save().then(message => {
-    console.log('sending message ack: '+ message._id)
-    res.json({message: message})
-  }).catch(err => {
+async function createOrAddMessageThread(thread_id, subscribers, cb) {
+
+};
+
+router.post('/messaging/send', async (req,res) => {
+  try {
+    const rb = req.body
+    console.log(rb)
+    const thread_id = rb.thread_id
+    const subscribers = req.body.subscribers
+
+    var msgthread = await new MessageThread({subscribers: subscribers})
+    if (thread_id) {
+      msgthread = await MessageThread.findById(thread_id).exec();
+    }
+    msgthread.msgs.push({
+        sender: ObjectID(rb.msg.sender),
+        text: String(rb.msg.text),
+    })
+    const msg_thread = await msgthread.save()
+    res.json({msg_thread: msg_thread})
+  }
+  catch (err) {
+    console.log(err)
     res.json({error: err})
-  });
+  }
 });
 
 //gets entire message thread
-router.get('/messenger/get', (req,res) => {
-  Message.find({
-    thread: String(req.body.thread),
-    deleted: false
-  }).populate('imgs').exec(function(err, messages) {
-    if (err) {res.json({error:err})}
-    res.json({messages: messages})
+router.get('/messaging/get', (req,res) => {
+  console.log(req.body)
+  MessageThread.findById(String(req.body.thread_id))
+    .exec(function(err, msg_thread) {
+      if (err) {res.json({error:err})}
+      res.json({msg_thread: msg_thread})
   });
 });
-
 
 module.exports = router;

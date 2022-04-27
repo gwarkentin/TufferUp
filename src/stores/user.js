@@ -14,9 +14,10 @@ export const useUser = defineStore('user', {
         url:'http://localhost:3001/auth/signup',
         data: userForm
       }).then( response => {
-        console.log('store got back: ' + JSON.stringify(response.data));
+        console.log('store got back: ');
+        console.log(response.data.error);
         if (response.data.error) {
-          return response.data.error
+          return response.data.error.message
         }
         else {
           this.user = response.data

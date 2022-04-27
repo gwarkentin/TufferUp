@@ -19,7 +19,6 @@ export default {
   },
   computed: {
     haserror() {
-        console.log('this.error: ' + this.error)
         return this.error ? true : false;
     },
   },
@@ -57,8 +56,8 @@ export default {
       .then(posts => {
         this.cleanPosts(posts)
       })
-      .catch(function (error) {
-        self.error = error;
+      .catch(error => {
+        this.error = error;
         }); 
       }
     },
