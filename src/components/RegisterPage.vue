@@ -66,6 +66,7 @@ export default {
                   class="form-control"
                   id="exampleDropdownFormEmail1"
                   placeholder="email@csu.fullerton.edu"
+                  required
                 />
               </div>
               <div class="mb-3">
@@ -76,6 +77,7 @@ export default {
                   class="form-control"
                   id="exampleDropdownFormPassword1"
                   placeholder="Password"
+                  required
                 />
               </div>
               <div class="mb-3">
