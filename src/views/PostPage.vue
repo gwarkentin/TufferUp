@@ -16,6 +16,8 @@ export default {
     return {
       postID: String,
       form: {
+        posterid: String,
+        postername: String,
         title: String,
         description: String,
         category: String, 
@@ -29,8 +31,11 @@ export default {
     }
   },
   computed: {
-      haserror() {
-        return this.error ? true : false;
+    haserror() {
+      return this.error ? true : false;
+    },
+    isOwner() {
+      return 
     }
   },
   components: {
@@ -90,9 +95,8 @@ export default {
     <p>{{ error }}</p>
   </div>
   <div class="row align-items-start">
-    <!-- this button should go away, the page should immediate try to fetch the data, this is just for example -->
     <div class="col-sm">
-      <button @click="deletePost(postID)" class="btn btn-danger">Delete {{ postID }}</button>
+      <button @click="deletePost(postID)" class="btn btn-danger">Delete</button>
       <PostDetails v-bind="form" v-bind:postID="postID" />
     </div>
   </div>
