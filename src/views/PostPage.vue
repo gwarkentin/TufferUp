@@ -30,21 +30,11 @@ export default {
   },
   computed: {
       haserror() {
-        console.log('this.error: ' + this.error)
         return this.error ? true : false;
     }
   },
   components: {
     PostDetails
-  },
-  watch: {
-    userStore(newstore, oldstore) {
-      console.log(newstore)
-      console.log(oldstore)
-      if (!newstore.user) {
-        this.$router.push('/')
-      }
-    }
   },
   mounted() {
     this.getPostDetails()
@@ -55,20 +45,19 @@ export default {
       this.postID = (this.$route.params.id ? this.$route.params.id : "");
       this.axios.get('/api/post/get/' + this.postID)
       .then(response => {
-        console.log(response.data)
         const rd = response.data;
         if (rd.error) {this.error = rd.error}
         const post = rd.post
         const fields = Object.keys(this.form)
         if (post) {
           // thanks stack overflow. I was actually going to write something like this if I hadn't found it no cap
-          // basically it filters the Object to only have the keys from the other object. This is nice for v-bind whole form to obj
+          // basically it filters the Object to only have the keys from the other object.
+          // This is nice for v-bind whole form variable to obj, rather than each var individually
           const form = Object.keys(post).
             filter(key=> fields.includes(key)).
             reduce((obj,key)=>{obj[key] = post[key];return obj;}, {});
-          form.category = form.category.category;
-          form.condition = form.condition.condition;
-          console.log(form);
+          form['category'] = form['category'].category;
+          form['condition'] = form['condition'].condition;
           this.form = form;
         this.ogdata = false;
         }
@@ -78,18 +67,17 @@ export default {
       })
     },
     deletePost(id) {
-      var self = this
       this.axios({
             method: 'post',
             url:'/api/post/delete/' + id,
             data: this.form   
           }).then(res=> {
             console.log(res.data)
-            if (res.data.error) { console.log(res.data.error)}
+            if (res.data.error) { this.error = res.data.error }
             if (res.data.postid) { this.$router.push('/') }
           })
-          .catch(function (err) {
-            self.error = err
+          .catch(err => {
+            this.error = err
       });
     }
   }
