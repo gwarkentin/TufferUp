@@ -8,7 +8,8 @@ var UserSchema = new Schema({
     email: { type: String, required: true, index: true, unique: true },
     name: { type: String },
     password: { type: String, required: true },
-    posts: [ {type: Schema.Types.ObjectId, ref:'Post'}]
+    posts: [ {type: Schema.Types.ObjectId, ref:'Post'}],
+    new_messages: [ {type: Schema.Types.ObjectId, ref:'MessageThread'}]
 });
 
 UserSchema.pre("save", function(next) {

@@ -8,6 +8,7 @@ var mongoose = require("mongoose");
 const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
 var {Post, Category, Condition, Image} = require('../models/post-model.js');
 var { Message, MessageThread } = require('../models/message-model.js')
+var { User } = require('../models/user-model.js')
 const { ObjectId, ObjectID } = require('bson');
 const { resetTracking } = require('@vue/reactivity');
 
@@ -237,11 +238,22 @@ router.post('/image/add', (req,res) => {
 });
 
 
-async function createOrAddMessageThread(thread_id, subscribers, cb) {
+async function addNotification(subscriber, msgthread) {
+  try {
+    var user = User.findById(subscriber)
+    user.new_messages.push(msgthread)
+    await user.save()
+    return
+  }
+  catch (err) {
+    console.log(err)
+    return err
+  }
+}
 
-};
-
+// ah man, didn't realize you could async the cb and therefore use try-catch
 router.post('/messaging/send', async (req,res) => {
+  console.log('Req sess: ' + req.session)
   try {
     const rb = req.body
     console.log(rb)
@@ -257,6 +269,9 @@ router.post('/messaging/send', async (req,res) => {
         text: String(rb.msg.text),
     })
     const msg_thread = await msgthread.save()
+    for (var sub in subscribers) {
+      addNotification(sub, msg_thread) // do not want sync
+    }
     res.json({msg_thread: msg_thread})
   }
   catch (err) {
