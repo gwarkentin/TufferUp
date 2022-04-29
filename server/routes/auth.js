@@ -96,11 +96,12 @@ router.post('/signup', function(req, res, next) {
         }
         else {
             req.login(user, function(err) {
-                if (err) { return next(err); }
-                res.json( {
+                if (err) { res.json( {error: err }) }
+                res.json( { user: {
                     user: user._id,
                     email: user.email,
                     name: user.name,
+                  }
                 });
             })
         }

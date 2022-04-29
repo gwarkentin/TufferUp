@@ -27,9 +27,8 @@ UserSchema.pre("save", function(next) {
     if (regex.test(user.email)) {
         return next();
     } else {
-        const err = Error("Email has to be a CSUF-issued and contain only alphanumeric characters.");
-        console.log(err);
-        return err.stack;
+        const err = "Email has to be a CSUF-issued and contain only alphanumeric characters.";
+        return next(err);
     }
 }); 
 

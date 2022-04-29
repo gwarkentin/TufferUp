@@ -30,6 +30,7 @@ export default {
       console.log("vue sending this to store.registerUser:" + JSON.stringify(form));
       // need to validate form on frontend here before submitting via axios
       this.userStore.registerUser(form).then(err => {
+        console.log(err)
         if (err) {
           this.error = err
         }

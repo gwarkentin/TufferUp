@@ -210,7 +210,6 @@ router.get('/image/get/:id', (req,res) => {
       res.json({error:err})
     }
     else {
-      console.log('sending data for image: ' + image._id)
       res.json({image: image.image});
     }
   });
@@ -230,7 +229,6 @@ router.post('/image/add', (req,res) => {
   console.log('receive image req');
   var newimage = new Image({image: req.body.image });
   newimage.save().then(image => {
-    console.log('sending imageid: '+ image._id)
     res.json({image: image._id})
   }).catch(err => {
     res.json({error: err})

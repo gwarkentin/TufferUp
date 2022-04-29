@@ -9,37 +9,47 @@ export const useUser = defineStore('user', {
   },
   actions: {
     async registerUser(userForm) {
-      axios({
-        method: 'post',
-        url:'http://localhost:3001/auth/signup',
-        data: userForm
-      }).then( response => {
-        console.log('store got back: ');
-        console.log(response.data.error);
-        if (response.data.error) {
-          return response.data.error.message
-        }
-        else {
-          this.user = response.data
-          return
-        }
-      })
-    },
-    async loginUser(userForm) {
-      axios({
-        method: 'post',
-        url:'http://localhost:3001/auth/login',
-        data: userForm
-      }).then( response => {
-        console.log('store got back: ' + JSON.stringify(response.data));
+      try {
+        var response = await axios({
+                    method: 'post',
+                    url:'http://localhost:3001/auth/signup',
+                    data: userForm})
         if (response.data.error) {
           return response.data.error
         }
         else {
-          this.user = response.data
-          return
+          if (response.data.user) {
+            this.user = response.data.user
+            return
+          }
+          return "Didn't receive back user info, please try logging in with your new account info."
         }
-      })
+      }
+      catch (err) {
+        console.log(err)
+        return err
+      }
+    },
+    async loginUser(userForm) {
+      try {
+        var response = await axios({
+          method: 'post',
+          url:'http://localhost:3001/auth/login',
+          data: userForm
+        })
+        if (response.data.error) {
+          return response.data.error
+        }
+        else {
+          if (response.data.user) {
+            this.user = response.data.user
+            return
+          }
+        }
+      }
+      catch (err) {
+        return err
+      }
     }
   },
   persist: {
