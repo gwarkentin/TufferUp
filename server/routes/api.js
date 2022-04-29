@@ -60,7 +60,7 @@ router.post('/post/delete/:id', (req,res) => {
     else {
       if (post.imgs) {
         if (Array(post.imgs).length > 1) {
-          const imgs = post.imgs.map(img => ObjectID(String(img))) //weird that I had to do this. img was a =  new ObjectID(':id')
+          const imgs = post.imgs.map(img => ObjectID(String(img))) //weird that I had to do this. img was a = new ObjectID(':id')
           Image.deleteMany({ _id: { $in: imgs } }) // I feel like this should happen asynchronosly, no need for user to wait
         }
         else {
@@ -127,6 +127,8 @@ router.get('/condition/all', (req,res) => {
 });
 
 router.get('/posts/', (req,res) => {
+  // populate(model, fields to get). Fields also includes model._id.  
+  // Must specifiy fields on user or you get password and all
   Post.find({}).limit(50).populate('user', 'name').sort('-createdDate').exec(function(err,posts) {
     console.log(err)
     if (err) {res.json({error:err})}
@@ -137,7 +139,8 @@ router.get('/posts/', (req,res) => {
 });
 
 router.get('/posts/category/:category', (req,res) => {
-  Post.find( { category: req.params.category}).limit(50).populate('user', 'name').sort('-createdDate').exec( function(err,posts) {
+  Post.find( { category: req.params.category}).limit(50)
+  .populate('user', 'name').sort('-createdDate').exec( function(err,posts) {
     if (err) {res.json({error:err})}
     else {
       res.json( {posts: posts});
@@ -166,12 +169,12 @@ router.post('/posts/keywords/', (req,res) => {
       "minimumShouldMatch": 1
     }
   }
-  console.log(JSON.stringify(kwfilt))
 
   Post.aggregate().search(kwfilt).limit(50).then(function(posts) {
-    Post.populate(posts, {path: 'user category'}, function(err,posts) {
+    Post.populate(posts, {path: 'user category', select: 'name category'}, function(err,posts) {
       if (err) {res.json({error:err})}
       else {
+        console.log(posts.pop())
         res.json( {posts: posts});
       }
     })
@@ -179,7 +182,8 @@ router.post('/posts/keywords/', (req,res) => {
 });
 
 router.get('/posts/condition/:condition', (req,res) => {
-  Post.find( { condition: req.params.condition}).limit(50).populate('user', 'name').sort('-createdDate').exec(function(err,posts) {
+  Post.find( { condition: req.params.condition}).limit(50)
+  .populate('user', 'name').sort('-createdDate').exec(function(err,posts) {
     if (err) {res.json({error:err})}
     else {
       res.json( {posts: posts});
@@ -188,7 +192,8 @@ router.get('/posts/condition/:condition', (req,res) => {
 })
 
 router.get('/posts/user/:userid', (req,res) => {
-  Post.find( { user: req.params.userid }).limit(50).populate('user', 'name').sort('-createdDate').exec(function(err,posts) {
+  Post.find( { user: req.params.userid }).limit(50)
+  .populate('user', 'name').sort('-createdDate').exec(function(err,posts) {
     if (err) {res.json({error:err})}
     else {
       res.json( {posts: posts});
