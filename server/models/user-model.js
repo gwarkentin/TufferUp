@@ -35,7 +35,7 @@ UserSchema.pre("save", function(next) {
     
     const err = Error("Email has to be CSUF-issued and contain alphanumerical characters.");
     console.log(err);
-    return err.stack;  
+    return next(err);  
 }); 
 
 UserSchema.pre("save", function(next) {
