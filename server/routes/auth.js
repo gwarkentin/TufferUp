@@ -5,7 +5,7 @@ var LocalStrategy = require('passport-local');
 const cors = require('cors');
 
 var mongoose = require("mongoose");
-var { User } = require('../models/user-model.js');
+var User = require('../models/user-model.js');
 const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
 
 var router = express.Router();

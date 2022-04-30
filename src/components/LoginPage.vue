@@ -30,7 +30,7 @@ export default {
         console.log('login err: ' + err)
         if (err) {this.error = err}
         else {
-          this.$router.push('/') // should push to /post/:id
+          this.$router.push('/')
         }
       }).catch(err => {
         this.error = err

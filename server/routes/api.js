@@ -8,7 +8,7 @@ var mongoose = require("mongoose");
 const uri = "mongodb+srv://tuffy:" + passwords.mongo + "@tufferup.5qlje.mongodb.net/tufferup?retryWrites=true&w=majority";
 var {Post, Category, Condition, Image} = require('../models/post-model.js');
 var { Message, MessageThread } = require('../models/message-model.js')
-var { User } = require('../models/user-model.js')
+var User = require('../models/user-model.js')
 const { ObjectId, ObjectID } = require('bson');
 const { resetTracking } = require('@vue/reactivity');
 
