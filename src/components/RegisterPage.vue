@@ -22,6 +22,7 @@ export default {
   },
   methods: {
     registerUser(e) {
+      this.error = ""
       const form = {
         'email': this.email,
         'name': this.name,
