@@ -1,25 +1,37 @@
 <script>
+import ImageCarousel from './ImageCarousel.vue'
+
 export default {
   //these are public variables that parents can v-bind to
   props: {
       'postID': String,
       'title': String,
       'price': Number,
-      'imgs': Object
+      'imgs': Object,
+      'posterid': "",
+      'postername': String,
+  },
+  components: {
+    ImageCarousel
   }
 }
 </script>
 
 <template>
-<div class="container border">
-    <router-link :to="{ name: 'SpecificPost' , params: { id: postID }}" class="nav-link">
-      <h5 class="card-title">{{ title }}</h5>
+  <div class="card h-100">
+    <template v-if="imgs">
+        <ImageCarousel :imgs="Array(imgs[0])" :isthumbnail="true"/>
+    </template>
+    <div class="card-body">
+      <router-link :to="{ name: 'SpecificPost' , params: { id: postID }}" class="card-link" >
+        <h6 class="card-title">
+            {{ title }}
+        </h6>
+      </router-link>
       <p class="card-text">${{ price }}</p>
-    </router-link>
-    <span v-for="image in imgs" :key="image">
-      <p>replace us with a carousel</p>
-      <img :src="image" class="card-img-bottom" alt="picture of {{ title }}">
-    </span>
-</div>
+      <router-link :to="{ name: 'UserPage' , params: { id: posterid }}" class="">
+        <p class="card-text"><small class="text-muted">{{ postername }}</small></p>
+      </router-link> 
+    </div>
+  </div>
 </template>
-

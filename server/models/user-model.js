@@ -4,23 +4,32 @@ var bcrypt = require("bcrypt");
 const SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
-    email: {
-        type: String,
-        required: true,
-        index: true,
-        unique: true
-    },
-    displayname: {
-        type: String,
-    },
-    password: {
-        type: String,
-        required: true
-    }
+    creationDate: { type: Date, required: true, default: Date.now },
+    email: { type: String, required: true, index: true, unique: true },
+    name: { type: String },
+    password: { type: String, required: true },
+    posts: [ {type: Schema.Types.ObjectId, ref:'Post'}],
+    msg_threads: [{
+     thread: { type: Schema.Types.ObjectId, ref:'MessageThread'},
+     unread: { type: Boolean, required: true, default: true}
+    }]
+
 });
 
 UserSchema.pre("save", function(next) {
     var user = this;
+    let regex = /^[a-zA-Z]+[a-zA-Z0-9]+[\w|\.\\][a-zA-Z0-9]+@csu.fullerton.edu$/;
+    if (regex.test(user.email)) {
+        return next();
+    } else {
+        const err = "Email has to be a CSUF-issued and contain only alphanumeric characters.";
+        return next(err);
+    }
+}); 
+
+UserSchema.pre("save", function(next) {
+    var user = this;
+
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) return next();
 

@@ -1,49 +1,51 @@
 <script>
-import axios from 'axios'
+import { useUser } from '@/stores/user'
 export default {
+  setup() {
+    const userStore = useUser()
+    return {
+      userStore,
+    }
+  },
   data() {
     return {
       'email': "",
+      'name': "",
       'password': "",
       'error': "",
     }
   },
+  computed: {
+      haserror() {
+        return this.error ? true : false;
+    }
+  },
   methods: {
     registerUser(e) {
-      console.log(e)
-      // put it all in one json object
-      this.form = {
+      this.error = ""
+      const form = {
         'email': this.email,
+        'name': this.name,
         'password': this.password,
       }
-      console.log(JSON.stringify(this.form));
+      console.log("vue sending this to store.registerUser:" + JSON.stringify(form));
       // need to validate form on frontend here before submitting via axios
-
-      var self = this; // only way to get access to "this" from inside the catch??
-      axios({
-        method: 'post', // post type is for one time submissions. Only post listener functions on backend will answer this call at this url
-        url:'http://localhost:3001/api/register', // we shouldn't hardcode the url like this
-        data: this.form
-      }).then(response => {
-        if (response.data.success) {
-          this.$router.push('/category') // should push to /post/:id
+      this.userStore.registerUser(form).then(err => {
+        console.log(err)
+        if (err) {
+          this.error = err
         }
         else {
-          this.error = response.data.error
+          this.$router.push('/')
         }
-      })
-      .catch(function (err) {
-        self.error = err
+      }).catch(function (err) {
+        this.error = err
       });
     },
   }
 };
 </script>
 
-<!--- need to implement the actually post/connection to backend.
-    Mirror the PostForm code, but we also need to look at login/cookie/seesion managment
-    i'm not sure how node and vue handle that yet. I saw something called "stores" that might be it?
--->
 <template>
   <div class="container">
       <div class="row">
@@ -53,7 +55,10 @@ export default {
             <div class="mt-3">
               <h4 class="text-center">Register for TufferUp</h4>
             </div>
-            <form class="px-4 py-3">
+            <div v-if="haserror" class="alert alert-danger" role="alert">
+              <p>{{ error }}</p>
+            </div>
+            <form class="px-4 py-3" @submit.prevent="registerUser">
               <div class="mb-3">
                 <label for="exampleDropdownFormEmail1" class="form-label"
                   >Email address</label>
@@ -63,6 +68,7 @@ export default {
                   class="form-control"
                   id="exampleDropdownFormEmail1"
                   placeholder="email@csu.fullerton.edu"
+                  required
                 />
               </div>
               <div class="mb-3">
@@ -73,21 +79,21 @@ export default {
                   class="form-control"
                   id="exampleDropdownFormPassword1"
                   placeholder="Password"
+                  required
                 />
               </div>
               <div class="mb-3">
-                <div class="form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="dropdownCheck"
-                  />
-                  <label class="form-check-label" for="dropdownCheck">
-                    Remember me
-                  </label>
-                </div>
+                <label for="displayname" class="form-label">Display Name</label>
+                <input
+                  v-model="name"
+                  type="text"
+                  class="form-control"
+                  id="displayname"
+                  placeholder="Password"
+                  required
+                />
               </div>
-              <button type="button" class="btn btn-primary" @click="registerUser">Register</button>
+              <button type="submit" class="btn btn-primary">Register</button>
             </form>
           </div>
         <div class="col-md-9"></div>

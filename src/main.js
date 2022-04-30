@@ -1,35 +1,37 @@
-import { createApp } from 'vue'
-import { createRouter, createWebHistory} from 'vue-router'
-import App from './App.vue'
+import { createApp } from 'vue';
+import { createRouter, createWebHistory} from 'vue-router';
+import App from './App.vue';
+import axios from './http'
+import VueAxios from 'vue-axios'
+import { createPinia } from 'pinia'
 
-import NewPostPage from './views/NewPostPage.vue'
-import PostPageView from './views/PostPageView.vue'
-import LoginPage from './components/LoginPage.vue'
-import NewPostDone from './components/NewPostDone.vue'
-import RegisterPage from './components/RegisterPage.vue'
-import CategoryPage from './views/CategoryPage.vue'
-import HomePage from './components/HomePage.vue'
-import UserProfile from './components/UserProfile.vue'
+import piniaPersist from 'pinia-plugin-persist'
 
-// add your imports and routes here to provide urls for your frontend pages
-// see server/index.js for backend routing for our api, very similar concept
+import NewPostPage from './views/NewPostPage.vue';
+import PostPage from './views/PostPage.vue';
+import LoginPage from './components/LoginPage.vue';
+import RegisterPage from './components/RegisterPage.vue';
+import CategoryPage from './views/CategoryPage.vue';
+import AddCategoryPage from './views/AddCategoryPage.vue';
+import AllPostsPage from './views/AllPostsPage.vue';
+import SearchPostsPage from './views/SearchPostsPage.vue';
+import UserPage from './views/UserPage.vue'
+import UserProfile from './views/UserProfile.vue'
 
-//  :id is a variable/paramater as seen in PostPage.vue's tryAjax() and <p> element
-// see vuerouter docs for more on url children and nested views
 const routes = [
-  { path: '/', name: 'Home', component: PostPageView },
-  { path: '/post', name: 'Post', component: PostPageView },
-  { path: '/post/:id', name: 'SpecificPost', component: PostPageView },
+  { path: '/', name: 'Home', component: AllPostsPage },
+  { path: '/post', name: 'Post', component: PostPage },
+  { path: '/post/:id', name: 'SpecificPost', component: PostPage },
   { path: '/newpost', name: 'NewPost', component: NewPostPage },
-  { path: '/newpost/done', name: 'PostDone', component: NewPostDone },
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/register', name: 'Register', component: RegisterPage },
-  { path: '/category', name: 'AllCategory', component: CategoryPage },
-  { path: '/category/:category', name: 'Category', component: CategoryPage },
-  { path: '/homepage', name: 'HomePage', component: HomePage },
-  { path: '/userprofile', name: 'UserPage', component: UserProfile },
+  { path: '/posts', name: 'AllPosts', component: AllPostsPage },
+  { path: '/category/add', name: 'AddCategory', component: AddCategoryPage },
+  { path: '/category/get/:category', name: 'Category', component: CategoryPage },
+  { path: '/search/:keywords+', name: 'Search', component: SearchPostsPage },
+  { path: '/profile', name: 'Profile', component: UserProfile },
+  { path: '/user/:id', name: 'UserPage', component: UserPage },
 ]
-
 
 const router = createRouter({
   // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
@@ -37,4 +39,12 @@ const router = createRouter({
   routes, // short for `routes: routes`
 })
 
-createApp(App).use(router).mount('#app')
+const pinia = createPinia()
+pinia.use(piniaPersist)
+import {firebaseMessaging} from './firebase'
+
+const app = createApp(App)
+app.provide('$firebasemessaging', firebaseMessaging)
+app.use(router).use(VueAxios, axios).use(pinia)
+
+app.mount('#app')

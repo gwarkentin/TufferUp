@@ -4,8 +4,16 @@
 
 import PostForm from '../components/PostForm.vue'
 import PostDetails from '../components/PostDetails.vue'
+import { useUser } from '@/stores/user'
 
 export default {
+  setup() {
+    const userStore = useUser()
+
+    return {
+      userStore,
+    }
+  },
   data() {
     return {
       // i feel like there should be a better way, but this was only thing I could make work natively.
@@ -26,6 +34,16 @@ export default {
   components: {
     PostForm,
     PostDetails
+  },
+  mounted() {
+    if (!this.userStore.user) {
+      this.$router.push('/login')
+    }
+    this.userStore.$subscribe((mutation, state) => {
+      if (!state.user) {
+        this.$router.push('/login')
+      }
+    })
   }
 }
 
