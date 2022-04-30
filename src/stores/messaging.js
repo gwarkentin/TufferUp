@@ -5,6 +5,7 @@ export const useMessaging = defineStore('messaging', {
   state: () => {
     return {
       msg_thread: null,
+      subscriber: null,
     }
   },
   actions: {

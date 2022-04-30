@@ -1,8 +1,15 @@
 <script>
 import ImageCarousel from './ImageCarousel.vue'
 import UserGetter from './UserGetter.vue'
+import { useMessaging } from "@/stores/messaging";
 
 export default {
+  setup() {
+    const messageStore = useMessaging();
+    return {
+      messageStore
+    }
+  },
   props: {
         'user': {},
         'title': String,
@@ -18,6 +25,11 @@ export default {
     UserGetter
 },
   emits: ['initMessage'],
+  methods: {
+    updateSubscriber() {
+      this.messageStore.subscriber = this.user._id;
+    }
+  }
 }
 </script>
 
@@ -36,7 +48,7 @@ export default {
             <h1>${{ price }}</h1>
           </div>
         <div class="d-grid gap-2 mx-auto">
-          <button @click="$emit('initMessage', user._id)" class="btn btn-primary">Make Offer</button>
+          <button @click="updateSubscriber" class="btn btn-primary">Make Offer</button>
         </div>
         <div class="col p-4">
           <UserGetter :user="user"  />

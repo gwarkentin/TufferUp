@@ -1,6 +1,7 @@
 <script>
 import { useCatCond } from '@/stores/cat_cond'
 import { useUser } from '@/stores/user'
+import { useMessaging } from '@/stores/messaging'
 import MainNav from './components/MainNav.vue'
 import CategoryNav from './components/CategoryNav.vue'
 import Messaging from './components/Messaging.vue';
@@ -11,9 +12,11 @@ export default {
     catcondStore.getCategoryList();
     catcondStore.getConditionList();
     const userStore = useUser();
+    const messageStore = useMessaging();
     return {
       catcondStore,
-      userStore
+      userStore,
+      messageStore
     }
   },
   components: {
@@ -30,5 +33,7 @@ export default {
   <div class="container">
     <router-view></router-view>
   </div>
-  <Messaging v-if="userStore.user" />
+  <template v-if="(userStore.user && messageStore.subscriber)">
+    <Messaging :receiverId="messageStore.subscriber" />
+  </template>
 </template>

@@ -46,6 +46,7 @@ export default {
         msgform.subscribers.push(this.receiverId);
       }
       this.messagingStore.sendMessage(msgform);
+      this.msg = ""
     },
   },
 };
@@ -58,7 +59,7 @@ export default {
     </div>
     <button
       type="button"
-      class="adiv"
+      class="adiv btn"
       aria-label="Close"
       data-bs-toggle="collapse"
       data-bs-target="#collapseMessage"
@@ -67,16 +68,12 @@ export default {
     >Live Chat</button>
     <div id="collapseMessage" class="collapse ">
       <div class="overflow-auto container-fluid chatbox">
-        <!-- scroll container, idk if we want ul/li !-->
           <template v-if="messagingStore.msg_thread">
-            <div
-              v-for="msg in messagingStore.msg_thread.msgs"
-              :key="msg"
-              class="row my-2"
-              :class="msg.sender !== userStore.user.user ? 'justify-content-end' : ''">
-              <div class="col-lg-auto p-2 msg"
+            <div v-for="msg in messagingStore.msg_thread.msgs" :key="msg"
+                  class="row my-2" :class="msg.sender !== userStore.user.user ? 'justify-content-end' : ''">
+              <div class="col-3 text g-2"
                 :class=" msg.sender !== userStore.user.user ? 'response' : ''">
-              <span>{{ msg.text }}</span>
+                <span class="p-2 msg">{{ msg.text }}</span>
             </div></div>
           </template>
       </div>
@@ -98,6 +95,7 @@ export default {
 <style>
 .chatcontainer {
   background: #DDD;
+  border-radius: 10px;
   border: none;
 }
 .chatbox {
@@ -118,17 +116,17 @@ export default {
 
 .msg {
   border: none;
-  background: #0095ff;
+  background: #00109c;
+  color: #FFF;
   width: 170px;
   font-size: 14px;
   border-radius: 10px;
   background-size: 5px;
-  overflow: auto;
   align-content: flex-end;
 }
 
 .response {
-  background: #40ff00;
+  background: #eb6314;
 }
 
 </style>
