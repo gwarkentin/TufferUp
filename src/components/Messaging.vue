@@ -52,7 +52,7 @@ export default {
 </script>
 
 <template>
-  <div class="row position-fixed bottom-0 col-md-3 offset-md-7 chatbox mt-5">
+  <div class="row position-fixed bottom-0 col-md-3 offset-md-7 mt-5 chatcontainer">
     <div v-show="haserror" class="alert alert-danger" role="alert">
       {{ error }}
     </div>
@@ -65,48 +65,49 @@ export default {
       aria-expanded="false"
       aria-controls="collapseMessage"
     >Live Chat</button>
-    <div id="collapseMessage" class="collapse">
-      <div class="overflow-auto container-fluid">
+    <div id="collapseMessage" class="collapse ">
+      <div class="overflow-auto container-fluid chatbox">
         <!-- scroll container, idk if we want ul/li !-->
-        <div class="col-6 col-4">
           <template v-if="messagingStore.msg_thread">
             <div
               v-for="msg in messagingStore.msg_thread.msgs"
               :key="msg"
-              class="chat ml-2 p-3"
-            >
-              <span>{{ msg.text }}</span>
-            </div>
+              class="row my-2"
+              :class="msg.sender !== userStore.user.user ? 'justify-content-end' : ''">
+              <div class="col-3 p-2 msg"
+                :class=" msg.sender !== userStore.user.user ? 'response' : ''">
+              <span class="">{{ msg.text }}</span>
+            </div></div>
           </template>
-        </div>
       </div>
       <form @submit.prevent="sendMessage">
+        <div class="input-group mb-2">
         <input
           v-model="msg"
           type="text"
-          class="send"
           placeholder="Send Message..."
+          class="form-control"
         />
-        <button type="submit">Send</button>
-      </form>
+        <button type="submit" class="btn btn-outline-primary">Send</button>
+       </div>
+     </form>
     </div>
   </div>
 </template>
 
 <style>
-.chatbox {
-  background: #3e3e3e;
-  width: 300px;
+.chatcontainer {
+  background: #DDD;
   border: none;
-  border-top-right-radius: 15px;
-  border-top-left-radius: 15px;
 }
-
+.chatbox {
+  overflow: auto;
+  height: 400px;
+}
 .adiv {
   background: #cb5a04;
   vertical-align: auto;
-  width: 300px;
-  border-radius: 15px;
+  border-radius: 10px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   font-size: 12px;
@@ -115,29 +116,19 @@ export default {
   text-align: center;
 }
 
-.chat {
+.msg {
   border: none;
   background: #0095ff;
-  font-size: 12px;
-  border-radius: 20px;
+  width: 170px;
+  font-size: 14px;
+  border-radius: 10px;
   background-size: 5px;
   overflow: auto;
-  row-gap: 100px;
   align-content: flex-end;
 }
 
 .response {
-  border: none;
   background: #40ff00;
-  font-size: 12px;
-  border-radius: 20px;
-  background-size: 5px;
-  overflow: auto;
-  row-gap: 100px;
 }
 
-.send {
-  border-radius: 15px;
-  background: #ffffff;
-}
 </style>
