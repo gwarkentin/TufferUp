@@ -24,7 +24,7 @@ var UserSchema = new Schema({
 UserSchema.pre("save", function(next) {
     var user = this;
     
-    let regex = /csu.fullerton.edu+$/;
+    let regex = /@csu.fullerton.edu+$/;
     
     var validator = require("email-validator");
     if (validator.validate(user.email)) {
