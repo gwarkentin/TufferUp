@@ -27,6 +27,8 @@ export default {
   emits: ['initMessage'],
   methods: {
     updateSubscriber() {
+      console.log(this.user)
+      this.messageStore.clearMessageThread();
       this.messageStore.subscriber = this.user._id;
     }
   }

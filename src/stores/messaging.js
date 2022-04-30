@@ -9,6 +9,9 @@ export const useMessaging = defineStore('messaging', {
     }
   },
   actions: {
+    clearMessageThread() {
+      this.msg_thread = null
+    },
     async sendMessage(msgform) {
       try {
         console.log('sending message data: ')

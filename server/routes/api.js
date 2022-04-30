@@ -241,10 +241,16 @@ router.post('/image/add', (req,res) => {
 
 async function addMessage(subscriber, msg_thread, sender) {
   try {
-    var user = User.findById(ObjectID(subscriber))
+    console.log(subscriber)
+    var user = await User.findById((String(subscriber)))
     if (!user) { throw Error("Couldn't find user") }
     var issender = (subscriber === sender)
-    user['msg_threads'].unshift({ thread: msg_thread, unread: !issender })
+    if (user.msg_threads) {
+      user['msg_threads'].unshift({ thread: msg_thread, unread: !issender })
+    }
+    else {
+      user['msg_threads'] = [{ thread: msg_thread, unread: !issender }]
+    }
     await user.save()
     return
   }
@@ -276,11 +282,11 @@ router.post('/messaging/send', async (req,res) => {
         text: String(rb.msg.text),
     })
     const msg_thread = await msgthread.save()
-    for (var sub in subscribers) {
+    subscribers.forEach(sub => {
       console.log('sub: ' + sub)
       console.log('sender: ' + rb.msg.sender)
       addMessage(sub, msg_thread, rb.msg.sender) // do not want sync
-    }
+    })
     res.json({msg_thread: msg_thread})
   }
   catch (err) {

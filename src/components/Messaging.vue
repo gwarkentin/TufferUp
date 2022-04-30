@@ -70,11 +70,14 @@ export default {
       <div class="overflow-auto container-fluid chatbox">
           <template v-if="messagingStore.msg_thread">
             <div v-for="msg in messagingStore.msg_thread.msgs" :key="msg"
-                  class="row my-2" :class="msg.sender !== userStore.user.user ? 'justify-content-end' : ''">
-              <div class="col-3 text g-2"
+                  class="row my-1" :class="msg.sender !== userStore.user.user ? 'justify-content-end' : ''">
+              <div class="col-auto me-auto msg g-2"
                 :class=" msg.sender !== userStore.user.user ? 'response' : ''">
-                <span class="p-2 msg">{{ msg.text }}</span>
-            </div></div>
+                <div>
+                  <p class="p-2 m-0">{{ msg.text }}</p>
+                </div>
+              </div>
+            </div>
           </template>
       </div>
       <form @submit.prevent="sendMessage">
