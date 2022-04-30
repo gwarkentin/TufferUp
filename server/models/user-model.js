@@ -23,14 +23,19 @@ var UserSchema = new Schema({
 
 UserSchema.pre("save", function(next) {
     var user = this;
-    let regex = /^[a-zA-Z]+[a-zA-Z0-9]+[\w|\.\\][a-zA-Z0-9]+@csu.fullerton.edu$/;
-    if (regex.test(user.email)) {
-        return next();
-    } else {
-        const err = Error("Email has to be CSUF-issued and contain only alphanumeric characters and 1 underscore or period.");
-        console.log(err);
-        return err.stack;
-    }
+    
+    let regex = /csu.fullerton.edu+$/;
+    
+    var validator = require("email-validator");
+    if (validator.validate(user.email)) {
+        if (regex.test(user.email)) {
+            return next();
+        } 
+    } 
+    
+    const err = Error("Email has to be CSUF-issued and contain alphanumerical characters.");
+    console.log(err);
+    return err.stack;  
 }); 
 
 UserSchema.pre("save", function(next) {
