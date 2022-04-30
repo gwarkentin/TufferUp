@@ -242,9 +242,10 @@ router.post('/image/add', (req,res) => {
 
 async function addMessage(subscriber, msg_thread, sender) {
   try {
-    var user = User.findById(subscriber)
+    var user = User.findById(ObjectID(subscriber))
+    if (!user) { throw Error("Couldn't find user") }
     var issender = (subscriber === sender)
-    user.msg_threads.push({ thread: msg_thread, unread: !issender })
+    user['msg_threads'].unshift({ thread: msg_thread, unread: !issender })
     await user.save()
     return
   }
@@ -263,17 +264,23 @@ router.post('/messaging/send', async (req,res) => {
     const thread_id = rb.thread_id
     const subscribers = req.body.subscribers
 
-    var msgthread = await new MessageThread({subscribers: subscribers})
+    var msgthread = {} 
     if (thread_id) {
       msgthread = await MessageThread.findById(thread_id).exec();
     }
+    else {
+      msgthread = await new MessageThread({subscribers: subscribers})
+    }
+    if (!msgthread) { res.json({error: "Couldn't make/get message thread"})}
     msgthread.msgs.push({
         sender: ObjectID(rb.msg.sender),
         text: String(rb.msg.text),
     })
     const msg_thread = await msgthread.save()
     for (var sub in subscribers) {
-      addMessage(sub, msg_thread, ObjectID(rb.msg.sender)) // do not want sync
+      console.log('sub: ' + sub)
+      console.log('sender: ' + rb.msg.sender)
+      addMessage(sub, msg_thread, rb.msg.sender) // do not want sync
     }
     res.json({msg_thread: msg_thread})
   }
