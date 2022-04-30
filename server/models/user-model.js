@@ -28,8 +28,7 @@ UserSchema.pre("save", function(next) {
             return next();
         } 
     } 
-    const err = Error("Email has to be CSUF-issued and contain alphanumerical characters.");
-    console.log(err);
+    var err = 'error: Email has to be CSUF-issued and contain alphanumerical characters.';
     return next(err);  
 }); 
 

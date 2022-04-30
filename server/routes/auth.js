@@ -90,7 +90,8 @@ router.post('/signup', function(req, res, next) {
     var userinfo = req.body
     createUser(userinfo, function(err, user) {
         if (err) {
-            res.json( {error: err})
+            console.log('error: ' + err)
+            res.json( {error: 'error: ' + err})
         }
         else {
             req.login(user, function(err) {

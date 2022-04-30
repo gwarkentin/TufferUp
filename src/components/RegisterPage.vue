@@ -38,7 +38,7 @@ export default {
         else {
           this.$router.push('/')
         }
-      }).catch(function (err) {
+      }).catch((err)=>{
         this.error = err
       });
     },

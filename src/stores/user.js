@@ -26,7 +26,6 @@ export const useUser = defineStore('user', {
         }
       }
       catch (err) {
-        console.log(err)
         return err
       }
     },

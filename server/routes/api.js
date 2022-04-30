@@ -178,7 +178,6 @@ router.post('/posts/keywords/', (req,res) => {
     Post.populate(posts, {path: 'user category', select: 'name thumbnail rating category'}, function(err,posts) {
       if (err) {res.json({error:err})}
       else {
-        console.log(posts.pop())
         res.json( {posts: posts});
       }
     })
