@@ -304,13 +304,23 @@ router.get('/messaging/get', (req,res) => {
       res.json({msg_thread: msg_thread})
   });
 });
+//gets entire message thread
+router.post('/messagethreads/get', (req,res) => {
+  console.log(req.body)
+  User.findById(String(req.body.user))
+    .exec(function(err, user) {
+      if (err) {res.json({error:err})}
+      res.json({msg_thread: msg_thread})
+  });
+});
+
 
 router.get('/user/:id', (req,res) => {
   console.log(req.body)
-  User.findById(String(req.params.id), 'name picture')
+  User.findById(String(req.params.id), 'msg_threads')
     .exec(function(err, user) {
       if (err) {res.json({error:err})}
-      res.json({user: user})
+      res.json({msg_threads: user.msg_threads})
   });
 });
 

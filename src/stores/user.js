@@ -1,13 +1,36 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import axios from '../http.js'
 
 export const useUser = defineStore('user', {
   state: () => {
     return {
       user: null,
+      msg_threads: null
     }
   },
   actions: {
+    async getMessageThreads() {
+      try {
+        var response = await axios({
+                    method: 'post',
+                    url:'http://localhost:3001/messagethreads/get',
+                    data: this.user})
+        if (response.data.error) {
+          return response.data.error
+        }
+        else {
+          console.log(response.data)
+          if (response.data.msg_threads) {
+            this.msg_threads = response.data.msg_threads
+            return
+          }
+          return "Couldn't retreive messages"
+        }
+      }
+      catch (err) {
+        return err
+      }
+    },
     async registerUser(userForm) {
       try {
         var response = await axios({

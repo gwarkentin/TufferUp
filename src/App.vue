@@ -13,6 +13,8 @@ export default {
     catcondStore.getConditionList();
     const userStore = useUser();
     const messageStore = useMessaging();
+    userStore.getMessageThreads();
+    console.log(userStore.msg_threads)
     return {
       catcondStore,
       userStore,

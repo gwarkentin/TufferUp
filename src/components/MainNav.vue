@@ -48,8 +48,8 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav container-fluid">
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <template v-if="userStore.user">
             <li class="nav-item">
@@ -64,6 +64,15 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
             <li class="nav-item">
               <button class="btn" type="button" @click="logoutUser">Logout</button>
             </li>
+            <li class="nav-item"></li>
+            <button type="button" class="btn position-relative">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left" viewBox="0 0 16 16">
+  <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+</svg>
+              <span v-if="userStore.msg_threads" class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                <span class="visually-hidden">New alerts</span>
+              </span>
+            </button>
           </template>
           <template v-else>
             <li class="nav-item">
