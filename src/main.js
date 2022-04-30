@@ -16,6 +16,7 @@ import AddCategoryPage from './views/AddCategoryPage.vue';
 import AllPostsPage from './views/AllPostsPage.vue';
 import SearchPostsPage from './views/SearchPostsPage.vue';
 import UserPage from './views/UserPage.vue'
+import UserOwnPage from './views/UserOwnPage.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: AllPostsPage },
@@ -28,7 +29,7 @@ const routes = [
   { path: '/category/add', name: 'AddCategory', component: AddCategoryPage },
   { path: '/category/get/:category', name: 'Category', component: CategoryPage },
   { path: '/search/:keywords+', name: 'Search', component: SearchPostsPage },
-  { path: '/profile', name: 'Profile', component: UserPage },
+  { path: '/profile', name: 'Profile', component: UserOwnPage },
   { path: '/user/:id', name: 'UserPage', component: UserPage },
 ]
 

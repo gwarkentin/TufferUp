@@ -16,15 +16,14 @@ export default {
     return {
       postID: String,
       form: {
-        posterid: String,
-        postername: String,
-        title: String,
-        description: String,
-        category: String, 
-        condition: String,
-        price: Number,
-        discountable: Boolean,
-        imgs: null
+        user: {},
+        title: "",
+        description: "",
+        category: "", 
+        condition: "",
+        price: 999,
+        discountable: false,
+        imgs: {}
       },
       ogdata: true,
       error: ""
@@ -35,7 +34,10 @@ export default {
       return this.error ? true : false;
     },
     isOwner() {
-      return 
+      if (this.userStore.user) {
+        return this.form.user._id === this.userStore.user.user
+      }
+      return false
     }
   },
   components: {
@@ -46,7 +48,6 @@ export default {
   },
   methods: {
     getPostDetails() {
-      var self = this
       this.postID = (this.$route.params.id ? this.$route.params.id : "");
       this.axios.get('/api/post/get/' + this.postID)
       .then(response => {
@@ -65,10 +66,11 @@ export default {
           form['condition'] = form['condition'].condition;
           this.form = form;
         this.ogdata = false;
+        console.log(this.form)
         }
       })
-      .catch(function (error) {
-        self.error = error;
+      .catch((error) => {
+        this.error = error;
       })
     },
     deletePost(id) {
@@ -89,16 +91,16 @@ export default {
 }
 </script>
 
-
 <template>
   <div v-if="haserror" class="alert alert-danger" role="alert">
     <p>{{ error }}</p>
   </div>
-  <div class="row align-items-start">
-    <div class="col-sm">
-      <button @click="deletePost(postID)" class="btn btn-danger">Delete</button>
-      <PostDetails v-bind="form" v-bind:postID="postID" />
+  <div class="row">
+    <div v-if="isOwner" class="col-sm">
+      <button
+      @click="deletePost(postID)" class="btn btn-danger">Delete</button>
     </div>
+    <PostDetails v-bind="form" v-bind:postID="postID" />
   </div>
 </template>
 

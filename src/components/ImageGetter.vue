@@ -3,7 +3,7 @@
 export default {
     data() {
         return {
-            image: {} 
+            image: null 
         }
     },
   //these are public variables that parents can v-bind to
@@ -15,20 +15,27 @@ export default {
     },
     methods: {
     getImagesById: function() {
-        this.axios({
-            method:'get', 
-            url:'/api/image/get/' + this.id
-        })
-        .then((res)=>{
-            if(res.data.error) { console.log(res.data.error)}
-            else {
-                this.image = res.data.image
-            }
-        })
+        if (this.id) {
+            this.axios({
+                method:'get', 
+                url:'/api/image/get/' + this.id
+            })
+            .then((res)=>{
+                if(res.data.error) { console.log(res.data.error)}
+                else {
+                    this.image = res.data.image
+                }
+            })
+        }
     },
   }
 }
 </script>
 <template>
-    <img :src="image" :id='id' class="card-img-bottom" alt="picture of ">
+    <template v-if="!image">
+        <img class="card-img-bottom bg-secondary">
+    </template>
+    <template v-else-if="image"  >
+        <img :src="image" :id='id' class="card-img-bottom" alt="picture of ">
+    </template>
 </template>

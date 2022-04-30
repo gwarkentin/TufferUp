@@ -1,23 +1,19 @@
 <script>
 import PostsList from '../components/PostsList.vue'
-import { useUser } from '@/stores/user'
 
 export default {
-  setup() {
-    const userStore = useUser()
-    return {
-      userStore,
-    }
-  },
   components: {
     PostsList
   },
+  props: {
+    userid: String
+  },
   computed: {
-    userid() {
-      if (this.userStore.user) {
-        return this.userStore.user.user
+    userid2() {
+      if (this.userid) {
+        return this.userid
       }
-      if (this.$route.params.id) {
+      else if (this.$route.params.id) {
         return this.$route.params.id
       }
     }
@@ -26,10 +22,10 @@ export default {
 </script>
 
 <template>
-  <template v-if="userid">
+  <template v-if="userid2">
     <div class="text-center">
-      <h2>Posts By: {{ userid }}</h2>
+      <h2>Posts By: {{ userid2 }}</h2>
     </div>
-    <posts-list :url="'/api/posts/user/' + userid"></posts-list>
+    <posts-list :url="'/api/posts/user/' + userid2"></posts-list>
   </template>
 </template>

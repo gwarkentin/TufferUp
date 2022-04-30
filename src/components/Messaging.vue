@@ -74,9 +74,9 @@ export default {
               :key="msg"
               class="row my-2"
               :class="msg.sender !== userStore.user.user ? 'justify-content-end' : ''">
-              <div class="col-3 p-2 msg"
+              <div class="col-lg-auto p-2 msg"
                 :class=" msg.sender !== userStore.user.user ? 'response' : ''">
-              <span class="">{{ msg.text }}</span>
+              <span>{{ msg.text }}</span>
             </div></div>
           </template>
       </div>

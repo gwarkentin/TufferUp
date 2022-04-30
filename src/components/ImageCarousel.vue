@@ -8,7 +8,7 @@ export default {
     }
   },
   props: {
-        imgs: Array,
+        imgs: Object,
         isthumbnail: Boolean
   },
   components: {
@@ -19,7 +19,7 @@ export default {
           if (this.isthumbnail) {
               return '200px'
           }
-          return '100%'
+          return '500px'
       }
   },
   methods: {
