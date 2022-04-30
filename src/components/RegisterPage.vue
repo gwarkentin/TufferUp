@@ -17,13 +17,12 @@ export default {
   },
   computed: {
       haserror() {
-        console.log('this.error: ' + this.error)
         return this.error ? true : false;
     }
   },
   methods: {
     registerUser(e) {
-      var self = this
+      this.error = ""
       const form = {
         'email': this.email,
         'name': this.name,
@@ -31,15 +30,16 @@ export default {
       }
       console.log("vue sending this to store.registerUser:" + JSON.stringify(form));
       // need to validate form on frontend here before submitting via axios
-      this.userStore.registerUser(form).then( (err)=> {
+      this.userStore.registerUser(form).then(err => {
+        console.log(err)
         if (err) {
-          self.error = err
+          this.error = err
         }
         else {
           this.$router.push('/')
         }
-      }).catch(function (err) {
-        self.error = err
+      }).catch((err)=>{
+        this.error = err
       });
     },
   }
@@ -58,7 +58,7 @@ export default {
             <div v-if="haserror" class="alert alert-danger" role="alert">
               <p>{{ error }}</p>
             </div>
-            <form class="px-4 py-3">
+            <form class="px-4 py-3" @submit.prevent="registerUser">
               <div class="mb-3">
                 <label for="exampleDropdownFormEmail1" class="form-label"
                   >Email address</label>
@@ -68,6 +68,7 @@ export default {
                   class="form-control"
                   id="exampleDropdownFormEmail1"
                   placeholder="email@csu.fullerton.edu"
+                  required
                 />
               </div>
               <div class="mb-3">
@@ -78,6 +79,7 @@ export default {
                   class="form-control"
                   id="exampleDropdownFormPassword1"
                   placeholder="Password"
+                  required
                 />
               </div>
               <div class="mb-3">
@@ -88,18 +90,10 @@ export default {
                   class="form-control"
                   id="displayname"
                   placeholder="Password"
+                  required
                 />
               </div>
-              <div class="mb-3">
-                <div class="form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="dropdownCheck"
-                  />
-                </div>
-              </div>
-              <button type="button" class="btn btn-primary" @click="registerUser">Register</button>
+              <button type="submit" class="btn btn-primary">Register</button>
             </form>
           </div>
         <div class="col-md-9"></div>

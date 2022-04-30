@@ -5,7 +5,7 @@ import PostPreview from '../components/PostPreview.vue'
 export default {
   data() {
     return {
-      posts: Array,
+      posts: {},
       postscleaned: [],
       error: "",
     }
@@ -19,7 +19,6 @@ export default {
   },
   computed: {
     haserror() {
-        console.log('this.error: ' + this.error)
         return this.error ? true : false;
     },
   },
@@ -57,8 +56,8 @@ export default {
       .then(posts => {
         this.cleanPosts(posts)
       })
-      .catch(function (error) {
-        self.error = error;
+      .catch(error => {
+        this.error = error;
         }); 
       }
     },
@@ -71,8 +70,7 @@ export default {
             title: post.title,
             price: post.price,
             imgs: post.imgs,
-            posterid: post.user._id,
-            postername: post.user.name
+            user: post.user
           }
           this.postscleaned.unshift(p)
         }

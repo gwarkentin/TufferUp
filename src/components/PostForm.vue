@@ -41,7 +41,6 @@ export default {
     ],
     computed: {
       haserror() {
-        console.log(Boolean('this.error: ' + this.error))
         return this.error ? true : false;
       },
     },

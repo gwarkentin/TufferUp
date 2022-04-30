@@ -4,41 +4,52 @@ import axios from 'axios'
 export const useUser = defineStore('user', {
   state: () => {
     return {
-      user: null
+      user: null,
     }
   },
   actions: {
     async registerUser(userForm) {
-      axios({
-        method: 'post',
-        url:'http://localhost:3001/auth/signup',
-        data: userForm
-      }).then( response => {
-        console.log('store got back: ' + JSON.stringify(response.data));
+      try {
+        var response = await axios({
+                    method: 'post',
+                    url:'http://localhost:3001/auth/signup',
+                    data: userForm})
         if (response.data.error) {
           return response.data.error
         }
         else {
-          this.user = response.data
-          return
+          if (response.data.user) {
+            this.user = response.data.user
+            return
+          }
+          return "Didn't receive back user info, please try logging in with your new account info."
         }
-      })
+      }
+      catch (err) {
+        return err
+      }
     },
     async loginUser(userForm) {
-      axios({
-        method: 'post',
-        url:'http://localhost:3001/auth/login',
-        data: userForm
-      }).then( response => {
-        console.log('store got back: ' + JSON.stringify(response.data));
+      try {
+        var response = await axios({
+          method: 'post',
+          url:'http://localhost:3001/auth/login',
+          data: userForm
+        })
         if (response.data.error) {
           return response.data.error
         }
         else {
-          this.user = response.data
-          return
+          if (response.data.user) {
+            console.log(response.data)
+            this.user = response.data.user
+            return
+          }
         }
-      })
+      }
+      catch (err) {
+        return err
+      }
     }
   },
   persist: {

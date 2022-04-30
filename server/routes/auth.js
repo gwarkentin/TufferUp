@@ -51,12 +51,11 @@ router.post('/login',
   passport.authenticate('local'),
   function(req, res) {
       if (!req.user) { res.json({ error: req.err }) }
-      console.log(req.user)
-      res.json( {
+      res.json( { user: {
           user: req.user._id,
           email: req.user.email,
           name: req.user.name,
-        })
+      }})
   });
 
 router.post('/logout', function(req, res, next) {
@@ -78,24 +77,30 @@ const createUser = async function (userinfo, cb) {
     if (user) return cb('user_exists');
 
     var newuser = new User(userinfo);
-    var userid = await newuser.save();
-    return cb(null, newuser);
+    try {
+        var userid = await newuser.save();
+        return cb(null, newuser);
+    }
+    catch (err) {
+        return cb(err)
+    }
 };
 
 router.post('/signup', function(req, res, next) {
     var userinfo = req.body
-    console.log(req.body)
     createUser(userinfo, function(err, user) {
-        if (err == 'user_exists') {
-            res.json( {error: err})
+        if (err) {
+            console.log('error: ' + err)
+            res.json( {error: 'error: ' + err})
         }
         else {
             req.login(user, function(err) {
-                if (err) { return next(err); }
-                res.json( {
+                if (err) { res.json( {error: err }) }
+                res.json( { user: {
                     user: user._id,
                     email: user.email,
                     name: user.name,
+                  }
                 });
             })
         }

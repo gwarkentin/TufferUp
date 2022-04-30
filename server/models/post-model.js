@@ -20,6 +20,7 @@ var ConditionSchema = new Schema ({
 
 var ImageSchema = new Schema ({
     image: { type: String, required: true },
+    deleted: { type: Boolean, required: true, default: false },
 });
 
 var PostSchema = new Schema({
@@ -32,9 +33,8 @@ var PostSchema = new Schema({
     price: { type:Number, required: true, min: [0, 'Must have price >= 0'] },
     discountable: { type: Boolean, default: true },
     imgs: [{ type:Schema.Types.ObjectId, required: true, ref:'Image'}], // is it time for gridfs?
+    deleted: { type: Boolean, required: true, default: false },
 });
-
-PostSchema.index( { title: 'text', description: 'text'})
 
 module.exports.Post = mongoose.model('Post', PostSchema);
 module.exports.Condition = mongoose.model('Condition', ConditionSchema);

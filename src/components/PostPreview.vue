@@ -1,5 +1,6 @@
 <script>
 import ImageCarousel from './ImageCarousel.vue'
+import UserGetter from './UserGetter.vue'
 
 export default {
   //these are public variables that parents can v-bind to
@@ -8,12 +9,14 @@ export default {
       'title': String,
       'price': Number,
       'imgs': Object,
-      'posterid': "",
-      'postername': String,
+      'user': "",
+      // 'posterid': "",
+      // 'postername': String,
   },
   components: {
-    ImageCarousel
-  }
+    ImageCarousel,
+    UserGetter
+}
 }
 </script>
 
@@ -29,9 +32,12 @@ export default {
         </h6>
       </router-link>
       <p class="card-text">${{ price }}</p>
+      <UserGetter :user="user" />
+      <!--
       <router-link :to="{ name: 'UserPage' , params: { id: posterid }}" class="">
         <p class="card-text"><small class="text-muted">{{ postername }}</small></p>
       </router-link> 
+      !-->
     </div>
   </div>
 </template>

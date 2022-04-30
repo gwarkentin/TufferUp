@@ -16,26 +16,24 @@ export default {
   },
   computed: {
       haserror() {
-        console.log('this.error: ' + this.error)
         return this.error ? true : false;
     }
   },
   methods: {
     loginUser(e) {
-      var self = this
       const form = {
         'email': this.email,
         'password': this.password,
       }
-      console.log(JSON.stringify(form));
       // need to validate form on frontend here before submitting via axios
-      this.userStore.loginUser(form).then( (err)=> {
-        if (err) {self.error = err}
+      this.userStore.loginUser(form).then( err => {
+        console.log('login err: ' + err)
+        if (err) {this.error = err}
         else {
-          this.$router.push('/') // should push to /post/:id
+          this.$router.push('/')
         }
-      }).catch(function (err) {
-        self.error = err
+      }).catch(err => {
+        this.error = err
       });
     },
   }
@@ -58,7 +56,7 @@ export default {
             <div v-if="haserror" class="alert alert-danger" role="alert">
               <p>{{ error }}</p>
             </div>
-            <form class="px-4 py-3">
+            <form class="px-4 py-3" @submit.prevent="loginUser">
               <div class="mb-3">
                 <label for="exampleDropdownFormEmail1" class="form-label"
                   >Email address</label>
@@ -68,6 +66,7 @@ export default {
                   class="form-control"
                   id="exampleDropdownFormEmail1"
                   placeholder="email@csu.fullerton.edu"
+                  required
                 />
               </div>
               <div class="mb-3">
@@ -78,18 +77,10 @@ export default {
                   class="form-control"
                   id="exampleDropdownFormPassword1"
                   placeholder="Password"
+                  required
                 />
               </div>
-              <div class="mb-3">
-                <div class="form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="dropdownCheck"
-                  />
-                </div>
-              </div>
-              <button type="button" class="btn btn-primary" @click="loginUser">Log In</button>
+              <button type="submit" class="btn btn-primary" >Log In</button>
             </form>
           </div>
         <div class="col-md-9"></div>

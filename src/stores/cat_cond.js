@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import axios from '../http'
 
 export const useCatCond = defineStore('cat_cond', {
   state: () => {
@@ -13,7 +13,7 @@ export const useCatCond = defineStore('cat_cond', {
       try {
           await axios({
             method: 'get',
-            url:'http://localhost:3001/api/category/all',
+            url:'/api/category/all',
           }).then( response => {
             const rd = response.data;
             if (response.data.error) {
@@ -34,7 +34,7 @@ export const useCatCond = defineStore('cat_cond', {
       try {
           await axios({
             method: 'get',
-            url:'http://localhost:3001/api/condition/all',
+            url:'/api/condition/all',
           }).then( response => {
             const rd = response.data;
             if (response.data.error) {
