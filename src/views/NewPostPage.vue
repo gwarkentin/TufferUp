@@ -50,8 +50,8 @@ export default {
 </script>
 
 <template>
-  <div class="row align-items-start">
-    <div class="col-sm">
+  <div class="row align-items-start m-4">
+    <div class="col-sm-auto">
       <!-- Set local variables to update based on the PostForm emitting changes -->
       <PostForm 
         v-model:title="form.title"

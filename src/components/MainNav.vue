@@ -16,6 +16,7 @@ export default {
   methods: {
     logoutUser() {
       this.userStore.$patch({user:null});
+      this.messageStore.$patch({msg_thread:null, subscriber:null});
     },
     searchByKeywords() {
       if (this.keywords) {
@@ -35,7 +36,7 @@ This is just ugly, can you please update design. We should use CSUF colors for t
 Also want to set up search bar to go to /post/:id for now, in future it should use a javascript autocomplete
   function to find common terms easily
 -->
-<nav class="navbar navbar-expand-lg navbar-light "  style="background-color: #FF8C00" >
+<nav class="navbar navbar-expand-sm navbar-light "  style="background-color: #FF8C00" >
   <div class="container-fluid">
     <router-link to="/" class="navbar-brand">
       <img src="/Tuffy.png" width="32" height="32" style="backgroud-colo:transparent;" class="d-inline-block align-text-top">
@@ -45,10 +46,6 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
       <input v-model="keywords" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" @keyup.enter="searchByKeywords">
       <button class="btn btn-outline-success" type="button" @click="searchByKeywords">Search</button>
     </div>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <template v-if="userStore.user">
@@ -83,7 +80,6 @@ Also want to set up search bar to go to /post/:id for now, in future it should u
             </li>
           </template>
         </ul>
-      </div>
     </div>
 
   </div>

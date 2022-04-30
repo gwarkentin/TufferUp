@@ -38,7 +38,7 @@ export default {
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md p-4">
+      <div class="col-sm p-4">
         <div class="row border">
           <div class="col col-sm-auto align-items-center p-4">
             <h5>{{ title }}</h5>
