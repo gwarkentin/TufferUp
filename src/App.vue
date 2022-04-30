@@ -20,7 +20,7 @@ export default {
     MainNav,
     CategoryNav,
     Messaging
-}
+  }
 }
 </script>
 

@@ -236,10 +236,11 @@ router.post('/image/add', (req,res) => {
 });
 
 
-async function addNotification(subscriber, msgthread) {
+async function addMessage(subscriber, msg_thread, sender) {
   try {
     var user = User.findById(subscriber)
-    user.new_messages.push(msgthread)
+    var issender = (subscriber === sender)
+    user.msg_threads.push({ thread: msg_thread, unread: !issender })
     await user.save()
     return
   }
@@ -268,7 +269,7 @@ router.post('/messaging/send', async (req,res) => {
     })
     const msg_thread = await msgthread.save()
     for (var sub in subscribers) {
-      addNotification(sub, msg_thread) // do not want sync
+      addMessage(sub, msg_thread, ObjectID(rb.msg.sender)) // do not want sync
     }
     res.json({msg_thread: msg_thread})
   }

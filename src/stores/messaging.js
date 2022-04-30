@@ -9,23 +9,38 @@ export const useMessaging = defineStore('messaging', {
   },
   actions: {
     async sendMessage(msgform) {
-      console.log('sending message data: ')
-      console.log(msgform)
-      axios({
-          method: 'post', 
-          url:'/api/messaging/send',
-          data: msgform   
-        }).then(response => {
-          if (response.data.error) {this.error = response.data.error}
-          else {
-            this.msg_thread = response.data.msg_thread
-            console.log('response message thread: ')
-            console.log(response.data.msg_thread)
-          }
-        })
-        .catch( (err)=> {
-          this.error = err
-        });
+      try {
+        console.log('sending message data: ')
+        console.log(msgform)
+        var response =  await axios({ method: 'post', url:'/api/messaging/send', data: msgform   })
+        if (response.data.error) { throw error(response.data.error) }
+        else {
+          this.msg_thread = response.data.msg_thread
+          console.log('response message thread: ')
+          console.log(response.data.msg_thread)
+        }
+      }
+      catch (err) {
+        return err 
+      }
+    },
+    async getMessageThread(thread_id) {
+      try {
+        console.log('req msgs for thread: ' + thread_id)
+        var response =  await axios({
+          method: 'post',
+          url:'/api/messaging/get',
+          data: {thread_id: thread_id} })
+        if (response.data.error) { throw error(response.data.error) }
+        else {
+          this.msg_thread = response.data.msg_thread
+          console.log('response message thread: ')
+          console.log(response.data.msg_thread)
+        }
+      }
+      catch (err) {
+        return err 
+      }
     }
   },
   persist: {

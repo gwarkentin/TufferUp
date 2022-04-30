@@ -4,7 +4,7 @@ import axios from 'axios'
 export const useUser = defineStore('user', {
   state: () => {
     return {
-      user: null
+      user: null,
     }
   },
   actions: {
@@ -42,6 +42,7 @@ export const useUser = defineStore('user', {
         }
         else {
           if (response.data.user) {
+            console.log(response.data)
             this.user = response.data.user
             return
           }

@@ -51,12 +51,11 @@ router.post('/login',
   passport.authenticate('local'),
   function(req, res) {
       if (!req.user) { res.json({ error: req.err }) }
-      console.log(req.user)
-      res.json( {
+      res.json( { user: {
           user: req.user._id,
           email: req.user.email,
           name: req.user.name,
-        })
+      }})
   });
 
 router.post('/logout', function(req, res, next) {
@@ -89,7 +88,6 @@ const createUser = async function (userinfo, cb) {
 
 router.post('/signup', function(req, res, next) {
     var userinfo = req.body
-    console.log(req.body)
     createUser(userinfo, function(err, user) {
         if (err) {
             res.json( {error: err})

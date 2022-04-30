@@ -19,6 +19,9 @@ export default {
       error: ''
     }
   },
+  props: {
+    receiverId: String
+  },
   mounted() {
     console.log('Firebase cloud messaging object', this.$firebasemessaging)
   },
@@ -36,6 +39,9 @@ export default {
           sender: this.userStore.user.user,
           text: this.msg,
         }
+      }
+      if (this.receiverId) {
+        msgform.subscribers.push(this.receiverId)
       }
       this.messagingStore.sendMessage(msgform);
     },

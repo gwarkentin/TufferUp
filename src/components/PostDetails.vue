@@ -16,6 +16,7 @@ export default {
   components: {
     ImageCarousel,
   },
+  emits: ['initMessage'],
 }
 </script>
 
@@ -43,6 +44,7 @@ export default {
         </template>
       </div>
     </div>
+    <button @click="$emit('initMessage', posterid)" class="btn btn-primary">Delete</button>
   </div>
 </template>
 

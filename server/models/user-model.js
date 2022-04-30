@@ -18,7 +18,11 @@ var UserSchema = new Schema({
     name: { type: String },
     password: { type: String, required: true },
     posts: [ {type: Schema.Types.ObjectId, ref:'Post'}],
-    new_messages: [ {type: Schema.Types.ObjectId, ref:'MessageThread'}]
+    msg_threads: [{
+     thread: { type: Schema.Types.ObjectId, ref:'MessageThread'},
+     unread: { type: Boolean, required: true, default: true}
+    }]
+
 });
 
 UserSchema.pre("save", function(next) {
