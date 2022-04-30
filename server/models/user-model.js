@@ -3,15 +3,6 @@ var Schema = mongoose.Schema;
 var bcrypt = require("bcrypt");
 const SALT_WORK_FACTOR = 10;
 
-// var validateEmail = function(email)  {
-//   let regex = /^[a-z_A-Z]+[\w]+@csu.fullerton.edu$/;
-//   if (regex.test(email)) {
-//     return true;
-//   } else {
-//     console.log("Email has to be a CSUF-issued and contain only alphanumeric characters.");
-//   }
-// } 
-
 var UserSchema = new Schema({
     creationDate: { type: Date, required: true, default: Date.now },
     email: {
@@ -32,11 +23,11 @@ var UserSchema = new Schema({
 
 UserSchema.pre("save", function(next) {
     var user = this;
-    let regex = /^[a-z_A-Z]+[\w]+@csu.fullerton.edu$/;
+    let regex = /^[a-zA-Z]+[a-zA-Z0-9]+[\w|\.\\][a-zA-Z0-9]+@csu.fullerton.edu$/;
     if (regex.test(user.email)) {
         return next();
     } else {
-        const err = Error("Email has to be a CSUF-issued and contain only alphanumeric characters.");
+        const err = Error("Email has to be CSUF-issued and contain only alphanumeric characters and 1 underscore or period.");
         console.log(err);
         return err.stack;
     }
