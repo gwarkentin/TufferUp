@@ -304,7 +304,6 @@ router.get('/messaging/get', (req,res) => {
 });
 //gets entire message thread
 router.post('/messagethreads/get', (req,res) => {
-  console.log(req.body)
   User.findById(String(req.body.user))
     .exec(function(err, user) {
       if (err) {res.json({error:err})}

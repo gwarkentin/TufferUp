@@ -49,7 +49,7 @@ export default {
       <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-          <div class="card">
+          <div class="card my-4">
             <div class="mt-3">
               <h4 class="text-center">Login to TufferUp</h4>
             </div>
@@ -80,7 +80,16 @@ export default {
                   required
                 />
               </div>
-              <button type="submit" class="btn btn-primary" >Log In</button>
+              <div class="row justify-content-around">
+                <div class="col">
+                  <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+                <div class="col">
+                  <router-link :to="'/register'">
+                    Don't have an Account? Register now!
+                  </router-link>
+                </div>
+              </div>
             </form>
           </div>
         <div class="col-md-9"></div>
