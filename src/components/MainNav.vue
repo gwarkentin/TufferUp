@@ -1,11 +1,14 @@
 <script>
 import { useUser } from '@/stores/user'
+import { useMessaging } from '@/stores/messaging'
 
 export default {
   setup() {
+    const messageStore = useMessaging()
     const userStore = useUser()
     return {
       userStore,
+      messageStore,
     }
   },
   data() {

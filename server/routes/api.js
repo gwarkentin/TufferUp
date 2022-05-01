@@ -56,7 +56,7 @@ router.get('/post/get/:id', (req,res) => {
 
 router.post('/post/delete/:id', (req,res) => {
   console.log('req to delete: ' + req.params.id)
-  Post.findByIdAndDelete(req.params.id, function(err, post) {
+  Post.findByIdAndDelete(String(req.params.id), function(err, post) {
     if (err) {res.json({error:err})}
     else {
       if (post.imgs) {
@@ -241,15 +241,14 @@ router.post('/image/add', (req,res) => {
 
 async function addMessage(subscriber, msg_thread, sender) {
   try {
-    console.log(subscriber)
     var user = await User.findById((String(subscriber)))
     if (!user) { throw Error("Couldn't find user") }
     var issender = (subscriber === sender)
-    if (user.msg_threads) {
+    if (Array(user.msg_threads)) {
       user['msg_threads'].unshift({ thread: msg_thread, unread: !issender })
     }
     else {
-      user['msg_threads'] = [{ thread: msg_thread, unread: !issender }]
+      user['msg_threads'] = { thread: msg_thread, unread: !issender }
     }
     await user.save()
     return
@@ -265,7 +264,6 @@ router.post('/messaging/send', async (req,res) => {
   console.log('Req sess: ' + req.session)
   try {
     const rb = req.body
-    console.log(rb)
     const thread_id = rb.thread_id
     const subscribers = req.body.subscribers
 
@@ -310,7 +308,10 @@ router.post('/messagethreads/get', (req,res) => {
   User.findById(String(req.body.user))
     .exec(function(err, user) {
       if (err) {res.json({error:err})}
-      res.json({msg_thread: msg_thread})
+      if (user) {
+        res.json({msg_threads: user.msg_threads})
+      }
+      res.json({error: "Couldn't find user messages"})
   });
 });
 

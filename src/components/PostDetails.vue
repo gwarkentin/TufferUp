@@ -2,12 +2,15 @@
 import ImageCarousel from './ImageCarousel.vue'
 import UserGetter from './UserGetter.vue'
 import { useMessaging } from "@/stores/messaging";
+import { useUser } from "@/stores/user";
 
 export default {
   setup() {
     const messageStore = useMessaging();
+    const userStore = useUser();
     return {
-      messageStore
+      messageStore,
+      userStore
     }
   },
   props: {
@@ -28,6 +31,9 @@ export default {
   methods: {
     updateSubscriber() {
       console.log(this.user)
+      if (!this.userStore.user) {
+        this.$router.push('/login') //want to say: go back to this page after
+      }
       this.messageStore.clearMessageThread();
       this.messageStore.subscriber = this.user._id;
     }

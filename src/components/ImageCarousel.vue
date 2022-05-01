@@ -45,14 +45,14 @@ export default {
 <template>
     <template v-if="imgs" >
         <template v-if="imgs.length == 1">
-            <ImageGetter :id="imgs[0]" :style="{ height:imgheight, width:'100%', 'object-fit': !overflow ? 'contain' : 'cover'}" />
+            <ImageGetter :id="imgs[0]" :style="{ height:imgheight, width:'100%'}" style="object-fit: cover;"/>
         </template>
         <template v-else-if="imgs.length > 1">
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
-                <div v-for="(image,index) in imgs" :index="index" :key="image" class="carousel-item"  :class="{active: index==currentImg}">
-                    <ImageGetter :id="image" :style="{ height:imgheight, width:'100%', 'object-fit': !overflow ? 'contain' : 'cover'}" />
-                </div>
+                  <div v-for="(image,index) in imgs" :index="index" :key="image" class="carousel-item"  :class="{active: index==currentImg}">
+                    <ImageGetter :id="image" :style="{ height:imgheight, width:'100%'}" style="object-fit: cover;"/>
+                  </div>
                 </div>
                 <span class="carousel-control-prev" role="button" data-slide="prev" @click="previousImg">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>

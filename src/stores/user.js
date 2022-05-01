@@ -10,10 +10,11 @@ export const useUser = defineStore('user', {
   },
   actions: {
     async getMessageThreads() {
+      /*
       try {
         var response = await axios({
                     method: 'post',
-                    url:'http://localhost:3001/messagethreads/get',
+                    url:'/api/messagethreads/get',
                     data: this.user})
         if (response.data.error) {
           return response.data.error
@@ -30,6 +31,7 @@ export const useUser = defineStore('user', {
       catch (err) {
         return err
       }
+      */
     },
     async registerUser(userForm) {
       try {
