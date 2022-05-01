@@ -54,24 +54,38 @@ router.get('/post/get/:id', (req,res) => {
   });
 });
 
-router.post('/post/delete/:id', (req,res) => {
-  console.log('req to delete: ' + req.params.id)
-  Post.findByIdAndDelete(String(req.params.id), function(err, post) {
-    if (err) {res.json({error:err})}
-    else {
-      if (post.imgs) {
-        if (Array(post.imgs).length > 1) {
-          const imgs = post.imgs.map(img => ObjectID(String(img))) //weird that I had to do this. img was a = new ObjectID(':id')
-          Image.deleteMany({ _id: { $in: imgs } }) // I feel like this should happen asynchronosly, no need for user to wait
-        }
-        else {
-          const img = ObjectID(String(post.imgs))
-          Image.deleteOne({ _id: img }) // I feel like this should happen asynchronosly, no need for user to wait
-        }
+
+async function deleteImgs(imgs) {
+  try {
+    await imgs.forEach(async img => {
+      if (img) {
+        await Image.findByIdAndDelete(img)
       }
-      res.json( {postid: post._id});
+    })
+    return
+  }
+  catch (err) {
+    console.log(err)
+    return err
+  }
+}
+
+//idk why I went to async, promises makes more sense
+router.post('/post/delete/:id', async (req,res) => {
+  console.log('req to delete: ' + req.params.id)
+  try {
+    var post = await Post.findById(String(req.params.id))
+    var d = await Post.findByIdAndDelete(post._id)
+    if (post.imgs) {
+      var err = await deleteImgs(post.imgs)
     }
-  });
+    if (err) { throw err }
+    res.json({postid: post._id})
+  }
+  catch(err) {
+    console.log(err)
+    res.json({error: err})
+  }
 });
 
 router.post('/category/add', (req,res) => {
@@ -214,7 +228,12 @@ router.get('/image/get/:id', (req,res) => {
       res.json({error:err})
     }
     else {
-      res.json({image: image.image});
+      if (image) {
+        res.json({image: image.image});
+      }
+      else {
+        res.json({image: null})
+      }
     }
   });
 });
