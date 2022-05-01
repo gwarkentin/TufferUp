@@ -21,9 +21,11 @@ export default {
 </script>
 
 <template>
-  <div class="text-center">
-  <h2 v-if="catcondStore.categories[category]">{{ catcondStore.categories[category].category }}</h2></div>
-  <template v-if="category">
-    <PostsList :url="'/api/posts/category/' + category"></PostsList>
-  </template>
+  <div class="text-center py-4">
+    <h2 v-if="catcondStore.categories[category]">{{ catcondStore.categories[category].category }}</h2>
+    <hr>
+  </div>
+    <template v-if="category">
+      <PostsList :url="'/api/posts/category/' + category"></PostsList>
+    </template>
 </template>
